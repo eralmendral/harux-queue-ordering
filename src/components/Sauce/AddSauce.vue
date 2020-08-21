@@ -44,10 +44,10 @@
 
               <div class="my-2">
                 <input type="file" @change="uploadProductImage" :disabled="sauce.image != ''" ref="file" />
-                <div class="my-2">
+                <div class="my-2 ml-2" v-if="sauce.image">
                   <span>Preview:</span>
                   <br />
-                  <img :src="sauce.image" alt width="200px" />
+                  <img :src="sauce.image" class="product-preview-image" />
                   <v-btn
                     fab
                     style="margin-bottom: 150px"
@@ -61,26 +61,17 @@
                   </v-btn>
                 </div>
               </div>
-
+              <br/>
               <v-btn
                 :disabled="disabled || productExists == true"
-                depressed
                 class="primary white--text"
-                large
                 @click="addSauce"
               >
                 <span>Add</span>
-                <v-icon right>add</v-icon>
               </v-btn>
             </v-card-text>
           </v-card>
         </v-form>
-
-        <div class="mt-3">
-          <v-btn depressed fab color="red lighten--4" to="/dashboard/sauces">
-            <v-icon color="white">arrow_back</v-icon>
-          </v-btn>
-        </div>
       </v-flex>
     </v-layout>
   </div>
@@ -207,6 +198,9 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
+        },
+        (err) => {
+          console.log(err)
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {

@@ -90,17 +90,17 @@
                   ref="file"
                   :disabled="this.product.newImage != ''"
                 />
-                <div class="my-2">
-                  <h4>Preview:</h4>
+                <div v-if="product.image || product.newImage" class="my-2 ml-2">
+                  <small>Preview</small>
                   <br />
                   <v-layout row>
                     <v-flex xs3>
                       <p v-if="product.newImage">Old Image:</p>
-                      <img :src="product.image" alt width="200px" />
+                      <img :src="product.image" class="product-preview-image" />
                     </v-flex>
                     <v-flex xs3 v-if="product.newImage">
                       <p>New Image:</p>
-                      <img :src="product.newImage" alt width="200px" />
+                      <img :src="product.newImage" class="product-preview-image" />
                       <v-btn
                         fab
                         style="margin-bottom: 150px"
@@ -116,29 +116,17 @@
                   </v-layout>
                 </div>
               </div>
-
+              <br/>
               <v-btn
                 :disabled="disabled || productExists == true"
-                depressed
                 class="primary white--text"
-                large
                 @click="updateProduct"
               >
                 <span>Update</span>
-                <v-icon right>check</v-icon>
               </v-btn>
             </v-card-text>
           </v-card>
         </v-form>
-
-        <div class="mt-3">
-          <v-btn depressed fab color="red lighten--4" to="/dashboard/products">
-            <v-icon color="white">arrow_back</v-icon>
-          </v-btn>
-          <v-btn depressed fab color="red lighten--4" @click="deleteProduct(product.id)">
-            <v-icon color="white">delete</v-icon>
-          </v-btn>
-        </div>
       </v-flex>
     </v-layout>
   </div>
@@ -364,6 +352,9 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
+        },
+        (err) => {
+          console.log(err)
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {

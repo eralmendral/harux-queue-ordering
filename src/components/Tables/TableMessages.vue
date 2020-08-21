@@ -6,15 +6,15 @@
       </template>
     </v-breadcrumbs>
     <v-container>
-      <h3>Send Message to Table Number: {{table_num}}</h3>
+      <p>Message table #: <b class="primary--text">{{table_num}}</b></p>
       <v-form ref="messageForm">
-        <v-text-field prepend-icon="chat" v-model="message" label="Message"></v-text-field>
-        <v-btn depressed color="success" class="white--text" @click="sendMessage">Send</v-btn>
+        <v-text-field prepend-icon="chat" v-model="message" label="type a message"></v-text-field>
+        <v-btn color="primary" class="white--text" @click="sendMessage">Send</v-btn>
       </v-form>
       <br />
       <v-card>
         <v-card-title>
-          <h3>Previous Messages Below:</h3>
+         <small><b>messages</b></small>
         </v-card-title>
 
         <v-card-text>
@@ -26,9 +26,8 @@
 
               <!-- action buttons -->
               <td class="text-xs-center">
-                <v-btn depressed small color="red lighten--4" @click="deleteMessage(props.item.id)">
+                <v-btn color="red" @click="deleteMessage(props.item.id)">
                   <span class="mr-1 white--text">Delete</span>
-                  <v-icon small color="white">delete</v-icon>
                 </v-btn>
               </td>
             </template>
@@ -61,8 +60,8 @@ export default {
       headers: [
         { text: 'Date', value: 'created_at', align: 'center' },
         { text: 'Time', value: 'created_at', align: 'center' },
-        { text: 'Message', value: 'message', align: 'center' },
-        { text: 'Action', value: '', align: 'center' }
+        { text: 'Message', value: 'message', align: 'center', sortable: false },
+        { text: 'Action', value: '', align: 'center', sortable: false }
       ],
       items: [
         {
@@ -79,7 +78,7 @@ export default {
   },
   methods: {
     orderDate (date) {
-      return moment(date).format('MMMM Do YYYY')
+      return moment(date).format('MMM. DD YYYY')
     },
     orderTime (date) {
       return moment(date).format('h:mm:ss a')

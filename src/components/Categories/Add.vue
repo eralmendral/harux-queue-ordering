@@ -104,6 +104,9 @@ export default {
       uploadTask.on(
         'state_changed',
         snapshot => {},
+        (err) => {
+          console.log(err)
+        },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             this.image = downloadURL

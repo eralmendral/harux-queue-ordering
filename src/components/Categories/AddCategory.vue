@@ -1,12 +1,11 @@
 <template>
-  <v-container>
-    <div>
+  <div>
       <v-breadcrumbs :items="items">
         <template v-slot:divider>
           <v-icon>chevron_right</v-icon>
         </template>
       </v-breadcrumbs>
-      <v-layout row wrap>
+      <v-layout>
         <v-flex>
           <v-form ref="categoryForm">
             <v-card flat>
@@ -33,12 +32,14 @@
                 </div>
 
                 <div class="my-2">
+                  <p>Image</p>
                   <input type="file" @change="uploadCategoryImage" ref="file" required />
-
                   <br />
                   <div class="my-2">
-                    <span>Preview:</span> <br>
-                    <img :src="category.image" alt width="200px" />
+                    <div v-if="category.image">
+                      <p>Image</p>
+                      <img :src="category.image" alt width="200px" />
+                    </div>
 
                     <v-btn
                       fab
@@ -56,27 +57,17 @@
 
                 <v-btn
                   :disabled="disabled || categoryExists == true"
-                  depressed
                   class="primary white--text"
-                  large
                   @click="addCategory"
                 >
                   <span>Add</span>
-                  <v-icon right>add</v-icon>
                 </v-btn>
               </v-card-text>
             </v-card>
           </v-form>
-
-          <div class="mt-3">
-            <v-btn depressed fab color="red lighten--4" to="/dashboard/categories">
-              <v-icon color="white">arrow_back</v-icon>
-            </v-btn>
-          </div>
         </v-flex>
       </v-layout>
-    </div>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -181,6 +172,9 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
+        },
+        (err) => {
+          console.log(err)
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {

@@ -32,29 +32,22 @@
                 prepend-icon="drag_indicator"
                 v-model="table.password"
                 label="Password"
+                :type="'password'"
                 :rules="inputRules"
               ></v-text-field>
 
               <v-btn
-                large
                 class="primary white--text"
                 :disabled="disabled || tableExists"
                 @click="updateUser"
               >
-                <span>Update User</span>
-                <v-icon right>check</v-icon>
+                <span>Update</span>
               </v-btn>
             </v-form>
 
             <p v-if="error !== ''" class="text-xs-center primary white--text pa-2">{{error}}</p>
           </v-card-text>
         </v-card>
-
-        <div class="mt-3">
-          <v-btn depressed fab color="red lighten--4" to="/dashboard/users">
-            <v-icon color="white">arrow_back</v-icon>
-          </v-btn>
-        </div>
       </v-flex>
     </v-layout>
   </div>
@@ -150,7 +143,7 @@ export default {
       }
 
       axios
-        .post('https://haru-6bed6.firebaseapp.com/updateUser', {
+        .post(process.env.VUE_APP_API_URL + '/updateUser', {
           userid: user.id,
           email: user.email,
           password: user.password

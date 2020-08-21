@@ -25,25 +25,15 @@
               </div>
             <label for="title">Title</label>
             <vue-editor id="title" v-model="slide.title"></vue-editor>
-
+            <br>
             <label for="details">Details</label>
             <vue-editor id="details" v-model="slide.details"></vue-editor>
 
               <v-switch v-model="slide.show" label="Show" color="primary"></v-switch>
 
-              <v-btn large class="primary white--text" :disabled="disabled" @click="updateSlide">
-                <span>Update Slide</span>
-                <v-icon right>check</v-icon>
+              <v-btn class="primary white--text" :disabled="disabled" @click="updateSlide">
+                <span>Update</span>
               </v-btn>
-
-              <div class="mt-3">
-                <v-btn depressed fab color="red lighten--4" to="/dashboard/slideshow">
-                  <v-icon color="white">arrow_back</v-icon>
-                </v-btn>
-                <v-btn depressed fab color="red lighten--4" @click="deleteSlide(slide.id)">
-                  <v-icon color="white">delete</v-icon>
-                </v-btn>
-              </div>
             </v-card-text>
           </v-card>
         </v-form>
@@ -151,6 +141,9 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
+        },
+        (err) => {
+          console.log(err)
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {

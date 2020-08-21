@@ -27,15 +27,14 @@
 
             <label for="title">Title</label>
             <vue-editor id="title" v-model="slide.title"></vue-editor>
-
+            <br>
             <label for="details">Details</label>
             <vue-editor id="details" v-model="slide.details"></vue-editor>
 
             <v-switch v-model="slide.show" label="Show" color="primary"></v-switch>
 
-            <v-btn large class="primary white--text" :disabled="disabled" @click="addSlide">
-              <span>Add Slide</span>
-              <v-icon right>add</v-icon>
+            <v-btn class="primary white--text" :disabled="disabled" @click="addSlide">
+              <span>Add</span>
             </v-btn>
           </v-form>
         </v-card-text>
@@ -123,6 +122,9 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
+        },
+        (err) => {
+          console.log(err)
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {

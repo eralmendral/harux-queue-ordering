@@ -27,7 +27,7 @@
               <td class="text-xs-center">
                 <v-dialog v-model="dialog" width="500">
                   <template v-slot:activator="{ on }">
-                    <v-btn color="info darken-2" dark v-on="on">Message</v-btn>
+                    <v-btn color="info" dark v-on="on">Message</v-btn>
                   </template>
 
                   <v-card>
@@ -39,9 +39,8 @@
                     </v-card-text>
 
                     <v-card-actions>
-                      <v-btn class="success large" @click="sendMessage(props.item.table_number)">
+                      <v-btn class="primary" @click="sendMessage(props.item.table_number)">
                         <span>Send</span>
-                        <v-icon>send</v-icon>
                       </v-btn>
                     </v-card-actions>
                   </v-card>

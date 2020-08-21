@@ -58,7 +58,7 @@
               <vue-editor v-model="product.details"></vue-editor>
 
               <div class="my-2">
-                <p>Thumbnail</p>
+                <p>Image</p>
                 <input type="file" @change="uploadProductImage" ref="file" />
                 <div class="my-2">
                   <p v-if="product.image">Preview:</p>
@@ -70,20 +70,13 @@
               <v-btn
                 :disabled="disabled || productExists == true"
                 class="primary white--text"
-                large
                 @click="addProduct"
               >
-                <span>Save</span>
+                <span>Add</span>
               </v-btn>
             </v-card-text>
           </v-card>
         </v-form>
-
-        <div class="mt-3">
-          <v-btn fab color="primary lighten--4" to="/dashboard/chickens">
-            <v-icon color="white">arrow_back</v-icon>
-          </v-btn>
-        </div>
       </v-flex>
     </v-layout>
   </div>
@@ -204,6 +197,9 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
+        },
+        (err) => {
+          console.log(err)
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {

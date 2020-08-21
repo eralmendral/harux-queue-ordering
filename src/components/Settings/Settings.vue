@@ -77,7 +77,7 @@
           <v-text-field label="Email" v-model="userData.email"></v-text-field>
         </v-flex>
         <v-flex xs6 sm3 mx-3>
-          <v-text-field label="Password" v-model="userData.password"></v-text-field>
+          <v-text-field label="Password" :type="'password'" v-model="userData.password"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout>
@@ -198,7 +198,7 @@ export default {
       }
 
       axios
-        .post('https://haru-6bed6.firebaseapp.com/updateUser', {
+        .post(process.env.VUE_APP_API_URL + '/updateUser', {
           userid: user.id,
           email: user.email,
           password: user.password

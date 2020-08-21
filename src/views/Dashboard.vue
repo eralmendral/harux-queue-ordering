@@ -81,6 +81,13 @@ img {
   filter: saturate(2)
 }
 
+.product-preview-image {
+  width: 180px;
+  height: 150px;
+  border-radius: 1px;
+  filter: saturate(2)
+}
+
 /* scrollbar */
 ::-webkit-scrollbar {
   width: 3px;

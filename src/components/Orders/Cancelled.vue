@@ -38,7 +38,6 @@
                   :to="{name:'order_details',params:{order_number: props.item.order_number}}"
                 >
                   <span class="mr-1 white--text">View</span>
-                  <v-icon small color="white">visibility</v-icon>
                 </v-btn>
 
                 <v-btn

@@ -37,25 +37,17 @@
               ></v-text-field>
 
               <v-btn
-                large
                 class="primary white--text"
                 :disabled="disabled || tableExists"
                 @click="addUser"
               >
-                <span>Add User</span>
-                <v-icon right>add</v-icon>
+                <span>Add</span>
               </v-btn>
             </v-form>
 
             <p v-if="error !== ''" class="text-xs-center pink white--text pa-2">{{error}}</p>
           </v-card-text>
         </v-card>
-
-        <div class="mt-3">
-          <v-btn depressed fab color="red lighten--4" to="/dashboard/users">
-            <v-icon color="white">arrow_back</v-icon>
-          </v-btn>
-        </div>
       </v-flex>
     </v-layout>
   </div>
@@ -130,7 +122,7 @@ export default {
         var password = String(this.table.password)
 
         axios
-          .post('https://haru-6bed6.firebaseapp.com/addUser', {
+          .post(process.env.VUE_APP_API_URL + '/addUser', {
             email: email,
             password: password
           })

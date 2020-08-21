@@ -31,23 +31,25 @@
                 <input type="color" id="categoryColor" v-model="category.color" />
               </div>
 
-              <input
+              <div>
+                 <input
                 type="file"
                 @change="uploadCategoryImage"
                 ref="file"
                 :disabled="this.category.newImage != ''"
               />
-              <div class="my-2">
-                <h4>Preview:</h4>
+              </div>
+              <div v-if="category.image || category.newImage" class="my-2 ml-3">
+                <small>Preview</small>
                 <br />
                 <v-layout row>
-                  <v-flex xs3>
+                  <v-flex>
                     <p v-if="category.newImage">Old Image:</p>
-                    <img :src="category.image" alt width="200px" />
+                    <img :src="category.image" class="product-preview-image"/>
                   </v-flex>
-                  <v-flex xs3 v-if="category.newImage">
+                  <v-flex v-if="category.newImage">
                     <p>New Image:</p>
-                    <img :src="category.newImage" alt width="200px" />
+                    <img :src="category.newImage" class="product-preview-image"/>
                     <v-btn
                       fab
                       style="margin-bottom: 150px"
@@ -62,26 +64,14 @@
                   </v-flex>
                 </v-layout>
               </div>
-
+              <br>
               <v-btn
                 :disabled="disabled || categoryExists == true"
-                depressed
                 class="primary white--text"
-                large
                 @click="updateCategory"
               >
                 <span>Update</span>
-                <v-icon right>check</v-icon>
               </v-btn>
-
-              <div class="mt-3">
-                <v-btn depressed fab color="red lighten--4" to="/dashboard/categories">
-                  <v-icon color="white">arrow_back</v-icon>
-                </v-btn>
-                <v-btn depressed fab color="red lighten--4" @click="deleteCategory(category.id)">
-                  <v-icon color="white">delete</v-icon>
-                </v-btn>
-              </div>
             </v-card-text>
           </v-card>
         </v-form>
@@ -231,6 +221,9 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
+        },
+        (err) => {
+          console.log(err)
         },
         () => {
           this.disabled = true

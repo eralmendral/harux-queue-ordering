@@ -30,18 +30,19 @@
               </div>
 
             <div class="my-2">
+                <p>Image</p>
                 <input type="file" @change="uploadCategoryImage" ref="file" />
-                <div class="my-2">
+                <div class="my-2 ml-2" v-if="saucecategory.newImage || saucecategory.image">
                   <span>Preview:</span>
                   <br />
                   <v-layout row>
                     <v-flex xs3>
                       <p v-if="saucecategory.newImage">Old Image:</p>
-                      <img :src="saucecategory.image" alt width="200px" />
+                      <img :src="saucecategory.image" class="product-preview-image" />
                     </v-flex>
                     <v-flex xs3 v-if="saucecategory.newImage">
                       <p>New Image:</p>
-                      <img :src="saucecategory.newImage" alt width="200px" />
+                      <img :src="saucecategory.newImage" class="product-preview-image" />
                       <v-btn
                         fab
                         style="margin-bottom: 150px"
@@ -57,31 +58,14 @@
                   </v-layout>
                 </div>
               </div>
-
+              <br/>
               <v-btn
                 :disabled="disabled || categoryExists == true"
-                depressed
                 class="primary white--text"
-                large
                 @click="updateCategory"
               >
                 <span>Update</span>
-                <v-icon right>check</v-icon>
               </v-btn>
-
-              <div class="mt-3">
-                <v-btn depressed fab color="red lighten--4" to="/dashboard/sauces/categories">
-                  <v-icon color="white">arrow_back</v-icon>
-                </v-btn>
-                <v-btn
-                  depressed
-                  fab
-                  color="red lighten--4"
-                  @click="deleteCategory(saucecategory.id)"
-                >
-                  <v-icon color="white">delete</v-icon>
-                </v-btn>
-              </div>
             </v-card-text>
           </v-card>
         </v-form>
@@ -220,6 +204,9 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
+        },
+        (err) => {
+          console.log(err)
         },
         () => {
           this.disabled = true

@@ -25,19 +25,18 @@
 
               <div class="form-group">
                 <label for="categoryColor">Sauce Category Color:</label>
-
                 <br />
                 <input type="color" id="categoryColor" />
               </div>
-
               <div class="my-2">
+                <small>Image</small>
+                <br />
                 <input type="file" @change="uploadCategoryImage" :disabled="saucecategory.image != ''" ref="file" required />
                 <br />
-                <div class="my-2">
-                  <span>Preview:</span>
+                <div v-if="saucecategory.image" class="my-2">
+                  <small>Preview:</small>
                   <br />
-                  <img :src="saucecategory.image" alt width="200px" />
-
+                  <img :src="saucecategory.image" class="product-preview-image" />
                   <v-btn
                     fab
                     style="margin-bottom: 150px"
@@ -51,26 +50,17 @@
                   </v-btn>
                 </div>
               </div>
-
+              <br/>
               <v-btn
                 :disabled="disabled || categoryExists == true"
-                depressed
                 class="primary white--text"
-                large
                 @click="addCategory"
               >
                 <span>Add</span>
-                <v-icon right>add</v-icon>
               </v-btn>
             </v-card-text>
           </v-card>
         </v-form>
-
-        <div class="mt-3">
-          <v-btn depressed fab color="red lighten--4" to="/dashboard/categories">
-            <v-icon color="white">arrow_back</v-icon>
-          </v-btn>
-        </div>
       </v-flex>
     </v-layout>
   </div>
@@ -183,6 +173,9 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
+        },
+        (err) => {
+          console.log(err)
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {

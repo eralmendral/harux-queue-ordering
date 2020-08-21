@@ -110,9 +110,8 @@ export default {
         confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          const url = `https://haru-6bed6.firebaseapp.com/deleteUser`
           axios
-            .post(url, {
+            .post(process.env.VUE_APP_API_URL + '/deleteUser', {
               userid: id
             })
             .then(res => {
