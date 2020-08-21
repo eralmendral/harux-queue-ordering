@@ -120,7 +120,6 @@ export default {
           this.products.push(doc.data())
         })
       })
-    //  console.log("Fetched Products",this.fetchProducts);
   },
   beforeRouteEnter (to, from, next) {
     if (to.params.category === 'Sauce') {

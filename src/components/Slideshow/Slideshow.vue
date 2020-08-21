@@ -126,7 +126,6 @@ export default {
             .then(() => {
               Swal.fire('Deleted!', 'Your Slide has been deleted.', 'success')
             })
-            .catch(err => console.log(err))
         }
       })
     }

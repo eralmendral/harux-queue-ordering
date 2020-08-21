@@ -194,12 +194,7 @@ export default {
     deleteImage (img) {
       let image = fb.storage().refFromURL(img)
       this.category.image = ''
-      image
-        .delete()
-        .then(() => {
-          console.log('Image Deleted')
-        })
-        .catch(err => console.log(err))
+      image.delete()
     }
   }
 }

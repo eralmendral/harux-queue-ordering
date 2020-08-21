@@ -124,7 +124,6 @@ export default {
             .then(() => {
               Swal.fire('Deleted!', 'Message Deleted.', 'success')
             })
-            .catch(err => console.log(err))
         }
       })
     }

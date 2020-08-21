@@ -216,12 +216,7 @@ export default {
     deleteImage (img) {
       let image = fb.storage().refFromURL(img)
       this.product.newImage = ''
-      image
-        .delete()
-        .then(() => {
-          console.log('New Image Deleted')
-        })
-        .catch(err => console.log(err))
+      image.delete()
     },
     updateProduct () {
       this.disabled = true
@@ -243,12 +238,7 @@ export default {
         if (this.product.image !== '') {
           let image = fb.storage().refFromURL(this.product.image)
           this.product.image = ''
-          image
-            .delete()
-            .then(() => {
-              console.log('Image Deleted')
-            })
-            .catch(err => console.log(err))
+          image.delete()
         }
       }
 
@@ -316,23 +306,12 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
-
-          console.log('upload progress is: ' + progress)
-          switch (snapshot.state) {
-            case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log('Upload is paused')
-              break
-            case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log('Upload is running')
-              break
-          }
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.product.newImage = downloadURL)) {
               this.disabled = false
             }
-            console.log('File available at: ', downloadURL)
           })
         }
       )
@@ -354,7 +333,6 @@ export default {
             .then(() => {
               Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
             })
-            .catch(err => console.log(err))
 
           this.$router.push('/dashboard/products')
         }

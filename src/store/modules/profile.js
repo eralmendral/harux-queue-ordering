@@ -24,12 +24,6 @@ const getters = {
     }
   },
   canSauce: state => {
-    // if ("sauce" in state.tableProfile && state.tableProfile.sauce == true) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
-    //  console.log("Table profile" ,state.tableProfile.orders)
     var letSauce = false
     if (state.tableProfile.sauce) {
       letSauce = true
@@ -96,8 +90,6 @@ const mutations = {
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          console.log(doc.id, ' => ', doc.data())
-          // Build doc ref from doc.id
           db.collection('billout')
             .doc(doc.id)
             .update({ triggerNotif: num })

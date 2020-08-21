@@ -117,7 +117,6 @@ const mutations = {
         ...order
       })
       .then(() => {
-        console.log('Success')
         state.cart = []
         Swal.fire({
           type: 'success',

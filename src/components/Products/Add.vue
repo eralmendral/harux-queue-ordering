@@ -126,29 +126,17 @@ export default {
       form.reset()
     },
     uploadProductImage (e) {
-      let file = e.target.files[0]
-      console.log('FILE ' + file)
-
       for (var i = 0; i < this.$refs.file.files.length; i++) {
         let file = this.$refs.file.files[i]
-        console.log(file)
-
         var filename = uuid.v1() + file.name
-        console.log(filename)
         var storageRef = fb.storage().ref('products/' + filename)
-
         let uploadTask = storageRef.put(file)
-        console.log('DONE')
         uploadTask.on(
           'state_changed',
           snapshot => {},
-          error => {
-            console.log(error)
-          },
           () => {
             uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
               this.product.image.push(downloadURL)
-              console.log('Download url: ' + downloadURL)
             })
           }
         )
@@ -156,17 +144,8 @@ export default {
     },
     deleteImage (img, index) {
       let image = fb.storage().refFromURL(img)
-
       this.product.image.splice(index, 1)
-
-      image
-        .delete()
-        .then(() => {
-          console.log('Image Deleted')
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      image.delete()
     }
   }
 }

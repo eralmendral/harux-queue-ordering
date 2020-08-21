@@ -154,7 +154,6 @@ export default {
                 timer: 1000
               })
             })
-            .catch(err => console.log(err))
         }
       })
     }

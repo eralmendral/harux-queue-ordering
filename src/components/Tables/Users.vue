@@ -121,16 +121,12 @@ export default {
               userid: id
             })
             .then(res => {
-              console.log('Success', res)
               Swal.fire({
                 type: 'success',
                 title: 'User Deleted',
                 showConfirmButton: false,
                 timer: 1000
               })
-            })
-            .catch(err => {
-              console.log('Error', err)
             })
         }
       })

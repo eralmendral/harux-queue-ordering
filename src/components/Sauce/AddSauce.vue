@@ -130,17 +130,10 @@ export default {
     deleteImage (img) {
       let image = fb.storage().refFromURL(img)
       this.sauce.image = ''
-      image
-        .delete()
-        .then(() => {
-          console.log('Image Deleted')
-        })
-        .catch(err => console.log(err))
+      image.delete()
     },
     checkProduct () {
       var saucename = String(this.sauce.name)
-
-      // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
       db.collection('products')
         .where('name', '==', saucename)
         .get()
@@ -214,23 +207,12 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
-
-          console.log('upload progress is: ' + progress)
-          switch (snapshot.state) {
-            case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log('Upload is paused')
-              break
-            case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log('Upload is running')
-              break
-          }
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.sauce.image = downloadURL)) {
               this.disabled = false
             }
-            console.log('File available at: ', downloadURL)
           })
         }
       )

@@ -186,12 +186,7 @@ export default {
     deleteImage (img) {
       let image = fb.storage().refFromURL(img)
       this.sauce.newImage = ''
-      image
-        .delete()
-        .then(() => {
-          console.log('New Image Deleted')
-        })
-        .catch(err => console.log(err))
+      image.delete()
     },
     updateSauce () {
       let form = this.$refs.sauceForm
@@ -206,12 +201,7 @@ export default {
         if (this.sauce.image !== '') {
           let image = fb.storage().refFromURL(this.sauce.image)
           this.sauce.image = ''
-          image
-            .delete()
-            .then(() => {
-              console.log('Image Deleted')
-            })
-            .catch(err => console.log(err))
+          image.delete()
         }
       }
 
@@ -261,28 +251,15 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
-
-          console.log('upload progress is: ' + progress)
-          switch (snapshot.state) {
-            case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log('Upload is paused')
-              break
-            case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log('Upload is running')
-              break
-          }
         },
         () => {
           this.disabled = true
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             this.sauce.newImage = downloadURL
             this.disabled = false
-            console.log('File available at: ', downloadURL)
           })
         }
       )
-
-      // console.log(e.target.files[0]);
     },
     deleteSauce (id) {
       Swal.fire({
@@ -303,7 +280,6 @@ export default {
 
               this.$router.push('/dashboard/categories')
             })
-            .catch(err => console.log(err))
         }
       })
     }

@@ -161,8 +161,7 @@ export default {
             this.$router.push('/dashboard/users')
             this.error = ''
           })
-          .catch(err => {
-            console.log('Error', err)
+          .catch(() => {
             this.error = 'Error Adding User: email maybe already taken'
           })
 

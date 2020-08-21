@@ -134,7 +134,6 @@ export default {
                 Swal.fire('Deleted!', 'Order Deleted', 'success')
               })
             })
-            .catch(err => console.log(err))
         }
       })
     },

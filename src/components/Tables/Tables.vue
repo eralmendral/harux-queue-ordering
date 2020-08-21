@@ -155,9 +155,6 @@ export default {
             .get()
             .then(function (querySnapshot) {
               querySnapshot.forEach(function (doc) {
-                console.log(doc.id, ' => ', doc.data())
-
-                // Build doc ref from doc.id
                 db.collection('users')
                   .doc(doc.id)
                   .update({ billingout: false, orders: [], sauce: false })

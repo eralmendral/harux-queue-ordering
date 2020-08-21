@@ -14,7 +14,6 @@ export default {
         .then(() => {
           this.$router.push('/login')
         })
-        .catch(err => console.log(err))
     }
   }
 }

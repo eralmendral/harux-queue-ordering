@@ -228,8 +228,6 @@ export default {
           password: user.password
         })
         .then(res => {
-          console.log('Response Data Id', res.data.id)
-
           if (typeof res.data.id !== 'undefined') {
             db.collection('users')
               .doc(res.data.id)
@@ -247,12 +245,10 @@ export default {
             this.disabled = false
             this.error = ''
           } else {
-            console.log('Error')
             this.error = 'Error Updating User: email maybe already taken'
           }
         })
-        .catch(err => {
-          console.log('Error', err)
+        .catch(() => {
           this.error = 'Error Updating User: email maybe already taken'
         })
     }

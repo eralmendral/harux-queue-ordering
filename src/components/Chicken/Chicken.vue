@@ -155,7 +155,6 @@ export default {
             .then(() => {
               Swal.fire('Deleted!', 'Your product has been deleted.', 'success')
             })
-            .catch(err => console.log(err))
         }
       })
     }

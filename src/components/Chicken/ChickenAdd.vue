@@ -205,23 +205,13 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
-
-          console.log('upload progress is: ' + progress)
-          switch (snapshot.state) {
-            case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log('Upload is paused')
-              break
-            case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log('Upload is running')
-              break
-          }
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.product.image = downloadURL)) {
               this.disabled = false
             }
-            // console.log("File available at: ", downloadURL);
+           
           })
         }
       )

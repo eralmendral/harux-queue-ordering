@@ -156,8 +156,6 @@ export default {
           password: user.password
         })
         .then(res => {
-          console.log('Response Data Id', res.data.id)
-          //
           db.collection('users')
             .doc(user.id)
             .set({
@@ -174,10 +172,7 @@ export default {
           this.$router.push('/dashboard/users')
           this.disabled = false
         })
-        .catch(err => {
-          console.log('Error', err)
-          this.error = 'Error Updating User: email maybe already taken'
-        })
+        .catch(() => { this.error = 'Error Updating User: email maybe already taken' })
     }
   }
 }

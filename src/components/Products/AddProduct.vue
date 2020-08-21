@@ -264,9 +264,7 @@ export default {
     uploadProductImage (e) {
       this.disabled = true
       let image = e.target.files[0]
-
       var storageRef = fb.storage().ref('products/' + uuid.v1() + image.name)
-      console.log('Test upload', uuid.v1() + image.name)
       let uploadTask = storageRef.put(image)
 
       uploadTask.on(
@@ -275,23 +273,12 @@ export default {
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           this.uploadprogress = progress
-
-          console.log('upload progress is: ' + progress)
-          switch (snapshot.state) {
-            case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log('Upload is paused')
-              break
-            case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log('Upload is running')
-              break
-          }
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.product.image = downloadURL)) {
               this.disabled = false
             }
-            console.log('File available at: ', downloadURL)
           })
         }
       )
@@ -299,12 +286,7 @@ export default {
     deleteImage (img) {
       let image = fb.storage().refFromURL(img)
       this.product.image = ''
-      image
-        .delete()
-        .then(() => {
-          console.log('Image Deleted')
-        })
-        .catch(err => console.log(err))
+      image.delete()
     }
   },
   created () {
