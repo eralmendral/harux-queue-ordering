@@ -126,6 +126,7 @@ export default {
       form.reset()
     },
     uploadProductImage (e) {
+      // let file = e.target.files[0]
       for (var i = 0; i < this.$refs.file.files.length; i++) {
         let file = this.$refs.file.files[i]
         var filename = uuid.v1() + file.name
