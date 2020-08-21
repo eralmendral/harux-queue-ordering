@@ -211,7 +211,6 @@ export default {
             if ((this.product.image = downloadURL)) {
               this.disabled = false
             }
-           
           })
         }
       )

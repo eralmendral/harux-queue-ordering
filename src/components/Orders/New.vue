@@ -6,13 +6,11 @@
       </template>
     </v-breadcrumbs>
     <v-layout>
+
       <v-flex>
-        <v-card flat>
+        <h2>New Orders</h2>
+         <v-card flat>
           <v-card-title>
-            <!-- <v-btn depressed color="pink" class="white--text" to="/dashboard/add-order">
-              <span>Add New Order</span>
-              <v-icon right>add</v-icon>
-            </v-btn>-->
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -22,40 +20,31 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-
-          <v-data-table :headers="headers" :items="orders" :search="search">
+          <v-data-table :headers="headers" :items="orders" :search="search"  :items-per-page="25">
             <template v-slot:items="props">
               <td class="text-xs-center">{{ props.item.order_number }}</td>
               <td class="text-xs-center">{{ orderTime(props.item.time.toDate()) }}</td>
               <td class="text-xs-center">
-                <v-btn
-                  fab
-                  depressed
-                  color="primary"
-                  class="white--text"
-                >{{ props.item.table_number }}</v-btn>
+                <h3 class="primary--text">{{ props.item.table_number }}</h3>
               </td>
-              <td class="text-xs-center">Php.{{ props.item.total_price }}</td>
+              <td class="text-xs-center">₱ {{ props.item.total_price }}</td>
               <td class="text-xs-center">
                 <v-select
-                  style="width: 100px"
+                  style="width: 100px; display: block; margin: 0 auto"
                   :items="updates"
-                  class="mt-2"
+                  class="mt-3 primary--text"
                   label="Status"
                   v-model="status"
                   @change="updateOrder(props.item.order_number)"
-                  solo
                 ></v-select>
               </td>
               <!-- action buttons -->
               <td class="text-xs-center">
                 <v-btn
-                  depressed
-                  color="success"
+                  color="primary"
                   :to="{name:'order_details',params:{order_number: props.item.order_number}}"
                 >
                   <span class="mr-1 white--text">View</span>
-                  <v-icon color="white">visibility</v-icon>
                 </v-btn>
               </td>
             </template>
@@ -88,12 +77,12 @@ export default {
       status: 'test',
       updates: ['pending', 'finished', 'cancelled'],
       headers: [
-        { text: 'Order No.', value: 'order_number', align: 'center' },
+        { text: 'Order Number', value: 'order_number', sortable: false, align: 'center' },
         { text: 'Order Time', value: 'time', align: 'center' },
         { text: 'Table', value: 'table_number', align: 'center' },
         { text: 'Cost', value: 'total_price', align: 'center' },
         { text: 'Update', value: '', align: 'center' },
-        { text: 'Action', value: '', align: 'center' }
+        { text: 'Action', value: '', align: 'center', sortable: false }
       ],
       items: [
         {

@@ -47,11 +47,18 @@ label {
 }
 
 table.v-table thead th {
-  font-size: 20px !important;
+  font-size: 18px !important;
+  font-weight: bold;
+  font-family: 'Raleway';
 }
 
 table.v-table tbody td {
   font-size: 18px !important;
+  font-family: 'Raleway';
+}
+
+h1, h2{
+  font-family: "Do Hyeon", sans-serif !important;
 }
 
 img {
