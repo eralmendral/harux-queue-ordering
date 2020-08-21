@@ -7,22 +7,21 @@
     </v-breadcrumbs>
 
     <v-container>
-      <v-layout row>
+      <v-layout wrap justify-center align-items-center>
         <v-flex>
-          <v-card flat>
-            <v-layout row wrap>
-              <v-flex xs4>
-                <img :src="product.image" alt width="250px" class="ml-4 mt-4"/>
-              </v-flex>
-              <v-flex justify-center align-baseline xs6 ma-3>
-                <h4><small>Name:</small> <span class="ml-4 font-weight primary--text">{{product.name}}</span></h4>
-                <h5><small>Category:</small> <span class="ml-4 font-weight secondary--text">{{product.category}}</span></h5>
-                <h5><small>Price:</small> <span class="ml-4 font-weight secondary--text">₱.{{product.price}}</span></h5>
-
-                <p>Details:</p>
-                <p class="secondary--text" v-html="product.details"></p>
-              </v-flex>
-            </v-layout>
+          <v-card flat class="pa-4">
+                <v-layout>
+                  <v-flex><img :src="product.image ? product.image : '/haruxlogo.png'" class="product-view-image" :alt="product.name"/></v-flex>
+                  <v-flex>
+                   <div class="ml-3" style="width: 80%; overflow:scroll" v-if="product.details.length > 25" >
+                      <p class="secondary--text" v-html="product.details"></p>
+                    </div>
+                  </v-flex>
+                  </v-layout>
+                    <p v-if="product.details.length < 25" v-html="product.details"></p>
+                    <h3><b class="ml-1 font-custom secondary--text">{{product.name}}</b></h3>
+                    <h3> <b class="ml-1 font-custom secondary--text">{{product.category}}</b></h3>
+                    <h3 v-if="product.price"> <b class="ml-1 font-custom secondary--text">₱ {{product.price}}</b></h3>
           </v-card>
         </v-flex>
       </v-layout>

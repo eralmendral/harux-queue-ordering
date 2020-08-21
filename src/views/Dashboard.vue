@@ -88,9 +88,17 @@ img {
   filter: saturate(2)
 }
 
+.product-view-image {
+  width: 360px;
+  height: 300px;
+  border-radius: 1px;
+  filter: saturate(2)
+}
+
 /* scrollbar */
 ::-webkit-scrollbar {
-  width: 3px;
+  height: 4px;              /* height of horizontal scrollbar ← You're missing this */
+  width: 4px;               /* width of vertical scrollbar */
 }
 
 /* Track */
@@ -100,7 +108,7 @@ img {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: grey;
+  background: rgb(161, 108, 84);
   border-radius: 10px;
 }
 
