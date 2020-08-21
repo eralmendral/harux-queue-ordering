@@ -44,7 +44,7 @@
                   color="primary"
                   :to="{name:'order_details',params:{order_number: props.item.order_number}}"
                 >
-                  <span class="mr-1 white--text">View</span>
+                  <span class="mr-1 white--text">Orders</span>
                 </v-btn>
               </td>
             </template>

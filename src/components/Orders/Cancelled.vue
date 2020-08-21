@@ -5,14 +5,11 @@
         <v-icon>chevron_right</v-icon>
       </template>
     </v-breadcrumbs>
+    <h2>Cancelled Orders</h2>
     <v-layout>
       <v-flex>
-        <v-card flat class="pink darken--2">
+        <v-card flat class="border">
           <v-card-title>
-            <!-- <v-btn depressed color="pink" class="white--text" to="/dashboard/add-order">
-              <span>Add New Order</span>
-              <v-icon right>add</v-icon>
-            </v-btn>-->
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -29,17 +26,15 @@
               <td class="text-xs-center">{{ orderDate(props.item.time.toDate()) }}</td>
               <td class="text-xs-center">{{ orderTime(props.item.time.toDate()) }}</td>
 
-              <td class="text-xs-center">
-                <v-btn fab depressed color="primary" class="white--text">{{ props.item.table_number }}</v-btn>
+              <td class="text-xs-center primary--text">
+                <b>{{ props.item.table_number }}</b>
               </td>
-              <td class="text-xs-center">Php.{{ props.item.total_price }}</td>
+              <td class="text-xs-center"><span v-if="props.item.total_price">₱ {{ props.item.total_price }}</span></td>
 
               <!-- action buttons -->
               <td class="text-xs-center">
                 <v-btn
-                  depressed
-
-                  color="success lighten--4"
+                  color="primary"
                   :to="{name:'order_details',params:{order_number: props.item.order_number}}"
                 >
                   <span class="mr-1 white--text">View</span>
@@ -47,13 +42,10 @@
                 </v-btn>
 
                 <v-btn
-                  depressed
-
-                  color="red lighten--4"
+                  color="red"
                   @click="deleteOrder(props.item.order_number)"
                 >
                   <span class="mr-1 white--text">Delete</span>
-                  <v-icon small color="white">delete</v-icon>
                 </v-btn>
               </td>
             </template>
@@ -109,7 +101,7 @@ export default {
   },
   methods: {
     orderDate (date) {
-      return moment(date).format('MMMM Do YYYY')
+      return moment(date).format('MMM. DD YYYY')
     },
     orderTime (date) {
       return moment(date).format('h:mm:ss a')

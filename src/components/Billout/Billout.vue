@@ -5,7 +5,8 @@
         <v-icon>chevron_right</v-icon>
       </template>
     </v-breadcrumbs>
-    <v-layout row>
+    <h2>Billing out</h2>
+    <v-layout row >
       <v-flex>
         <v-card flat>
           <v-card-title>
@@ -24,19 +25,9 @@
               <td class="text-xs-center">{{ props.item.table_number }}</td>
 
               <td class="text-xs-center">
-                <v-btn
-                  depressed
-                  color="info lighten--4"
-                  v-if="props.item.orders.length"
-                  :to="{name:'tableallorders', params:{table_num:props.item.table_number}}"
-                >
-                  <span>Orders</span>
-                  <v-icon color="white">visibility</v-icon>
-                </v-btn>
-
                 <v-dialog v-model="dialog" width="500">
                   <template v-slot:activator="{ on }">
-                    <v-btn color="red darken-2" dark v-on="on">Send MEssage</v-btn>
+                    <v-btn color="info darken-2" dark v-on="on">Message</v-btn>
                   </template>
 
                   <v-card>
@@ -56,14 +47,20 @@
                   </v-card>
                 </v-dialog>
 
+                 <v-btn
+                  color="primary lighten--4"
+                  v-if="props.item.orders.length"
+                  :to="{name:'tableallorders', params:{table_num:props.item.table_number}}"
+                >
+                  <span>Orders</span>
+                </v-btn>
+
                 <v-btn
                   v-if="props.item.billingout"
                   @click="billOut(props.item.table_number)"
-                  depressed
-                  class="success white--text"
+                  class="pink white--text"
                 >
                   <span>Bill Out</span>
-                  <v-icon color="white" right>check</v-icon>
                 </v-btn>
               </td>
             </template>

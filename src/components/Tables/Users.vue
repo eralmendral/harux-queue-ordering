@@ -5,13 +5,13 @@
         <v-icon>chevron_right</v-icon>
       </template>
     </v-breadcrumbs>
-
+    <h2>Users</h2>
     <v-layout row>
       <v-flex>
         <v-card flat>
           <v-card-title>
-            <v-btn class="primary white--text" to="/dashboard/adduser" depressed large>
-              <span>Add User</span>
+            <v-btn class="primary white--text" to="/dashboard/adduser">
+              <span>User</span>
               <v-icon>add</v-icon>
             </v-btn>
 
@@ -28,22 +28,17 @@
           <v-data-table :headers="headers" :items="users" :search="search">
             <template v-slot:items="props">
               <td class="text-xs-center">{{ props.item.table_number }}</td>
-
               <td class="text-xs-center">{{ props.item.email }}</td>
-
               <td class="text-xs-center">
                 <v-btn
-                  depressed
-                  color="info lighten--4"
+                  color="info"
                   :to="{name: 'edituser', params: {userid: props.item.id}}"
                 >
                   <span class="mr-1">Edit</span>
-                  <v-icon color="white">edit</v-icon>
                 </v-btn>
 
-                <v-btn depressed color="red lighten--4" @click="deleteUser(props.item.id)">
+                <v-btn color="red" @click="deleteUser(props.item.id)">
                   <span class="mr-1 white--text">Delete</span>
-                  <v-icon color="white">delete</v-icon>
                 </v-btn>
               </td>
             </template>
@@ -73,7 +68,7 @@ export default {
       search: '',
       headers: [
         { text: 'Table', value: 'table_number', align: 'center' },
-        { text: 'Email', value: 'status', align: 'center' }
+        { text: 'Email', value: 'status', align: 'center', sortable: false }
       ],
       users: [],
       loading: false,

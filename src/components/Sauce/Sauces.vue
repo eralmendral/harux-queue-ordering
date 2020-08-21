@@ -5,12 +5,13 @@
         <v-icon>chevron_right</v-icon>
       </template>
     </v-breadcrumbs>
+    <h2>Sauces</h2>
     <v-layout row>
       <v-flex>
         <v-card flat>
           <v-card-title>
-            <v-btn to="/dashboard/sauces/add" class="primary white--text my-2" large depressed>
-              <span>Add Sauce</span>
+            <v-btn to="/dashboard/sauces/add" class="primary white--text my-2">
+              <span>Sauce</span>
               <v-icon right>add</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
@@ -26,13 +27,14 @@
           <v-data-table :headers="headers" :items="sauces" :search="search">
             <template v-slot:items="props">
               <td class="text-xs-center">
-                <img :src="props.item.image" width="80px" :alt="props.item.name" />
+                 <img :src="props.item.image ? props.item.image : '/haruxlogo.png'" class="product-table-image" :alt="props.item.name" />
               </td>
               <td class="text-xs-center">{{ props.item.name }}</td>
               <td class="text-xs-center">{{ props.item.subcategory }}</td>
 
               <td class="text-xs-center">
                 <v-chip
+                  class="white--text"
                   small
                   :color="props.item.status == true || props.item.status == 'available' ? 'green' : 'primary'"
                 >{{props.item.status == true || props.item.status == 'available' ? 'Active' : 'Inactive'}}</v-chip>
@@ -43,25 +45,20 @@
               <td class="text-xs-center">
                 <v-btn
                   :to="{name: 'viewproduct', params: {product_id: props.item.id}}"
-                  depressed
-                  small
-                  color="success lighten--4"
+                  color="primary"
                 >
                   <span class="mr-1">View</span>
-                  <v-icon small>visibility</v-icon>
                 </v-btn>
+
                 <v-btn
-                  depressed
-                  color="info lighten--4"
+                  color="info"
                   :to="{name: 'editsauce', params: {id: props.item.id}}"
                 >
                   <span class="mr-1">Edit</span>
-                  <v-icon color="white">edit</v-icon>
                 </v-btn>
 
-                <v-btn depressed color="red lighten--4" @click="deleteSauce(props.item.id)">
+                <v-btn color="red" @click="deleteSauce(props.item.id)">
                   <span class="mr-1 white--text">Delete</span>
-                  <v-icon color="white">delete</v-icon>
                 </v-btn>
               </td>
             </template>
@@ -90,7 +87,7 @@ export default {
     return {
       search: '',
       headers: [
-        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Image', value: 'image', align: 'center', sortable: false },
         { text: 'Name', value: 'name', align: 'center' },
         { text: 'Category', value: 'subcategory', align: 'center' },
         { text: 'Status', value: 'status', align: 'center' },

@@ -65,9 +65,7 @@
                 <button class="circleBtn" @click="removeFromCart(sauce.id)">
                   <v-icon class="primary--text">remove</v-icon>
                 </button>
-
-                <h3
-                  class="primary--text"
+                <h3 class="primary--text"
                 >{{fetchProductQuantity(sauce.id) ? fetchProductQuantity(sauce.id).quantity : '0'}}</h3>
                 <button class="circleBtn" @click="addToCart({productId: sauce.id})">
                   <v-icon class="primary--text">add</v-icon>
@@ -77,17 +75,6 @@
           </v-layout>
         </v-container>
       </v-card>
-
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-
-      <br />
-      <br />
     </div>
   </div>
 </template>

@@ -61,9 +61,24 @@ h1, h2{
   font-family: "Do Hyeon", sans-serif !important;
 }
 
+.font-custom {
+  font-family: "Do Hyeon", sans-serif !important;
+}
+
+h3, h4,h5 ,h6 , p {
+    font-family: "Raleway";
+}
+
 img {
   border-radius: 5px;
   margin: 5px;
+}
+
+.product-table-image {
+  width: 120px;
+  height: 100px;
+  border-radius: 1px;
+  filter: saturate(2)
 }
 
 /* scrollbar */

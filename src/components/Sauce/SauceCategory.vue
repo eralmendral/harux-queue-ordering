@@ -5,7 +5,7 @@
         <v-icon>chevron_right</v-icon>
       </template>
     </v-breadcrumbs>
-
+   <h2>Sauce Categories</h2>
     <v-layout>
       <v-flex>
         <v-card flat>
@@ -13,10 +13,8 @@
             <v-btn
               to="/dashboard/sauces/category/add"
               class="primary white--text my-2"
-              large
-              depressed
             >
-              <span>Add Sauce Category</span>
+              <span>Sauce Category</span>
               <v-icon right>add</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
@@ -32,7 +30,7 @@
           <v-data-table :headers="headers" :items="saucecategories" :search="search">
             <template v-slot:items="props">
               <td class="text-xs-center">
-                <img :src="props.item.image" width="80px" :alt="props.item.name" />
+                <img :src="props.item.image ? props.item.image : '/haruxlogo.png'" class="product-table-image" :alt="props.item.name" />
               </td>
               <td class="text-xs-center">{{ props.item.name }}</td>
 
@@ -41,6 +39,7 @@
               </td>
               <td class="text-xs-center">
                 <v-chip
+                  class="white--text"
                   small
                   :color="props.item.status == true || props.item.status == 'available' ? 'green' : 'primary'"
                 >{{props.item.status == true || props.item.status == 'available' ? 'Available' : 'Unavailable'}}</v-chip>
@@ -49,22 +48,16 @@
               <td>
                 <v-btn
                   :to="{name: 'editsaucecategory', params: {id: props.item.id}}"
-                  depressed
-
-                  color="info lighten--4"
+                  color="info"
                 >
                   <span class="mr-1">Edit</span>
-                  <v-icon small>edit</v-icon>
                 </v-btn>
 
                 <v-btn
-                  depressed
-
-                  color="red lighten--4"
+                  color="red"
                   @click="deleteSauceCategory(props.item.id)"
                 >
                   <span class="mr-1 white--text">Delete</span>
-                  <v-icon small color="white">delete</v-icon>
                 </v-btn>
               </td>
             </template>
@@ -94,9 +87,9 @@ export default {
       saucecategories: [],
       search: '',
       headers: [
-        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Image', value: 'image', align: 'center', sortable: false },
         { text: 'Name', value: 'name', align: 'center' },
-        { text: 'Color', value: 'status', align: 'center' },
+        { text: 'Color', value: 'status', align: 'center', sortable: false },
         { text: 'Status', value: 'status', align: 'center' }
       ],
       items: [

@@ -23,13 +23,7 @@
                 <p class="secondary--text" v-html="product.details"></p>
               </v-flex>
             </v-layout>
-
           </v-card>
-          <div class="mt-3">
-            <v-btn depressed fab color="red lighten--4" to="/dashboard/products">
-              <v-icon color="white">arrow_back</v-icon>
-            </v-btn>
-          </div>
         </v-flex>
       </v-layout>
     </v-container>

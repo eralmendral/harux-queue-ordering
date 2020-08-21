@@ -58,17 +58,6 @@
               </v-layout>
             </v-card-text>
           </v-card>
-
-           <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-        <br />
-      <br />
-      <br />
         </div>
         <div v-else class="text-xs-center">
           <h3 class="primary--text">There is No Product in these Category</h3>

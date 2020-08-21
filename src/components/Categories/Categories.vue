@@ -5,12 +5,13 @@
         <v-icon>chevron_right</v-icon>
       </template>
     </v-breadcrumbs>
+    <h2>All Categories</h2>
     <v-layout row>
       <v-flex>
         <v-card flat>
           <v-card-title>
-            <v-btn to="/dashboard/addcategory" class="primary white--text my-2" large depressed>
-              <span>Add Category</span>
+            <v-btn to="/dashboard/addcategory" class="primary white--text my-2">
+              <span>Category</span>
               <v-icon right>add</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
@@ -26,7 +27,7 @@
           <v-data-table :headers="headers" :items="categories" :search="search">
             <template v-slot:items="props">
               <td class="text-xs-center">
-                <img :src="props.item.image" width="80px" :alt="props.item.name" />
+                 <img :src="props.item.image ? props.item.image : '/haruxlogo.png'" class="product-table-image" :alt="props.item.name" />
               </td>
               <td class="text-xs-center">{{ props.item.name }}</td>
 
@@ -37,6 +38,7 @@
               <td class="text-xs-center">
                 <v-chip
                   small
+                  class="white--text"
                   :color="props.item.status == true || props.item.status == 'available' ? 'green' : 'primary'"
                 >{{props.item.status == true || props.item.status == 'available' ? 'Active' : 'Inactive'}}</v-chip>
               </td>
@@ -44,23 +46,21 @@
               <td class="text-xs-center">
                 <v-chip
                   small
+                  class="white--text"
                   :color="props.item.featured == true  ? 'green' : 'primary'"
                 >{{props.item.featured == true ? 'Yes' : 'No'}}</v-chip>
               </td>
 
               <td class="text-xs-center">
                 <v-btn
-                  depressed
-                  color="info lighten--4"
+                  color="info"
                   :to="{name: 'editcategory', params: {category_id: props.item.id}}"
                 >
                   <span class="mr-1">Edit</span>
-                  <v-icon color="white">edit</v-icon>
                 </v-btn>
 
-                <v-btn depressed color="red lighten--4" @click="deleteCategory(props.item.id)">
-                  <span class="mr-1">Delete</span>
-                  <v-icon color="white">delete</v-icon>
+                <v-btn color="red" @click="deleteCategory(props.item.id)">
+                  <span class="mr-1 white--text">Delete</span>
                 </v-btn>
               </td>
             </template>
@@ -90,9 +90,9 @@ export default {
     return {
       search: '',
       headers: [
-        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Image', value: 'image', align: 'center', sortable: false },
         { text: 'Name', value: 'name', align: 'center' },
-        { text: 'Color', value: 'color', align: 'center' },
+        { text: 'Color', value: 'color', align: 'center', sortable: false },
         { text: 'Status', value: 'status', align: 'center' },
         { text: 'Featured', value: 'featured', align: 'center' }
       ],

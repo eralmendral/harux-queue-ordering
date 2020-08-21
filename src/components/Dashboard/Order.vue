@@ -124,10 +124,6 @@ export default {
 </script>
 
 <style>
-h1 {
-  font-family: "Do Hyeon", sans-serif !important;
-}
-
 .tableBox {
   width: 170px;
   height: 170px;

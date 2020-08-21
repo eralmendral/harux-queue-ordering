@@ -5,7 +5,7 @@
         <v-icon>chevron_right</v-icon>
       </template>
     </v-breadcrumbs>
-
+    <h2>Tables</h2>
     <v-layout row>
       <v-flex>
         <v-card flat>
@@ -20,53 +20,50 @@
             ></v-text-field>
           </v-card-title>
 
-          <v-data-table :headers="headers" :items="users" :search="search">
+          <v-data-table
+            :headers="headers"
+            :items="users"
+            :search="search"
+            :hide-default-footer="true"
+            disable-pagination
+          >
             <template v-slot:items="props">
               <td class="text-xs-center">{{ props.item.table_number }}</td>
 
               <td class="text-xs-center">
-                <v-chip
-                  large
-                  class="white--text"
-                  :color="!props.item.orders || !props.item.orders.length ? 'pink' : 'success'"
-                >{{!props.item.orders || !props.item.orders.length ? 'No' : 'Yes'}}</v-chip>
-              </td>
-              <td class="text-xs-center">
-                <v-chip
-                  v-if="props.item.orders.length"
-                  large
-                  class="white--text"
-                  :color="props.item.billingout == true ? 'success' : 'pink'"
-                >{{props.item.billingout == true ? 'Yes' : 'No'}}</v-chip>
+                <v-chip v-if="props.item.orders.length > 1" large class="primary white--text">Yes</v-chip>
               </td>
 
-              <td class="">
+              <td class="text-xs-center">
+                <v-chip
+                  v-if="props.item.orders.length && props.item.billingout"
+                  large
+                  class="pink darken-1 white--text"
+                >Yes</v-chip>
+              </td>
+
+              <td class>
                 <v-btn
-                  class="brown large white--text"
+                  class="info white--text"
                   :to="{name: 'tablemessages', params: {table_num: props.item.table_number}}"
                 >
                   <span>Message</span>
-                  <v-icon small right>chat</v-icon>
                 </v-btn>
 
                 <v-btn
-                  depressed
-                  color="info lighten--4"
+                  color="primary"
                   v-if="props.item.orders.length"
                   :to="{name:'tableallorders', params:{table_num:props.item.table_number}}"
                 >
-                  <span class="mr-1">View</span>
-                  <v-icon color="white" right>visibility</v-icon>
+                  <span class="mr-1">Orders</span>
                 </v-btn>
 
                 <v-btn
                   v-if="props.item.orders.length"
                   @click="billOut(props.item.table_number)"
-                  depressed
-                  class="primary white--text"
+                  class="pink white--text"
                 >
                   <span>Bill Out</span>
-                  <v-icon color="white" right>check</v-icon>
                 </v-btn>
               </td>
             </template>
@@ -97,8 +94,13 @@ export default {
       message: '',
       headers: [
         { text: 'Table', value: 'table_number', align: 'center' },
-        { text: 'Occupied', value: 'orders', align: 'center' },
-        { text: 'Billing Out', value: 'billingout', align: 'center' }
+        { text: 'Occupied', value: 'orders', align: 'center', sortable: false },
+        {
+          text: 'Billing Out',
+          value: 'billingout',
+          align: 'center',
+          sortable: false
+        }
       ],
       users: [],
       loading: false,
@@ -135,7 +137,7 @@ export default {
             timer: 1500
           })
         })
-        .catch(err => err)
+        .catch((err) => err)
 
       this.dialog = false
     },
@@ -148,7 +150,7 @@ export default {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, Billout!'
-      }).then(result => {
+      }).then((result) => {
         if (result.value) {
           db.collection('users')
             .where('table_number', '==', tablenum)
@@ -172,9 +174,9 @@ export default {
     getUsers () {
       db.collection('users')
         .orderBy('table_number', 'asc')
-        .onSnapshot(querySnapshot => {
+        .onSnapshot((querySnapshot) => {
           this.users = []
-          querySnapshot.forEach(doc => {
+          querySnapshot.forEach((doc) => {
             this.users.push(doc.data())
           })
         })

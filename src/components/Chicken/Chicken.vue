@@ -5,13 +5,14 @@
         <v-icon>chevron_right</v-icon>
       </template>
     </v-breadcrumbs>
+    <h2>Chickens</h2>
     <v-layout row>
       <v-flex>
         <v-card flat>
           <v-card-title>
-            <v-btn to="/dashboard/chickens/add" class="primary white--text my-2" large depressed>
-              <span>Add Chicken</span>
-              <v-icon right>add</v-icon>
+            <v-btn to="/dashboard/chickens/add" class="primary white--text my-2">
+              <span>Chicken</span>
+              <v-icon>add</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
             <v-text-field
@@ -26,7 +27,7 @@
           <v-data-table :headers="headers" :items="chickens" :search="search">
             <template v-slot:items="props">
               <td class="text-xs-center">
-                <img :src="props.item.image" width="80px" :alt="props.item.name" />
+                  <img :src="props.item.image ? props.item.image : '/haruxlogo.png'" class="product-table-image" :alt="props.item.name" />
               </td>
               <td class="text-xs-center">{{ props.item.name }}</td>
 
@@ -38,37 +39,34 @@
                 >{{props.item.status == true || props.item.status == 'available' ? 'Active' : 'Inactive'}}</v-chip>
               </td>
 
-   <td class="text-xs-center">{{ props.item.price }}</td>
-   <td class="text-xs-center">{{ props.item.price_kid ? props.item.price_kid : "Na"}}</td>
+                <td class="text-xs-center">{{ props.item.price }}</td>
+                <td class="text-xs-center">{{ props.item.price_kid ? props.item.price_kid : "Na"}}</td>
 
-                   <td class="text-xs-center"><v-chip  class="white--text" :color="props.item.unli ?  'green' : 'primary'">
-                     {{ props.item.unli ? 'yes' : 'no'}}
-                     </v-chip></td>
+                <td class="text-xs-center">
+                  <v-chip  class="white--text" :color="props.item.unli ?  'green' : 'primary'">
+                  {{ props.item.unli ? 'yes' : 'no'}}
+                </v-chip></td>
 
-                        <td class="text-xs-center">{{ props.item.flavor != -1 ? props.item.flavor : 'unlimited' }}</td>
+                <td class="text-xs-center" v-if="props.item.flavor === -1" ><v-chip color="green white--text">Unli</v-chip></td>
+                <td v-else class="text-xs-center">{{ props.item.flavor }}</td>
 
               <td class="text-xs-center">
                   <v-btn
-                  depressed
-                  color="success lighten--4"
-                     :to="{name: 'viewproduct', params: {product_id: props.item.id}}"
-                >
-                  <span class="mr-1 white--text">View</span>
-                  <v-icon color="white">visibility</v-icon>
+                    color="primary lighten--4"
+                    :to="{name: 'viewproduct', params: {product_id: props.item.id}}"
+                  >
+                  <b class="mr-1 white--text">View</b>
                 </v-btn>
 
                 <v-btn
-                  depressed
                   color="info lighten--4"
                   :to="{name: 'chickensedit', params: {id: props.item.id}}"
                 >
-                  <span class="mr-1 white--text">Edit</span>
-                  <v-icon color="white">edit</v-icon>
+                  <b class="mr-1 white--text">Edit</b>
                 </v-btn>
 
-                <v-btn depressed color="red lighten--4" @click="deleteProduct(props.item.id)">
-                  <span class="mr-1 white--text">Delete</span>
-                  <v-icon color="white">delete</v-icon>
+                <v-btn color="red lighten--4" @click="deleteProduct(props.item.id)">
+                  <b class="mr-1 white--text">Delete</b>
                 </v-btn>
               </td>
             </template>
@@ -97,13 +95,13 @@ export default {
     return {
       search: '',
       headers: [
-        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Image', value: 'image', align: 'center', sortable: false },
         { text: 'Name', value: 'name', align: 'center' },
         { text: 'Status', value: 'status', align: 'center' },
         { text: 'Price', value: 'price', align: 'center' },
         { text: 'Price(kids)', value: 'price_kid', align: 'center' },
         { text: 'Unli', value: 'unli', align: 'center' },
-        { text: 'Flavors', value: 'flavor', align: 'center' }
+        { text: 'Flavors', value: 'flavor', align: 'center', sortable: false }
       ],
       chickens: [],
       category: {

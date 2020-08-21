@@ -1,20 +1,11 @@
 <template>
   <v-container>
-    <h1>Settings</h1>
-
-    <hr />
-    <!-- start of comment section -->
-    <br />
-    <br />
-    <h3 class="text-center secondary--text mb-2">Comment Section</h3>
+    <h2>Message Banner</h2>
     <form ref="commentForm" id="commentForm">
       <v-layout class="my-3" row>
-        <v-flex xs2></v-flex>
         <v-flex xs4>
           <div class="form-group">
-            <label for="bgcolor">Background Color</label>
-            <br />
-
+            <p for="bgcolor">Background Color</p>
             <input
               type="color"
               v-model="comment.background"
@@ -25,18 +16,14 @@
           </div>
 
           <div class="form-group">
-            <label for="textcolor">Text Color</label>
-            <br />
-
-            <div style="height: 70px; width: 70px;border-radius: 50%">
+            <p for="textcolor">Text Color</p>
               <input
                 type="color"
                 v-model="comment.textColor"
-                style="height: 50px; width: 50px font-size: 10px"
+                style="height: 50px; width: 50px font-size: 10px; border: 1px"
                 id="textcolor"
                 v-bind:style="{ 'background': comment.textColor  }"
               />
-            </div>
           </div>
 
           <div class="form-group">
@@ -47,15 +34,13 @@
             <v-layout>
               <v-btn
                 @click="commentFormReset"
-                class="stdBtn primary secondary--text"
-                style="height: 50px !important"
+                class="primary white--text"
               >
                 <span>Clear</span>
               </v-btn>
               <v-btn
                 @click="saveCommentSettings"
-                class="stdBtn secondary"
-                style="height: 50px !important"
+                class="secondary primary--text"
               >
                 <span>Save</span>
               </v-btn>
@@ -64,18 +49,14 @@
         </v-flex>
 
         <v-flex>
-          <h3>Preview</h3>
+          <p>Preview</p>
           <div
-            height="250px"
-            width="250px"
+            style="display: flex; margin: 0 auto; width: 90%; height: 150px; justify-content: center; align-items: center"
             v-bind:style="{ 'background': comment.background  }"
-            style="padding: 20px"
           >
             <h3
-              class="text-center"
+              class="text-center font-custom"
               v-bind:style="{ 'color': comment.textColor  }"
-              style=" font-family: 'Montserrat', cursive !important;
-  font-weight: bolder;"
             >{{comment.sampleText}}</h3>
           </div>
         </v-flex>
@@ -83,14 +64,11 @@
     </form>
     <!-- end of comment section -->
 
-    <hr />
-    <br />
-    <br />
-
+    <v-divider></v-divider>
     <!-- start of account setting section -->
-    <h3 class="text-center secondary--text mb-5">Account Setting</h3>
-    <form ref="commentForm" id="accountForm">
-      <v-layout class="my-3" justify-center align-center row>
+    <h2 class="mb-5">Account Setting</h2>
+    <form id="accountForm">
+      <v-layout class="my-3" row>
         <v-flex xs12 sm3 mx-3>
           <v-text-field label="Table No." v-model="userData.table_number" @input="checkTable"></v-text-field>
           <p v-if="tableExists" class="pink--text">Table No. Already Exists</p>
@@ -102,12 +80,11 @@
           <v-text-field label="Password" v-model="userData.password"></v-text-field>
         </v-flex>
       </v-layout>
-      <v-layout justify-center>
-        <v-flex xs3>
+      <v-layout>
+        <v-flex >
           <v-btn
             @click="saveAccountSettings"
-            class="stdBtn secondary"
-            style="height: 50px !important; width: 150px"
+            class="secondary primary--text"
             :disabled="tableExists"
           >
             <span>Save</span>
@@ -171,7 +148,6 @@ export default {
     checkTable () {
       var tableNumber = this.userData.table_number
       tableNumber = String(tableNumber)
-      // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
       db.collection('users')
         .where('table_number', '==', tableNumber)
         .get()
@@ -200,7 +176,7 @@ export default {
 
       Swal.fire({
         type: 'success',
-        title: 'Comment Settings Updated',
+        title: 'Settings Updated',
         showConfirmButton: false,
         timer: 1500
       })

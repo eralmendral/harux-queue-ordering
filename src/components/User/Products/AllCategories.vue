@@ -36,11 +36,6 @@
         </div>
       </v-layout>
     </v-container>
-
-    <br>
-    <br>
-    <br>
-    <br>
   </div>
 </template>
 
