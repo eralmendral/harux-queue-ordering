@@ -31,7 +31,7 @@
               </td>
               <td class="text-xs-center">{{ props.item.name }}</td>
               <td class="text-xs-center">{{ props.item.category }}</td>
-              <td class="text-xs-center">₱ {{ props.item.price }}</td>
+              <td class="text-xs-center">{{ props.item.price ? '₱' + props.item.price : '-'}}</td>
               <td class="text-xs-center">
                 <v-chip
                   small

@@ -40,7 +40,7 @@
                 >{{props.item.status == true || props.item.status == 'available' ? 'Active' : 'Inactive'}}</v-chip>
               </td>
 
-              <td class="text-xs-center">{{ props.item.price }}</td>
+              <td class="text-xs-center">{{ props.item.price ? '₱' + props.item.price : '-'}}</td>
 
               <td class="text-xs-center">
                 <v-btn

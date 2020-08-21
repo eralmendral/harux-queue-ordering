@@ -39,8 +39,8 @@
                 >{{props.item.status == true || props.item.status == 'available' ? 'Active' : 'Inactive'}}</v-chip>
               </td>
 
-                <td class="text-xs-center">{{ props.item.price }}</td>
-                <td class="text-xs-center">{{ props.item.price_kid ? props.item.price_kid : "Na"}}</td>
+                <td class="text-xs-center">{{ props.item.price ? '₱' + props.item.price : '-' }}</td>
+                <td class="text-xs-center">{{ props.item.price_kid ? '₱' + props.item.price_kid : "-"}}</td>
 
                 <td class="text-xs-center">
                   <v-chip  class="white--text" :color="props.item.unli ?  'green' : 'primary'">
