@@ -78,12 +78,21 @@ img {
 
 /* Buttons */
 .stdBtn {
-  background: #ddae6a !important;
+  background: #261c1d !important;
   color: #cb7a43 !important;
-  border: 1px solid #fff !important;
+  border: none !important;
   height: 70px;
 }
 
+.circleBtn {
+  display: block;
+  background: #261c1d !important;
+
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50%;
+  margin: 0px 5px;
+}
 .circleBtn {
   display: block;
   background: #ddae6a !important;

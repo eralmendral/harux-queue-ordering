@@ -9,5 +9,5 @@ Vue.use(Vuetify, {
     secondary: '#261c1d',
     anyColor: '#000',
     success: '#8db600'
-}
+  }
 })
