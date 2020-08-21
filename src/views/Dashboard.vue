@@ -41,7 +41,7 @@ a:hover {
   text-decoration: none !important;
 }
 
-label { 
+label {
  font-family: 'Raleway';
  font-weight: 600;
 }

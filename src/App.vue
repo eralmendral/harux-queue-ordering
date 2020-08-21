@@ -6,30 +6,20 @@
   </v-app>
 </template>
 
-
 <script>
-
 
 export default {
   name: 'App',
-  data(){
-    return{
-      app:true
+  data () {
+    return {
+      app: true
     }
   },
   components: {
-   
-  },
-  data () {
-    return {
-      //
-    }
   }
 }
 </script>
 
 <style>
 
-
 </style>
-

@@ -5,19 +5,19 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
+import { fb } from '@/config/firebase'
 export default {
   methods: {
-    logout() {
+    logout () {
       fb.auth()
         .signOut()
         .then(() => {
-          this.$router.push("/login");
+          this.$router.push('/login')
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
     }
   }
-};
+}
 </script>
 
 <style>

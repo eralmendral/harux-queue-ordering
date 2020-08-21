@@ -10,7 +10,7 @@
         right
         persistent
         width="400px"
-       
+
         class="secondary primary--text"
       >
         <v-btn fab absolute @click="cart = !cart" right color="primary white--text mt-2" small>
@@ -114,24 +114,24 @@
 </template>
 
 <script>
-import Navbar from "@/components/User/Navbar/Navbar";
-import Queue from "@/components/User/Navbar/Queue";
+import Navbar from '@/components/User/Navbar/Navbar'
+import Queue from '@/components/User/Navbar/Queue'
 
-import { fb, db } from "@/config/firebase";
-import { mapGetters, mapActions } from "vuex";
+import { fb, db } from '@/config/firebase'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       drawer: null,
       cart: null,
       items: [
-        { title: "Menu", icon: "dashboard" },
-        { title: "My Orders", icon: "shopping_cart" }
+        { title: 'Menu', icon: 'dashboard' },
+        { title: 'My Orders', icon: 'shopping_cart' }
       ],
       orderItems: [],
       tableprofile: {}
-    };
+    }
   },
   components: {
     Navbar,
@@ -139,47 +139,47 @@ export default {
   },
   methods: {
     ...mapActions([
-      "setTableProfile",
-      "setCategories",
-      "fetchProducts",
-      "setProducts",
-      "addToCart",
-      "removeFromCart",
-      "deleteFromCart",
-      "confirmOrder"
+      'setTableProfile',
+      'setCategories',
+      'fetchProducts',
+      'setProducts',
+      'addToCart',
+      'removeFromCart',
+      'deleteFromCart',
+      'confirmOrder'
     ]),
-    toggleDrawer() {
-      this.drawer = !this.drawer;
+    toggleDrawer () {
+      this.drawer = !this.drawer
     },
-    confirmTheseOrder() {
-      this.confirmOrder();
-      this.$router.push("/");
+    confirmTheseOrder () {
+      this.confirmOrder()
+      this.$router.push('/')
     }
   },
-  created() {
-    let userid = fb.auth().currentUser.uid;
-    db.collection("users")
+  created () {
+    let userid = fb.auth().currentUser.uid
+    db.collection('users')
       .doc(userid)
       .onSnapshot(doc => {
-        this.setTableProfile(doc.data());
-      });
+        this.setTableProfile(doc.data())
+      })
 
-    this.setCategories();
+    this.setCategories()
   },
   computed: {
     ...mapGetters([
-      "tableProfile",
-      "occupied",
-      "billingOut",
-      "fetchCategories",
-      "fetchProducts",
-      "fetchCart",
-      "cartSize",
-      "cartTotalAmount",
-      "fetchProductQuantity"
+      'tableProfile',
+      'occupied',
+      'billingOut',
+      'fetchCategories',
+      'fetchProducts',
+      'fetchCart',
+      'cartSize',
+      'cartTotalAmount',
+      'fetchProductQuantity'
     ])
   }
-};
+}
 </script>
 
 <style>
