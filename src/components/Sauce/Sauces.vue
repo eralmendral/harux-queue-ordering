@@ -81,86 +81,86 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "Category",
-  data() {
+  name: 'Category',
+  data () {
     return {
-      search: "",
+      search: '',
       headers: [
-        { text: "Image", value: "image", align: "center" },
-        { text: "Name", value: "name", align: "center" },
-        { text: "Category", value: "subcategory", align: "center" },
-        { text: "Status", value: "status", align: "center" },
-        { text: "Price", value: "price", align: "center" }
+        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Name', value: 'name', align: 'center' },
+        { text: 'Category', value: 'subcategory', align: 'center' },
+        { text: 'Status', value: 'status', align: 'center' },
+        { text: 'Price', value: 'price', align: 'center' }
       ],
       sauces: [],
       category: {
-        image: "",
-        name: ""
+        image: '',
+        name: ''
       },
       loading: false,
       dialog: false,
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Sauces",
+          text: 'Sauces',
           disabled: true
         }
       ]
-    };
+    }
   },
 
   computed: {},
   methods: {
-    watcher() {
-      db.collection("products")
-        .orderBy("name")
-        .where("category", "==", "Sauce")
+    watcher () {
+      db.collection('products')
+        .orderBy('name')
+        .where('category', '==', 'Sauce')
         .onSnapshot(querySnapshot => {
-          this.sauces = [];
+          this.sauces = []
           querySnapshot.forEach(doc => {
-            this.sauces.push(doc.data());
-          });
-        });
+            this.sauces.push(doc.data())
+          })
+        })
     },
-    deleteSauce(id) {
+    deleteSauce (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("products")
+          db.collection('products')
             .doc(id)
             .delete()
             .then(() => {
               Swal.fire({
-                type: "success",
-                title: "Sauce Deleted",
+                type: 'success',
+                title: 'Sauce Deleted',
                 showConfirmButton: false,
                 timer: 1000
-              });
+              })
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     }
   },
-  created() {
-    this.watcher();
+  created () {
+    this.watcher()
   }
-};
+}
 </script>
 
 <style >

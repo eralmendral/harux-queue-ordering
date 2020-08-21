@@ -301,123 +301,118 @@
 </template>
 
 <script>
-import Add from "./Add";
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
-import moment from "moment";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import moment from 'moment'
 
 export default {
-  name: "OrderDetails",
-  data() {
+  name: 'OrderDetails',
+  data () {
     return {
       order: {},
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Orders",
+          text: 'Orders',
           disabled: false,
-          to: "/dashboard/new-orders"
+          to: '/dashboard/new-orders'
         },
         {
-          text: "Details",
+          text: 'Details',
           disabled: true
         }
       ]
-    };
+    }
   },
 
   methods: {
-    orderDate(date) {
-      return moment(date).format("MMMM Do YYYY");
+    orderDate (date) {
+      return moment(date).format('MMMM Do YYYY')
     },
-    orderTime(date) {
-      return moment(date).format("h:mm:ss a");
+    orderTime (date) {
+      return moment(date).format('h:mm:ss a')
     },
-    updateOrderPending(order_num) {
-      //find and update
-      db.collection("orders")
-        .where("order_number", "==", order_num)
+    updateOrderPending (orderNumber) {
+      // find and update
+      db.collection('orders')
+        .where('order_number', '==', orderNumber)
         .get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
             // console.log(doc.id, " => ", doc.data());
 
             // Build doc ref from doc.id
-            db.collection("orders")
+            db.collection('orders')
               .doc(doc.id)
-              .update({ status: "pending" });
-          });
-        });
+              .update({ status: 'pending' })
+          })
+        })
 
       Swal.fire({
-        type: "success",
-        title: "Order Updated to Pending",
+        type: 'success',
+        title: 'Order Updated to Pending',
         showConfirmButton: false,
         timer: 1500
-      });
+      })
     },
-    updateOrderCancelled(order_num) {
-      //find and update
-      db.collection("orders")
-        .where("order_number", "==", order_num)
+    updateOrderCancelled (orderNumber) {
+      // find and update
+      db.collection('orders')
+        .where('order_number', '==', orderNumber)
         .get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            // console.log(doc.id, " => ", doc.data());
-
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
             // Build doc ref from doc.id
-            db.collection("orders")
+            db.collection('orders')
               .doc(doc.id)
-              .update({ status: "cancelled" });
-          });
-        });
+              .update({ status: 'cancelled' })
+          })
+        })
       Swal.fire({
-        type: "success",
-        title: "Order Updated to Cancelled",
+        type: 'success',
+        title: 'Order Updated to Cancelled',
         showConfirmButton: false,
         timer: 1500
-      });
+      })
     },
-    updateOrderFinished(order_num) {
-      this.order.status = "finished";
+    updateOrderFinished (orderNumber) {
+      this.order.status = 'finished'
 
-      //find and update
-      db.collection("orders")
-        .where("order_number", "==", order_num)
+      // find and update
+      db.collection('orders')
+        .where('order_number', '==', orderNumber)
         .get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            //console.log(doc.id, " => ", doc.data());
-
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
             // Build doc ref from doc.id
-            db.collection("orders")
+            db.collection('orders')
               .doc(doc.id)
-              .update({ status: "finished" });
-          });
-        });
+              .update({ status: 'finished' })
+          })
+        })
       Swal.fire({
-        type: "success",
-        title: "Order Updated to Finished",
+        type: 'success',
+        title: 'Order Updated to Finished',
         showConfirmButton: false,
         timer: 1500
-      });
+      })
     }
   },
-  created() {
-    let order_number = this.$route.params.order_number;
-    db.collection("orders")
-      .where("order_number", "==", order_number)
+  created () {
+    let orderNumber = this.$route.params.order_number
+    db.collection('orders')
+      .where('order_number', '==', orderNumber)
       .onSnapshot(snapshot => {
         snapshot.forEach(doc => {
-          this.order = doc.data();
-        });
-      });
+          this.order = doc.data()
+        })
+      })
   }
-};
+}
 </script>
 
 <style>

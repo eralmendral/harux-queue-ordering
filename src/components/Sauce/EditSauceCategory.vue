@@ -91,193 +91,188 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { uuid } from "vue-uuid";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import { uuid } from 'vue-uuid'
 export default {
-  data() {
+  data () {
     return {
       disabled: false,
       categoryExists: false,
       uploadProgress: 0,
       saucecategory: {
-        id: "",
-        image: "",
-        newImage: "",
-        name: "",
-        color: "",
+        id: '',
+        image: '',
+        newImage: '',
+        name: '',
+        color: '',
         status: false
       },
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"],
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters'],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Sauce Category",
+          text: 'Sauce Category',
           disabled: false,
-          to: "/dashboard/categories"
+          to: '/dashboard/categories'
         },
         {
-          text: "Edit",
+          text: 'Edit',
           disabled: true
         }
       ]
-    };
+    }
   },
-  beforeRouteEnter(to, from, next) {
-    db.collection("saucecategories")
-      .where("id", "==", to.params.id)
+  beforeRouteEnter (to, from, next) {
+    db.collection('saucecategories')
+      .where('id', '==', to.params.id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            (vm.saucecategory.id = doc.data().id),
-              (vm.saucecategory.name = doc.data().name),
-              (vm.saucecategory.image = doc.data().image),
-              (vm.saucecategory.status = doc.data().status),
-              (vm.saucecategory.color = doc.data().color);
-          });
-        });
-      });
+            vm.saucecategory.id = doc.data().id
+            vm.saucecategory.name = doc.data().name
+            vm.saucecategory.image = doc.data().image
+            vm.saucecategory.status = doc.data().status
+            vm.saucecategory.color = doc.data().color
+          })
+        })
+      })
   },
   methods: {
-    checkCategory() {
-      var category = String(this.saucecategory.name);
-      var category = category.charAt(0).toUpperCase() + category.slice(1);
+    checkCategory () {
+      var category = String(this.saucecategory.name)
+      category = category.charAt(0).toUpperCase() + category.slice(1)
 
-      // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
-      db.collection("saucecategories")
-        .where("name", "==", category)
+      db.collection('saucecategories')
+        .where('name', '==', category)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.categoryExists = false;
+            this.categoryExists = false
           } else {
-            this.categoryExists = true;
+            this.categoryExists = true
           }
-        });
+        })
     },
-    updateCategory() {
-      let form = this.$refs.categoryForm;
-      this.loading = true;
+    updateCategory () {
+      let form = this.$refs.categoryForm
+      this.loading = true
 
-    
-      //check if newimage is not empty . then assign image to new image, else retain old this.image
-      let update_image =
-        this.saucecategory.newImage != "" ? this.saucecategory.newImage : this.saucecategory.image;
+      // check if newimage is not empty . then assign image to new image, else retain old this.image
+      let updateImage = this.saucecategory.newImage !== '' ? this.saucecategory.newImage : this.saucecategory.image
 
-      //if newimage is not empty, means there is an upload, remove old image
-      if (this.saucecategory.newImage != "") {
-        if (this.saucecategory.image != "") {
-          let image = fb.storage().refFromURL(this.saucecategory.image);
-          this.saucecategory.image = "";
+      // if newimage is not empty, means there is an upload, remove old image
+      if (this.saucecategory.newImage !== '') {
+        if (this.saucecategory.image !== '') {
+          let image = fb.storage().refFromURL(this.saucecategory.image)
+          this.saucecategory.image = ''
           image
             .delete()
             .then(() => {
-              console.log("Image Deleted");
+              console.log('Image Deleted')
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
       }
 
       if (form.validate()) {
-        var name = this.saucecategory.name;
-        var name = name.charAt(0).toUpperCase() + name.slice(1);
-        var color = document.getElementById("categoryColor").value;
+        var name = this.saucecategory.name
+        name = name.charAt(0).toUpperCase() + name.slice(1)
+        var color = document.getElementById('categoryColor').value
         const saucecategory = {
           id: this.saucecategory.id,
-          image: update_image,
+          image: updateImage,
           name: name,
           status: this.saucecategory.status,
           color: color,
           created_at: new Date()
-        };
+        }
 
-        const ref = db.collection("saucecategories").doc(saucecategory.id);
+        const ref = db.collection('saucecategories').doc(saucecategory.id)
         ref
           .set({
             ...saucecategory
           }) // sets the contents of the doc using the id
           .then(() => {
             Swal.fire({
-              type: "success",
-              title: "Sauce Category Updated",
+              type: 'success',
+              title: 'Sauce Category Updated',
               showConfirmButton: false,
               timer: 1500
-            });
-          });
+            })
+          })
       }
-      this.$router.push("/dashboard/sauces/categories");
-      this.loading = false;
-      this.dialog = false;
-      form.reset();
+      this.$router.push('/dashboard/sauces/categories')
+      this.loading = false
+      this.dialog = false
+      form.reset()
     },
-    uploadCategoryImage(e) {
-      let image = e.target.files[0];
+    uploadCategoryImage (e) {
+      let image = e.target.files[0]
 
-      var storageRef = fb.storage().ref("saucecategory/"+ uuid.v1() + image.name);
+      var storageRef = fb.storage().ref('saucecategory/' + uuid.v1() + image.name)
 
-      let uploadTask = storageRef.put(image);
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {
           var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadprogress = progress;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadprogress = progress
 
-          console.log("upload progress is: " + progress);
+          console.log('upload progress is: ' + progress)
           switch (snapshot.state) {
             case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log("Upload is paused");
-              break;
+              console.log('Upload is paused')
+              break
             case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log("Upload is running");
-              break;
+              console.log('Upload is running')
+              break
           }
         },
-        error => {},
         () => {
-          this.disabled = true;
+          this.disabled = true
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-            this.saucecategory.newImage = downloadURL;
-            this.disabled = false;
-            console.log("File available at: ", downloadURL);
-          });
+            this.saucecategory.newImage = downloadURL
+            this.disabled = false
+            console.log('File available at: ', downloadURL)
+          })
         }
-      );
+      )
 
-      console.log(e.target.files[0]);
+      console.log(e.target.files[0])
     },
-    deleteCategory(id) {
+    deleteCategory (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("saucecategories")
+          db.collection('saucecategories')
             .doc(id)
             .delete()
             .then(() => {
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
 
-              this.$router.push("/dashboard/saucescategories");
+              this.$router.push('/dashboard/saucescategories')
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style>

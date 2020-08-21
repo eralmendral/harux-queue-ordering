@@ -38,11 +38,9 @@
                 prefix="₱"
               ></v-text-field>
 
-       
               <v-switch v-model="sauce.status" label="Status" color="primary"></v-switch>
 
               <vue-editor v-model="sauce.details"></vue-editor>
-
 
               <div class="my-2">
                 <input type="file" @change="uploadProductImage" :disabled="sauce.image != ''" ref="file" />
@@ -89,103 +87,100 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { uuid } from "vue-uuid";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import { uuid } from 'vue-uuid'
 export default {
-  data() {
+  data () {
     return {
       saucecategories: [],
       disabled: false,
       productExists: false,
       uploadProgress: 0,
-     
+
       sauce: {
-        image: "",
-        name: "",
-        category: "",
+        image: '',
+        name: '',
+        category: '',
         subcategory: '',
-        price: "",
+        price: '',
         status: false,
-        details: "",
+        details: ''
       },
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"],
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters'],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Sauces",
+          text: 'Sauces',
           disabled: false,
-          to: "/dashboard/sauces"
+          to: '/dashboard/sauces'
         },
         {
-          text: "Add",
+          text: 'Add',
           disabled: true
         }
       ]
-    };
+    }
   },
   methods: {
-      deleteImage(img) {
-      let image = fb.storage().refFromURL(img);
-      this.sauce.image = "";
+    deleteImage (img) {
+      let image = fb.storage().refFromURL(img)
+      this.sauce.image = ''
       image
         .delete()
         .then(() => {
-          console.log("Image Deleted");
+          console.log('Image Deleted')
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
     },
-    checkProduct() {
-      var saucename = String(this.sauce.name);
+    checkProduct () {
+      var saucename = String(this.sauce.name)
 
       // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
-      db.collection("products")
-        .where("name", "==", saucename)
+      db.collection('products')
+        .where('name', '==', saucename)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.productExists = false;
+            this.productExists = false
           } else {
-            this.productExists = true;
+            this.productExists = true
           }
-        });
+        })
     },
-    fetchCategories() {
-      db.collection("saucecategories")
-        .orderBy("name", "asc")
+    fetchCategories () {
+      db.collection('saucecategories')
+        .orderBy('name', 'asc')
         .onSnapshot(querySnapshot => {
-          this.saucecategories = [];
+          this.saucecategories = []
           querySnapshot.forEach(doc => {
-            this.saucecategories.push(doc.data());
-          });
-        });
+            this.saucecategories.push(doc.data())
+          })
+        })
     },
-    addSauce() {
-      this.disabled = true;
-      let form = this.$refs.sauceForm;
-      this.loading = true;
+    addSauce () {
+      this.disabled = true
+      let form = this.$refs.sauceForm
+      this.loading = true
 
-      var status = this.sauce.status ? "available" : "unavailable";
+      var status = this.sauce.status ? 'available' : 'unavailable'
 
       const sauce = {
         image: this.sauce.image,
         name: this.sauce.name,
-        category : "Sauce",
+        category: 'Sauce',
         subcategory: this.sauce.subcategory,
         price: this.sauce.price,
         details: this.sauce.details,
         status: status,
         created_at: new Date()
-      };
+      }
 
- 
-
-      const ref = db.collection("products").doc();
+      const ref = db.collection('products').doc()
       ref
         .set({
           id: ref.id,
@@ -193,59 +188,58 @@ export default {
         }) // sets the contents of the doc using the id
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Sauce Added",
+            type: 'success',
+            title: 'Sauce Added',
             showConfirmButton: false,
             timer: 1500
-          });
-        });
+          })
+        })
 
-      this.$router.push("/dashboard/sauces");
-      this.loading = false;
+      this.$router.push('/dashboard/sauces')
+      this.loading = false
 
-      form.reset();
+      form.reset()
     },
-    uploadProductImage(e) {
-      this.disabled = true;
-      let image = e.target.files[0];
+    uploadProductImage (e) {
+      this.disabled = true
+      let image = e.target.files[0]
 
-      var storageRef = fb.storage().ref("sauces/" + uuid.v1() + image.name);
+      var storageRef = fb.storage().ref('sauces/' + uuid.v1() + image.name)
 
-      let uploadTask = storageRef.put(image);
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {
           var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadprogress = progress;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadprogress = progress
 
-          console.log("upload progress is: " + progress);
+          console.log('upload progress is: ' + progress)
           switch (snapshot.state) {
             case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log("Upload is paused");
-              break;
+              console.log('Upload is paused')
+              break
             case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log("Upload is running");
-              break;
+              console.log('Upload is running')
+              break
           }
         },
-        error => {},
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.sauce.image = downloadURL)) {
-              this.disabled = false;
+              this.disabled = false
             }
-            console.log("File available at: ", downloadURL);
-          });
+            console.log('File available at: ', downloadURL)
+          })
         }
-      );
+      )
     }
   },
-  created() {
-    this.fetchCategories();
+  created () {
+    this.fetchCategories()
   }
-};
+}
 </script>
 
 <style>

@@ -50,7 +50,7 @@
                 <v-btn
                   :to="{name: 'editsaucecategory', params: {id: props.item.id}}"
                   depressed
-                  
+
                   color="info lighten--4"
                 >
                   <span class="mr-1">Edit</span>
@@ -59,7 +59,7 @@
 
                 <v-btn
                   depressed
-                
+
                   color="red lighten--4"
                   @click="deleteSauceCategory(props.item.id)"
                 >
@@ -84,76 +84,75 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "SauceCategory",
-  data() {
+  name: 'SauceCategory',
+  data () {
     return {
       saucecategories: [],
-      search: "",
+      search: '',
       headers: [
-        { text: "Image", value: "image", align: "center" },
-        { text: "Name", value: "name", align: "center" },
-        { text: "Color", value: "status", align: "center" },
-        { text: "Status", value: "status", align: "center" }
+        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Name', value: 'name', align: 'center' },
+        { text: 'Color', value: 'status', align: 'center' },
+        { text: 'Status', value: 'status', align: 'center' }
       ],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Sauce Categories",
+          text: 'Sauce Categories',
           disabled: true
         }
       ]
-    };
+    }
   },
   computed: {},
   methods: {
-    fetchSauceCategories() {
-      db.collection("saucecategories").onSnapshot(querySnapshot => {
-        this.saucecategories = [];
+    fetchSauceCategories () {
+      db.collection('saucecategories').onSnapshot(querySnapshot => {
+        this.saucecategories = []
         querySnapshot.forEach(doc => {
-          this.saucecategories.push(doc.data());
-        });
-      });
+          this.saucecategories.push(doc.data())
+        })
+      })
     },
-    deleteSauceCategory(id) {
+    deleteSauceCategory (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("saucecategories")
+          db.collection('saucecategories')
             .doc(id)
             .delete()
             .then(() => {
-             
-            Swal.fire({
-              type: "success",
-              title: "Sauce Category Deleted",
-              showConfirmButton: false,
-              timer: 1000
-            });
+              Swal.fire({
+                type: 'success',
+                title: 'Sauce Category Deleted',
+                showConfirmButton: false,
+                timer: 1000
+              })
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     }
   },
-  created() {
-    this.fetchSauceCategories();
+  created () {
+    this.fetchSauceCategories()
   }
-};
+}
 </script>
 
 <style>

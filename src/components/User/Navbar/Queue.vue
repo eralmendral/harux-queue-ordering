@@ -22,36 +22,36 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { mapGetters, mapActions } from "vuex";
+import { db } from '@/config/firebase'
+import { mapGetters } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
       unShowQueue: 0,
       showQueue: true,
       orderQueue: []
-    };
-  },
-  methods: {
-    myTable(orderTableNumber) {
-      return "background: #26b578 !important; width: 100px";
     }
   },
-  created() {
-    db.collection("orders")
-      .orderBy("time", "asc")
-      .where("status", "==", "pending")
+  methods: {
+    myTable (orderTableNumber) {
+      return 'background: #26b578 !important; width: 100px'
+    }
+  },
+  created () {
+    db.collection('orders')
+      .orderBy('time', 'asc')
+      .where('status', '==', 'pending')
       .onSnapshot(querySnapshot => {
-        this.orderQueue = [];
+        this.orderQueue = []
         querySnapshot.forEach(doc => {
-          this.orderQueue.push(doc.data());
-        });
-      });
+          this.orderQueue.push(doc.data())
+        })
+      })
   },
   computed: {
-    ...mapGetters(["tableProfile"])
+    ...mapGetters(['tableProfile'])
   }
-};
+}
 </script>
 
 <style>
@@ -63,7 +63,6 @@ export default {
 }
 .qtableBox {
 
-   
   height: 75px;
   color: rgb(223, 220, 202);
 }
@@ -85,7 +84,6 @@ export default {
     to{background: red}
 }
 
-
 .index--0{
   animation: blink;
   animation-duration: .4s;
@@ -93,6 +91,5 @@ export default {
   animation-direction: alternate;
   animation-timing-function: ease-in-out;
 }
-
 
 </style>

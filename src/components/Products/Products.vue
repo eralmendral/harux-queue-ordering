@@ -44,7 +44,7 @@
                 <v-btn
                   :to="{name: 'viewproduct', params: {product_id: props.item.id}}"
                   depressed
-                
+
                   color="success lighten--4"
                 >
                   <span class="mr-1">View</span>
@@ -54,7 +54,7 @@
                 <v-btn
                   :to="{name: 'editproduct', params: {product_id: props.item.id}}"
                   depressed
-                 
+
                   color="info lighten--4"
                 >
                   <span class="mr-1">Edit</span>
@@ -83,95 +83,92 @@
 </template>
 
 <script>
-import Add from "./Add";
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "Products",
+  name: 'Products',
   components: {
-    Add
   },
-  data() {
+  data () {
     return {
       products: [],
-      search: "",
+      search: '',
       headers: [
-        { text: "Image", value: "image", align: "center" },
-        { text: "Name", value: "name", align: "center" },
-        { text: "Category", value: "category", align: "center" },
-        { text: "Price", value: "price", align: "center" },
-        { text: "Status", value: "status", align: "center" }
+        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Name', value: 'name', align: 'center' },
+        { text: 'Category', value: 'category', align: 'center' },
+        { text: 'Price', value: 'price', align: 'center' },
+        { text: 'Status', value: 'status', align: 'center' }
       ],
       categories: [],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Products",
+          text: 'Products',
           disabled: true
         }
       ]
-    };
+    }
   },
   computed: {},
   methods: {
-    fetchCategories() {
-      db.collection("categories")
-        .orderBy("name", "asc")
+    fetchCategories () {
+      db.collection('categories')
+        .orderBy('name', 'asc')
         .onSnapshot(querySnapshot => {
-          this.categories = [];
+          this.categories = []
           querySnapshot.forEach(doc => {
-            this.categories.push(doc.data());
-          });
-        });
+            this.categories.push(doc.data())
+          })
+        })
     },
-    fetchProducts() {
-      db.collection("products")
-       .orderBy("created_at", "desc")
+    fetchProducts () {
+      db.collection('products')
+        .orderBy('created_at', 'desc')
         .onSnapshot(querySnapshot => {
-          this.products = [];
+          this.products = []
           querySnapshot.forEach(doc => {
-            this.products.push(doc.data());
-          });
-        });
+            this.products.push(doc.data())
+          })
+        })
     },
-    deleteProduct(id) {
+    deleteProduct (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("products")
+          db.collection('products')
             .doc(id)
             .delete()
             .then(() => {
-             
-            Swal.fire({
-              type: "success",
-              title: "Product Deleted",
-              showConfirmButton: false,
-              timer: 1000
-            });
+              Swal.fire({
+                type: 'success',
+                title: 'Product Deleted',
+                showConfirmButton: false,
+                timer: 1000
+              })
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     }
   },
-  created() {
-    this.fetchProducts();
-    this.fetchCategories();
+  created () {
+    this.fetchProducts()
+    this.fetchCategories()
   }
-};
+}
 </script>
 
 <style>

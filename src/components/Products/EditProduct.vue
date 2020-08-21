@@ -79,7 +79,6 @@
                 prefix="₱"
               ></v-text-field>
 
-
               <v-switch v-model="product.status" label="Status" color="primary"></v-switch>
 
               <vue-editor v-model="product.details"></vue-editor>
@@ -146,12 +145,11 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { uuid } from "vue-uuid";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import { uuid } from 'vue-uuid'
 export default {
-  data() {
+  data () {
     return {
       categories: [],
       saucecategories: [],
@@ -159,288 +157,273 @@ export default {
       productExists: false,
       uploadProgress: 0,
       product: {
-        image: "",
-        newImage: "",
-        name: "",
-        category: "",
-        price: "",
-        price_kid: "",
+        image: '',
+        newImage: '',
+        name: '',
+        category: '',
+        price: '',
+        price_kid: '',
         status: false,
-        details: "",
-        created_at: "",
-        subcategory: "",
-        subdetails: "",
+        details: '',
+        created_at: '',
+        subcategory: '',
+        subdetails: '',
         unli: false,
         flavor: null
       },
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"],
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters'],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Products",
+          text: 'Products',
           disabled: false,
-          to: "/dashboard/products"
+          to: '/dashboard/products'
         },
         {
-          text: "Edit Product",
+          text: 'Edit Product',
           disabled: true
         }
       ]
-    };
+    }
   },
-  beforeRouteEnter(to, from, next) {
-    db.collection("products")
-      .where("id", "==", to.params.product_id)
+  beforeRouteEnter (to, from, next) {
+    db.collection('products')
+      .where('id', '==', to.params.product_id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          if (doc.data().category == "Sauce") {
+          if (doc.data().category === 'Sauce') {
             next(vm => {
-              (vm.product.id = doc.data().id),
-                (vm.product.name = doc.data().name),
-                (vm.product.category = doc.data().category),
-                (vm.product.subcategory = doc.data().subcategory),
-                (vm.product.image = doc.data().image),
-                (vm.product.status = doc.data().status),
-                (vm.product.price = doc.data().price),
-                (vm.product.details = doc.data().details),
-                (vm.product.created_at = doc.data().created_at);
-            });
-          } else if (doc.data().category == "Chicken") {
+              vm.product.id = doc.data().id
+              vm.product.name = doc.data().name
+              vm.product.category = doc.data().category
+              vm.product.subcategory = doc.data().subcategory
+              vm.product.image = doc.data().image
+              vm.product.status = doc.data().status
+              vm.product.price = doc.data().price
+              vm.product.details = doc.data().details
+              vm.product.created_at = doc.data().created_at
+            })
+          } else if (doc.data().category === 'Chicken') {
             next(vm => {
-              (vm.product.id = doc.data().id),
-                (vm.product.name = doc.data().name),
-                (vm.product.category = doc.data().category),
-                (vm.product.image = doc.data().image),
-                (vm.product.status = doc.data().status),
-                (vm.product.price = doc.data().price),
-                 (vm.product.price_kid = doc.data().price_kid),
-                (vm.product.unli = doc.data().unli),
-                (vm.product.flavor = doc.data().flavor),
-                (vm.product.details = doc.data().details),
-                (vm.product.subdetails = doc.data().subdetails),
-                (vm.product.created_at = doc.data().created_at);
-            });
+              vm.product.id = doc.data().id
+              vm.product.name = doc.data().name
+              vm.product.category = doc.data().category
+              vm.product.image = doc.data().image
+              vm.product.status = doc.data().status
+              vm.product.price = doc.data().price
+              vm.product.price_kid = doc.data().price_kid
+              vm.product.unli = doc.data().unli
+              vm.product.flavor = doc.data().flavor
+              vm.product.details = doc.data().details
+              vm.product.subdetails = doc.data().subdetails
+              vm.product.created_at = doc.data().created_at
+            })
           } else {
             next(vm => {
-              (vm.product.id = doc.data().id),
-                (vm.product.name = doc.data().name),
-                (vm.product.category = doc.data().category),
-                (vm.product.image = doc.data().image),
-                (vm.product.status = doc.data().status),
-                (vm.product.price = doc.data().price),
-                (vm.product.details = doc.data().details),
-                (vm.product.created_at = doc.data().created_at);
-            });
+              vm.product.id = doc.data().id
+              vm.product.name = doc.data().name
+              vm.product.category = doc.data().category
+              vm.product.image = doc.data().image
+              vm.product.status = doc.data().status
+              vm.product.price = doc.data().price
+              vm.product.details = doc.data().details
+              vm.product.created_at = doc.data().created_at
+            })
           }
-
-          // else {
-          //   next(vm => {
-          //     (vm.product.id = doc.data().id),
-          //       (vm.product.name = doc.data().name),
-          //       (vm.product.category = doc.data().category),
-          //       (vm.product.image = doc.data().image),
-          //       (vm.product.status = doc.data().status),
-          //       (vm.product.price = doc.data().price),
-          //       (vm.product.details = doc.data().details);
-          //     vm.product.unli = doc.data().unli;
-          //     vm.product.flavor = doc.data().flavor;
-          //   });
-          // }
-        });
-      });
+        })
+      })
   },
   methods: {
-    fetchSubCategories() {
-      db.collection("saucecategories")
-        .orderBy("name", "asc")
+    fetchSubCategories () {
+      db.collection('saucecategories')
+        .orderBy('name', 'asc')
         .onSnapshot(querySnapshot => {
-          this.saucecategories = [];
+          this.saucecategories = []
           querySnapshot.forEach(doc => {
-            this.saucecategories.push(doc.data());
-          });
-        });
+            this.saucecategories.push(doc.data())
+          })
+        })
     },
-    checkProduct() {
-      var productname = String(this.product.name);
-      db.collection("products")
-        .where("name", "==", productname)
+    checkProduct () {
+      var productname = String(this.product.name)
+      db.collection('products')
+        .where('name', '==', productname)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.productExists = false;
+            this.productExists = false
           } else {
-            this.productExists = true;
+            this.productExists = true
           }
-        });
+        })
     },
-    fetchCategories() {
-      db.collection("categories")
-        .orderBy("name", "asc")
+    fetchCategories () {
+      db.collection('categories')
+        .orderBy('name', 'asc')
         .onSnapshot(querySnapshot => {
-          this.categories = [];
+          this.categories = []
           querySnapshot.forEach(doc => {
-            this.categories.push(doc.data());
-          });
-        });
+            this.categories.push(doc.data())
+          })
+        })
     },
-    deleteImage(img) {
-      let image = fb.storage().refFromURL(img);
-      this.product.newImage = "";
+    deleteImage (img) {
+      let image = fb.storage().refFromURL(img)
+      this.product.newImage = ''
       image
         .delete()
         .then(() => {
-          console.log("New Image Deleted");
+          console.log('New Image Deleted')
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
     },
-    updateProduct() {
-      this.disabled = true;
-      let form = this.$refs.productForm;
-      this.loading = true;
+    updateProduct () {
+      this.disabled = true
+      let form = this.$refs.productForm
+      this.loading = true
 
-      var status = this.product.status ? "available" : "unavailable";
+      var status = this.product.status ? 'available' : 'unavailable'
 
       // if newImage is not empty update_iamge = newImage, else update_image ==  to old image
 
-      //check if newimage is not empty . then assign image to new image, else retain old this.image
-      let update_image =
-        this.product.newImage != ""
+      // check if newimage is not empty . then assign image to new image, else retain old this.image
+      let updateImage =
+        this.product.newImage !== ''
           ? this.product.newImage
-          : this.product.image;
+          : this.product.image
 
-      //if newimage is not empty, means there is an upload, remove old image
-      if (this.product.newImage != "") {
-        if (this.product.image != "") {
-          let image = fb.storage().refFromURL(this.product.image);
-          this.product.image = "";
+      // if newimage is not empty, means there is an upload, remove old image
+      if (this.product.newImage !== '') {
+        if (this.product.image !== '') {
+          let image = fb.storage().refFromURL(this.product.image)
+          this.product.image = ''
           image
             .delete()
             .then(() => {
-              console.log("Image Deleted");
+              console.log('Image Deleted')
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
       }
 
       const product = {
         id: this.product.id,
-        image: update_image,
+        image: updateImage,
         name: this.product.name,
         category: this.product.category,
         price: this.product.price,
         details: this.product.details,
         status: status,
         created_at: new Date()
-      };
-
-      //if category is sauce, then in product object add subcategory;
-      if (product.category == "Sauce") {
-        product.subcategory = this.product.subcategory;
       }
 
-      //if category is chicken, then in product object, unli , flavor , sub details
-      if (product.category == "Chicken") {
-        product.unli = this.product.unli;
+      // if category is sauce, then in product object add subcategory;
+      if (product.category === 'Sauce') {
+        product.subcategory = this.product.subcategory
+      }
 
-        if (product.unli == true) {
-          product.flavor = -1;
-          product.price_kid = this.product.price_kid;
-          product.subdetails = this.product.subdetails;
+      // if category is chicken, then in product object, unli , flavor , sub details
+      if (product.category === 'Chicken') {
+        product.unli = this.product.unli
+
+        if (product.unli === true) {
+          product.flavor = -1
+          product.price_kid = this.product.price_kid
+          product.subdetails = this.product.subdetails
         } else {
-          product.flavor = parseInt(this.product.flavor);
+          product.flavor = parseInt(this.product.flavor)
         }
       }
-      //remove old image when updated
+      // remove old image when updated
 
-      const ref = db.collection("products").doc(product.id);
+      const ref = db.collection('products').doc(product.id)
       ref
         .set({
           ...product
         }) // sets the contents of the doc using the id
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Product Updated",
+            type: 'success',
+            title: 'Product Updated',
             showConfirmButton: false,
             timer: 1500
-          });
-        });
+          })
+        })
 
-      this.$router.push("/dashboard/products");
-      this.loading = false;
-      this.dialog = false;
-      form.reset();
+      this.$router.push('/dashboard/products')
+      this.loading = false
+      this.dialog = false
+      form.reset()
     },
-    uploadProductImage(e) {
-      this.disabled = true;
-      let image = e.target.files[0];
+    uploadProductImage (e) {
+      this.disabled = true
+      let image = e.target.files[0]
 
-      var storageRef = fb.storage().ref("products/" + uuid.v1() + image.name);
+      var storageRef = fb.storage().ref('products/' + uuid.v1() + image.name)
 
-      let uploadTask = storageRef.put(image);
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {
           var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadprogress = progress;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadprogress = progress
 
-          console.log("upload progress is: " + progress);
+          console.log('upload progress is: ' + progress)
           switch (snapshot.state) {
             case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log("Upload is paused");
-              break;
+              console.log('Upload is paused')
+              break
             case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log("Upload is running");
-              break;
+              console.log('Upload is running')
+              break
           }
         },
-        error => {},
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.product.newImage = downloadURL)) {
-              this.disabled = false;
+              this.disabled = false
             }
-            console.log("File available at: ", downloadURL);
-          });
+            console.log('File available at: ', downloadURL)
+          })
         }
-      );
+      )
     },
-    deleteProduct(id) {
+    deleteProduct (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("products")
+          db.collection('products')
             .doc(id)
             .delete()
             .then(() => {
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
 
-          this.$router.push("/dashboard/products");
+          this.$router.push('/dashboard/products')
         }
-      });
+      })
     }
   },
-  created() {
-    this.fetchCategories();
-    this.fetchSubCategories();
+  created () {
+    this.fetchCategories()
+    this.fetchSubCategories()
   }
-};
+}
 </script>
 
 <style>

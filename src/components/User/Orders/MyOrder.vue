@@ -108,7 +108,7 @@
                       <v-flex xs4>
                         <h5>Adults: <b>{{chicken.adultQty}}</b></h5>
                       </v-flex>
-                     
+
                       <v-flex xs4>
                         <h5 class="pink--text">₱ {{chicken.total_price_adult}}</h5>
                       </v-flex>
@@ -118,7 +118,7 @@
                       <v-flex xs4>
                         <h5>Kids: <b>{{chicken.kidQty}}</b></h5>
                       </v-flex>
-                     
+
                       <v-flex xs4>
                         <h5 class="pink--text">₱ {{chicken.total_price_kid}}</h5>
                       </v-flex>
@@ -160,43 +160,42 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import moment from "moment";
+import { db } from '@/config/firebase'
+import moment from 'moment'
 
 export default {
-  name: "MyOrder",
-  data() {
+  name: 'MyOrder',
+  data () {
     return {
       order: {}
-    };
+    }
   },
   methods: {
-    orderDate(date) {
-      return moment(date).format("MMMM Do YYYY");
+    orderDate (date) {
+      return moment(date).format('MMMM Do YYYY')
     },
-    orderTime(date) {
-      return moment(date).format("h:mm:ss a");
+    orderTime (date) {
+      return moment(date).format('h:mm:ss a')
     },
-    doStuff() {
-      console.log("test123");
-      db.collection("orders")
-        .where("order_number", "==", this.$route.params.order_number)
+    fetchOrder () {
+      db.collection('orders')
+        .where('order_number', '==', this.$route.params.order_number)
         .onSnapshot(snapshot => {
           snapshot.forEach(doc => {
-            this.order = doc.data();
-          });
-        });
+            this.order = doc.data()
+          })
+        })
     }
   },
-  created() {
-    this.doStuff();
+  created () {
+    this.fetchOrder()
   },
   watch: {
-    "$route.params.order_number": function(order_number) {
-      this.doStuff();
+    '$route.params.order_number': function (orderNumber) {
+      this.fetchOrder()
     }
   }
-};
+}
 </script>
 
 <style>

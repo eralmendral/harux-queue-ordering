@@ -226,103 +226,102 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { mapGetters, mapActions } from "vuex";
-import moment from "moment";
-import Swal from "sweetalert2";
+import { db } from '@/config/firebase'
+import moment from 'moment'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "TableAllOrders",
-  data() {
+  name: 'TableAllOrders',
+  data () {
     return {
-      table_num: "",
+      table_num: '',
       allorders: [],
       myorders: [],
       tableProfile: null,
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Tables",
+          text: 'Tables',
           disabled: false,
-          to: "/dashboard/tables"
+          to: '/dashboard/tables'
         },
         {
-          text: "Order",
+          text: 'Order',
           disabled: true
         }
       ]
-    };
-  },
-  methods: {
-    orderDate(date) {
-      return moment(date).format("MMMM Do YYYY");
-    },
-    orderTime(date) {
-      return moment(date).format("h:mm:ss a");
-    },
-    fetchMyOrders: function(ordernum) {
-      return this.allorders.filter(order => order.order_number == ordernum);
-    },
-    billOut(tablenum) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Billout!"
-      }).then(result => {
-        if (result.value) {
-          db.collection("users")
-            .where("table_number", "==", tablenum)
-            .get()
-            .then(function(querySnapshot) {
-              querySnapshot.forEach(function(doc) {
-                console.log(doc.id, " => ", doc.data());
-
-                // Build doc ref from doc.id
-                db.collection("users")
-                  .doc(doc.id)
-                  .update({ billingout: false, orders: [], sauce: false });
-              });
-            });
-          Swal.fire({
-            type: "success",
-            title: "Table Billed Out",
-            showConfirmButton: false,
-            timer: 1500
-          });
-
-          this.$router.push("/dashboard/tables");
-        }
-      });
     }
   },
-  created() {
-    this.table_num = this.$route.params.table_num;
+  methods: {
+    orderDate (date) {
+      return moment(date).format('MMMM Do YYYY')
+    },
+    orderTime (date) {
+      return moment(date).format('h:mm:ss a')
+    },
+    fetchMyOrders: function (ordernum) {
+      return this.allorders.filter(order => order.order_number === ordernum)
+    },
+    billOut (tablenum) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Billout!'
+      }).then(result => {
+        if (result.value) {
+          db.collection('users')
+            .where('table_number', '==', tablenum)
+            .get()
+            .then(function (querySnapshot) {
+              querySnapshot.forEach(function (doc) {
+                console.log(doc.id, ' => ', doc.data())
 
-    db.collection("orders").onSnapshot(querySnapshot => {
-      this.allorders = [];
+                // Build doc ref from doc.id
+                db.collection('users')
+                  .doc(doc.id)
+                  .update({ billingout: false, orders: [], sauce: false })
+              })
+            })
+          Swal.fire({
+            type: 'success',
+            title: 'Table Billed Out',
+            showConfirmButton: false,
+            timer: 1500
+          })
+
+          this.$router.push('/dashboard/tables')
+        }
+      })
+    }
+  },
+  created () {
+    this.table_num = this.$route.params.table_num
+
+    db.collection('orders').onSnapshot(querySnapshot => {
+      this.allorders = []
       querySnapshot.forEach(doc => {
-        this.allorders.push(doc.data());
-      });
-    });
+        this.allorders.push(doc.data())
+      })
+    })
 
-    db.collection("users")
-      .where("table_number", "==", this.table_num)
+    db.collection('users')
+      .where('table_number', '==', this.table_num)
       .onSnapshot(querySnapshot => {
-        this.users = {};
+        this.users = {}
         querySnapshot.forEach(doc => {
-          this.tableProfile = doc.data();
-        });
-      });
+          this.tableProfile = doc.data()
+        })
+      })
   }
-};
+}
 </script>
 
 <style>

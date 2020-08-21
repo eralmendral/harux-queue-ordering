@@ -50,9 +50,9 @@
                     <v-icon color="white">add</v-icon>
                   </v-btn>
                 </div>
-                
+
               </td>
-              
+
               <td class="text-xs-center">
                 <h1 v-if="props.item.status == true || props.item.status == 'available'">{{qty}}</h1>
               </td>
@@ -68,64 +68,58 @@
           </v-data-table>
         </v-card>
 
-      
       </v-flex>
     </v-layout>
   </div>
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { VueEditor, Quill } from "vue2-editor";
-import { uuid } from "vue-uuid";
-
+import { db } from '@/config/firebase'
 export default {
-  data() {
+  data () {
     return {
       qty: 0,
       products: [],
-      search: "",
+      search: '',
       order: {
-        no: "",
-        date: "",
-        time: "",
-        table: "",
-        cost: "",
+        no: '',
+        date: '',
+        time: '',
+        table: '',
+        cost: '',
         items: [],
-        created_at: ""
+        created_at: ''
       },
       headers: [
-        { text: "Name", value: "name", align: "center" },
-        { text: "Category", value: "category", align: "center" },
-        { text: "Image", value: "image", align: "center" },
-        { text: "Status", value: "status", align: "center" },
-        { text: "Quantity", value: "quantity", align: "center" },
-        { text: "Price", value: "price", align: "center" }
+        { text: 'Name', value: 'name', align: 'center' },
+        { text: 'Category', value: 'category', align: 'center' },
+        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Status', value: 'status', align: 'center' },
+        { text: 'Quantity', value: 'quantity', align: 'center' },
+        { text: 'Price', value: 'price', align: 'center' }
       ],
       tables: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
       loading: false,
       dialog: false
-    };
+    }
   },
   props: {},
   methods: {
-    fetchProducts() {
-      db.collection("products")
-        .orderBy("created_at", "desc")
+    fetchProducts () {
+      db.collection('products')
+        .orderBy('created_at', 'desc')
         .onSnapshot(querySnapshot => {
-          this.products = [];
+          this.products = []
           querySnapshot.forEach(doc => {
-            this.products.push(doc.data());
-          });
-        });
+            this.products.push(doc.data())
+          })
+        })
     }
   },
-  created() {
-    this.fetchProducts();
+  created () {
+    this.fetchProducts()
   }
-};
+}
 </script>
 
 <style>

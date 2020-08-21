@@ -26,59 +26,58 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
+import { db } from '@/config/firebase'
 
-import { uuid } from "vue-uuid";
 export default {
-  data() {
+  data () {
     return {
-        xslide:0,
+      xslide: 0,
       slide: {},
       sliding: null,
-     
+
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Slide",
+          text: 'Slide',
           disabled: false,
-          to: "/dashboard/slideshow"
+          to: '/dashboard/slideshow'
         },
         {
-          text: "View",
+          text: 'View',
           disabled: true
         }
       ]
-    };
-  },
-    methods: {
-    onSlideStart(slide) {
-      this.sliding = true;
-    },
-    onSlideEnd(slide) {
-      this.sliding = false;
     }
   },
-  beforeRouteEnter(to, from, next) {
-    db.collection("slideshows")
-      .where("id", "==", to.params.slide_id)
+  methods: {
+    onSlideStart (slide) {
+      this.sliding = true
+    },
+    onSlideEnd (slide) {
+      this.sliding = false
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    db.collection('slideshows')
+      .where('id', '==', to.params.slide_id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            (vm.slide.id = doc.data().id),
-              (vm.slide.image = doc.data().image),
-              (vm.slide.title = doc.data().title),
-              (vm.slide.details = doc.data().details),
-              (vm.slide.show = doc.data().show);
-          });
-        });
-      });
+            vm.slide.id = doc.data().id
+            vm.slide.image = doc.data().image
+            vm.slide.title = doc.data().title
+            vm.slide.details = doc.data().details
+            vm.slide.show = doc.data().show
+          })
+        })
+      })
   }
-};
+}
 </script>
 
 <style>

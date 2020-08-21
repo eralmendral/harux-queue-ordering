@@ -77,86 +77,81 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
-import moment from "moment";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import moment from 'moment'
 export default {
-  data() {
+  data () {
     return {
       orders: [],
-      search: "",
-      status: "test",
-      updates: ["pending", "finished", "cancelled"],
-      search: "",
+      search: '',
+      status: 'test',
+      updates: ['pending', 'finished', 'cancelled'],
       headers: [
-        { text: "Order No.", value: "order_number", align: "center" },
-        { text: "Order Time", value: "time", align: "center" },
-        { text: "Table", value: "table_number", align: "center" },
-        { text: "Cost", value: "total_price", align: "center" },
-        { text: "Update", value: "", align: "center" },
-        { text: "Action", value: "", align: "center" }
+        { text: 'Order No.', value: 'order_number', align: 'center' },
+        { text: 'Order Time', value: 'time', align: 'center' },
+        { text: 'Table', value: 'table_number', align: 'center' },
+        { text: 'Cost', value: 'total_price', align: 'center' },
+        { text: 'Update', value: '', align: 'center' },
+        { text: 'Action', value: '', align: 'center' }
       ],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "New Orders",
+          text: 'New Orders',
           disabled: true
         }
       ]
-    };
-  },
-  methods: {
-    orderTime(date) {
-      return moment(date).format("h:mm:ss a");
-    },
-    fetchNewOrders() {
-      db.collection("orders")
-        .where("status", "==", "pending")
-        .onSnapshot(querySnapshot => {
-          this.orders = [];
-          querySnapshot.forEach(doc => {
-            this.orders.push(doc.data());
-          });
-        });
-    },
-    updateOrder(order_num) {
-      let stat = this.status;
-      let tableRef = db
-        .collection("orders")
-        .where("order_number", "==", order_num);
-
-      db.collection("orders")
-        .where("order_number", "==", order_num)
-        .get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            // console.log(doc.id, " => ", doc.data());
-            // console.log("Status" + doc.data().status);
-
-            db.collection("orders")
-              .doc(doc.id)
-              .update({ status: stat });
-          });
-        });
-
-      Swal.fire({
-        type: "success",
-        title: "Order Updated",
-        showConfirmButton: false,
-        timer: 1500
-      });
-
-      this.status = "";
     }
   },
-  created() {
-    this.fetchNewOrders();
+  methods: {
+    orderTime (date) {
+      return moment(date).format('h:mm:ss a')
+    },
+    fetchNewOrders () {
+      db.collection('orders')
+        .where('status', '==', 'pending')
+        .onSnapshot(querySnapshot => {
+          this.orders = []
+          querySnapshot.forEach(doc => {
+            this.orders.push(doc.data())
+          })
+        })
+    },
+    updateOrder (orderNumber) {
+      let stat = this.status
+      db.collection('orders')
+        .where('order_number', '==', orderNumber)
+
+      db.collection('orders')
+        .where('order_number', '==', orderNumber)
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            db.collection('orders')
+              .doc(doc.id)
+              .update({ status: stat })
+          })
+        })
+
+      Swal.fire({
+        type: 'success',
+        title: 'Order Updated',
+        showConfirmButton: false,
+        timer: 1500
+      })
+
+      this.status = ''
+    }
+  },
+  created () {
+    this.fetchNewOrders()
   }
-};
+}
 </script>
 
 <style>

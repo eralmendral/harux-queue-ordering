@@ -44,33 +44,33 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
+import { fb } from '@/config/firebase'
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
-      title: "Harux1"
-    };
+      title: 'Harux1'
+    }
   },
   methods: {
-    ...mapActions(["billout"]),
-    toggleCart() {
-      this.$emit("toggleCart");
+    ...mapActions(['billout']),
+    toggleCart () {
+      this.$emit('toggleCart')
     },
-    logout() {
+    logout () {
       fb.auth()
         .signOut()
         .then(() => {
-          this.$router.push("/login");
+          this.$router.push('/login')
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
     }
   },
   computed: {
-    ...mapGetters(["cartSize", "tableProfile"])
+    ...mapGetters(['cartSize', 'tableProfile'])
   }
-};
+}
 </script>
 
 <style>

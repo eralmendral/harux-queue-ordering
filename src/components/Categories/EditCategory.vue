@@ -135,12 +135,12 @@ export default {
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            (vm.category.id = doc.data().id),
-            (vm.category.name = doc.data().name),
-            (vm.category.image = doc.data().image),
-            (vm.category.status = doc.data().status),
-            (vm.category.featured = doc.data().featured),
-            (vm.category.color = doc.data().color)
+            vm.category.id = doc.data().id
+            vm.category.name = doc.data().name
+            vm.category.image = doc.data().image
+            vm.category.status = doc.data().status
+            vm.category.featured = doc.data().featured
+            vm.category.color = doc.data().color
           })
         })
       })
@@ -182,8 +182,8 @@ export default {
           : this.category.image
 
       // if newimage is not empty, means there is an upload, remove old image
-      if (this.category.newImage != '') {
-        if (this.category.image != '') {
+      if (this.category.newImage !== '') {
+        if (this.category.image !== '') {
           let image = fb.storage().refFromURL(this.category.image)
           this.category.image = ''
           image
@@ -213,7 +213,7 @@ export default {
         ref
           .set({
             ...category
-          }) // sets the contents of the doc using the id
+          }) // Sets the contents of the doc using the id
           .then(() => {
             Swal.fire({
               type: 'success',

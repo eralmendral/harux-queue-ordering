@@ -124,93 +124,92 @@
 </template>
 
 <script>
-import { fb, db, fbadmin } from "@/config/firebase";
-import Swal from "sweetalert2";
-import axios from "axios";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import axios from 'axios'
 
 export default {
-  data() {
+  data () {
     return {
       comment: {
-        background: "",
-        textColor: "",
-        sampleText: "Lorem Ipsum"
+        background: '',
+        textColor: '',
+        sampleText: 'Lorem Ipsum'
       },
       userAuth: {},
       userData: {
-        table_number: "",
-        email: "",
-        password: ""
+        table_number: '',
+        email: '',
+        password: ''
       },
       tableExists: false,
-      error: ""
-    };
+      error: ''
+    }
   },
-  created() {
+  created () {
     // fetch comments
-    db.collection("settings")
-      .where("name", "==", "comment")
+    db.collection('settings')
+      .where('name', '==', 'comment')
       .onSnapshot(snapshot => {
         snapshot.forEach(doc => {
-          this.comment.background = doc.data().backgroundColor;
-          this.comment.textColor = doc.data().textColor;
-        });
-      });
+          this.comment.background = doc.data().backgroundColor
+          this.comment.textColor = doc.data().textColor
+        })
+      })
 
-    //fetch current auth user
-    var user = fb.auth().currentUser;
-    this.user = user;
+    // fetch current auth user
+    var user = fb.auth().currentUser
+    this.user = user
     // fetch user data in the database
-    db.collection("users")
+    db.collection('users')
       .doc(this.user.uid)
       .onSnapshot(doc => {
-        this.userData = doc.data();
-      });
+        this.userData = doc.data()
+      })
   },
   methods: {
-    checkTable() {
-      var table_number = this.userData.table_number;
-
-      var table_number = String(table_number);
+    checkTable () {
+      var tableNumber = this.userData.table_number
+      tableNumber = String(tableNumber)
       // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
-      db.collection("users")
-        .where("table_number", "==", table_number)
+      db.collection('users')
+        .where('table_number', '==', tableNumber)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.tableExists = false;
+            this.tableExists = false
           } else {
-            this.tableExists = true;
+            this.tableExists = true
           }
-        });
+        })
     },
-    saveCommentSettings() {
-      db.collection("settings")
-        .where("name", "==", "comment")
+    saveCommentSettings () {
+      db.collection('settings')
+        .where('name', '==', 'comment')
         .get()
         .then(q => {
           q.forEach(doc => {
-            db.collection("settings")
+            db.collection('settings')
               .doc(doc.id)
               .update({
                 backgroundColor: this.comment.background,
                 textColor: this.comment.textColor
-              });
-          });
-        });
+              })
+          })
+        })
 
       Swal.fire({
-        type: "success",
-        title: "Comment Settings Updated",
+        type: 'success',
+        title: 'Comment Settings Updated',
         showConfirmButton: false,
         timer: 1500
-      });
+      })
     },
-    commentFormReset() {
-      this.$refs.commentForm.reset();
+    commentFormReset () {
+      this.$refs.commentForm.reset()
     },
-    saveAccountSettings() {
-      this.disabled = true;
+    saveAccountSettings () {
+      this.disabled = true
 
       const user = {
         id: this.userData.id,
@@ -219,46 +218,46 @@ export default {
         password: this.userData.password,
         orders: this.userData.orders,
         billingout: this.userData.billingout,
-        role: "admin"
-      };
+        role: 'admin'
+      }
 
       axios
-        .post("https://haru-6bed6.firebaseapp.com/updateUser", {
+        .post('https://haru-6bed6.firebaseapp.com/updateUser', {
           userid: user.id,
           email: user.email,
           password: user.password
         })
         .then(res => {
-          console.log("Response Data Id", res.data.id);
+          console.log('Response Data Id', res.data.id)
 
-          if (typeof res.data.id !== "undefined") {
-            db.collection("users")
+          if (typeof res.data.id !== 'undefined') {
+            db.collection('users')
               .doc(res.data.id)
               .set({
                 ...user
-              });
+              })
 
             Swal.fire({
-              type: "success",
-              title: "User Updated",
+              type: 'success',
+              title: 'User Updated',
               showConfirmButton: false,
               timer: 1000
-            });
+            })
 
-            this.disabled = false;
-            this.error = "";
+            this.disabled = false
+            this.error = ''
           } else {
-            console.log("Error");
-            this.error = "Error Updating User: email maybe already taken";
+            console.log('Error')
+            this.error = 'Error Updating User: email maybe already taken'
           }
         })
         .catch(err => {
-          console.log("Error", err);
-          this.error = "Error Updating User: email maybe already taken";
-        });
+          console.log('Error', err)
+          this.error = 'Error Updating User: email maybe already taken'
+        })
     }
   }
-};
+}
 </script>
 
 <style>

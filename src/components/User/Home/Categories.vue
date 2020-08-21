@@ -2,7 +2,7 @@
   <div>
     <v-container fluid>
       <v-layout row flex wrap justify-center align-center>
-        
+
         <div v-if="canSauce">
             <router-link style="cursor:pointer" tag="div" to="/mainproduct/sauces">
               <img
@@ -47,35 +47,35 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { fb, db } from "@/config/firebase";
+import { mapGetters } from 'vuex'
+import { db } from '@/config/firebase'
 export default {
-  data() {
+  data () {
     return {
-       sauceCategory: null
-    };
+      sauceCategory: null
+    }
   },
   props: {
     categories: Array
   },
   methods: {
-    fetchSauceCategory() {
-      db.collection("categories")
-        .where("name", "==", "Sauce")
+    fetchSauceCategory () {
+      db.collection('categories')
+        .where('name', '==', 'Sauce')
         .onSnapshot(snapshot => {
           snapshot.forEach(doc => {
-            this.sauceCategory = doc.data();
-          });
-        });
+            this.sauceCategory = doc.data()
+          })
+        })
     }
   },
-  created() {
-     this.fetchSauceCategory();
+  created () {
+    this.fetchSauceCategory()
   },
   computed: {
-    ...mapGetters(["tableProfile", "canSauce"])
+    ...mapGetters(['tableProfile', 'canSauce'])
   }
-};
+}
 </script>
 
 <style>
@@ -93,7 +93,7 @@ export default {
   color: #261c1d !important;
 
   margin-bottom: 40px !important;
- 
+
   font-size: 24px;
   font-family: "Montserrat" !important;
 }

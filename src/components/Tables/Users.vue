@@ -63,84 +63,83 @@
 </template>
 
 <script>
-import Add from "./Add";
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
-import axios from "axios";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import axios from 'axios'
 export default {
-  name: "Users",
-  data() {
+  name: 'Users',
+  data () {
     return {
-      search: "",
+      search: '',
       headers: [
-        { text: "Table", value: "table_number", align: "center" },
-        { text: "Email", value: "status", align: "center" }
+        { text: 'Table', value: 'table_number', align: 'center' },
+        { text: 'Email', value: 'status', align: 'center' }
       ],
       users: [],
       loading: false,
       dialog: false,
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Users",
+          text: 'Users',
           disabled: true
         }
       ]
-    };
+    }
   },
   computed: {},
   methods: {
-    getUsers() {
-      db.collection("users")
-        .where("role", "==", "user")
-        .orderBy("table_number", "asc")
+    getUsers () {
+      db.collection('users')
+        .where('role', '==', 'user')
+        .orderBy('table_number', 'asc')
         .onSnapshot(querySnapshot => {
-          this.users = [];
+          this.users = []
           querySnapshot.forEach(doc => {
-            this.users.push(doc.data());
-          });
-        });
+            this.users.push(doc.data())
+          })
+        })
     },
-    deleteUser(id) {
+    deleteUser (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          const url = `https://haru-6bed6.firebaseapp.com/deleteUser`;
+          const url = `https://haru-6bed6.firebaseapp.com/deleteUser`
           axios
             .post(url, {
               userid: id
             })
             .then(res => {
-              console.log("Success", res);
+              console.log('Success', res)
               Swal.fire({
-                type: "success",
-                title: "User Deleted",
+                type: 'success',
+                title: 'User Deleted',
                 showConfirmButton: false,
                 timer: 1000
-              });
+              })
             })
             .catch(err => {
-              console.log("Error", err);
-            });
+              console.log('Error', err)
+            })
         }
-      });
+      })
     }
   },
-  created() {
-    this.getUsers();
+  created () {
+    this.getUsers()
   }
-};
+}
 </script>
 
 <style >

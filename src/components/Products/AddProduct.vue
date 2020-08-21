@@ -129,12 +129,11 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { uuid } from "vue-uuid";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import { uuid } from 'vue-uuid'
 export default {
-  data() {
+  data () {
     return {
       categories: [],
       saucecategories: [],
@@ -142,79 +141,77 @@ export default {
       productExists: false,
       uploadProgress: 0,
       product: {
-        image: "",
-        name: "",
-        category: "",
-        price: "",
-        price_kid: "",
+        image: '',
+        name: '',
+        category: '',
+        price: '',
+        price_kid: '',
         status: false,
-        details: "",
-        subcategory: "",
-        subdetails: "",
+        details: '',
+        subcategory: '',
+        subdetails: '',
         unli: false,
         flavor: 0
       },
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"],
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters'],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Products",
+          text: 'Products',
           disabled: false,
-          to: "/dashboard/products"
+          to: '/dashboard/products'
         },
         {
-          text: "Add Product",
+          text: 'Add Product',
           disabled: true
         }
       ]
-    };
+    }
   },
   methods: {
-    fetchSubCategories() {
-      db.collection("saucecategories")
-        .orderBy("name", "asc")
+    fetchSubCategories () {
+      db.collection('saucecategories')
+        .orderBy('name', 'asc')
         .onSnapshot(querySnapshot => {
-          this.saucecategories = [];
+          this.saucecategories = []
           querySnapshot.forEach(doc => {
-            this.saucecategories.push(doc.data());
-          });
-        });
+            this.saucecategories.push(doc.data())
+          })
+        })
     },
-    checkProduct() {
-      var productname = String(this.product.name);
-
-      // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
-      db.collection("products")
-        .where("name", "==", productname)
+    checkProduct () {
+      var productname = String(this.product.name)
+      db.collection('products')
+        .where('name', '==', productname)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.productExists = false;
+            this.productExists = false
           } else {
-            this.productExists = true;
+            this.productExists = true
           }
-        });
+        })
     },
-    fetchCategories() {
-      db.collection("categories")
-        .orderBy("name", "asc")
+    fetchCategories () {
+      db.collection('categories')
+        .orderBy('name', 'asc')
         .onSnapshot(querySnapshot => {
-          this.categories = [];
+          this.categories = []
           querySnapshot.forEach(doc => {
-            this.categories.push(doc.data());
-          });
-        });
+            this.categories.push(doc.data())
+          })
+        })
     },
-    addProduct() {
-      this.disabled = true;
-      let form = this.$refs.productForm;
-      this.loading = true;
+    addProduct () {
+      this.disabled = true
+      let form = this.$refs.productForm
+      this.loading = true
 
-      var status = this.product.status ? "available" : "unavailable";
+      var status = this.product.status ? 'available' : 'unavailable'
 
       const product = {
         image: this.product.image,
@@ -224,27 +221,27 @@ export default {
         details: this.product.details,
         status: status,
         created_at: new Date()
-      };
-
-      //if category is sauce, then in product object add subcategory;
-      if (product.category == "Sauce") {
-        product.subcategory = this.product.subcategory;
       }
 
-      //if category is chicken, then in product object, unli , flavor , sub details
-      if (product.category == "Chicken") {
-        product.unli = this.product.unli;
+      // if category is sauce, then in product object add subcategory;
+      if (product.category === 'Sauce') {
+        product.subcategory = this.product.subcategory
+      }
 
-        if (product.unli == true) {
-          product.flavor = -1;
-          product.price_kid = this.product.price_kid;
-          product.subdetails = this.product.subdetails;
+      // if category is chicken, then in product object, unli , flavor , sub details
+      if (product.category === 'Chicken') {
+        product.unli = this.product.unli
+
+        if (product.unli === true) {
+          product.flavor = -1
+          product.price_kid = this.product.price_kid
+          product.subdetails = this.product.subdetails
         } else {
-          product.flavor = parseInt(this.product.flavor);
+          product.flavor = parseInt(this.product.flavor)
         }
       }
 
-      const ref = db.collection("products").doc();
+      const ref = db.collection('products').doc()
       ref
         .set({
           id: ref.id,
@@ -252,70 +249,69 @@ export default {
         }) // sets the contents of the doc using the id
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Product Added",
+            type: 'success',
+            title: 'Product Added',
             showConfirmButton: false,
             timer: 1500
-          });
-        });
+          })
+        })
 
-      this.$router.push("/dashboard/products");
-      this.loading = false;
+      this.$router.push('/dashboard/products')
+      this.loading = false
 
-      form.reset();
+      form.reset()
     },
-    uploadProductImage(e) {
-      this.disabled = true;
-      let image = e.target.files[0];
+    uploadProductImage (e) {
+      this.disabled = true
+      let image = e.target.files[0]
 
-      var storageRef = fb.storage().ref("products/" + uuid.v1() + image.name);
-      console.log("Test upload", uuid.v1() + image.name);
-      let uploadTask = storageRef.put(image);
+      var storageRef = fb.storage().ref('products/' + uuid.v1() + image.name)
+      console.log('Test upload', uuid.v1() + image.name)
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {
           var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadprogress = progress;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadprogress = progress
 
-          console.log("upload progress is: " + progress);
+          console.log('upload progress is: ' + progress)
           switch (snapshot.state) {
             case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log("Upload is paused");
-              break;
+              console.log('Upload is paused')
+              break
             case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log("Upload is running");
-              break;
+              console.log('Upload is running')
+              break
           }
         },
-        error => {},
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.product.image = downloadURL)) {
-              this.disabled = false;
+              this.disabled = false
             }
-            console.log("File available at: ", downloadURL);
-          });
+            console.log('File available at: ', downloadURL)
+          })
         }
-      );
+      )
     },
-    deleteImage(img) {
-      let image = fb.storage().refFromURL(img);
-      this.product.image = "";
+    deleteImage (img) {
+      let image = fb.storage().refFromURL(img)
+      this.product.image = ''
       image
         .delete()
         .then(() => {
-          console.log("Image Deleted");
+          console.log('Image Deleted')
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
     }
   },
-  created() {
-    this.fetchCategories();
-    this.fetchSubCategories();
+  created () {
+    this.fetchCategories()
+    this.fetchSubCategories()
   }
-};
+}
 </script>
 
 <style>

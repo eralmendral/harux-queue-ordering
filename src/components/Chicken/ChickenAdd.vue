@@ -91,90 +91,87 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
 
 export default {
-  data() {
+  data () {
     return {
       disabled: false,
       productExists: false,
       uploadProgress: 0,
       product: {
-        image: "",
-        name: "",
-        price: "",
-        price_kid: "",
-        subdetails: "",
+        image: '',
+        name: '',
+        price: '',
+        price_kid: '',
+        subdetails: '',
         status: false,
-        details: "",
+        details: '',
         unli: false,
         flavor: null
       },
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"],
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters'],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Chickens",
+          text: 'Chickens',
           disabled: false,
-          to: "/dashboard/chickens"
+          to: '/dashboard/chickens'
         },
         {
-          text: "Add",
+          text: 'Add',
           disabled: true
         }
       ]
-    };
+    }
   },
   methods: {
-    checkProduct() {
-      var productname = String(this.product.name);
-
-      // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
-      db.collection("chickens")
-        .where("name", "==", productname)
+    checkProduct () {
+      var productname = String(this.product.name)
+      db.collection('chickens')
+        .where('name', '==', productname)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.productExists = false;
+            this.productExists = false
           } else {
-            this.productExists = true;
+            this.productExists = true
           }
-        });
+        })
     },
-    addProduct() {
-      this.disabled = true;
-      let form = this.$refs.productForm;
-      this.loading = true;
+    addProduct () {
+      this.disabled = true
+      let form = this.$refs.productForm
+      this.loading = true
 
-      var status = this.product.status ? "available" : "unavailable";
+      var status = this.product.status ? 'available' : 'unavailable'
 
       const product = {
         image: this.product.image,
         name: this.product.name,
-        category: "Chicken",
+        category: 'Chicken',
         price: this.product.price,
         details: this.product.details,
         status: status,
         created_at: new Date()
-      };
-
-      product.unli = this.product.unli;
-
-      if (product.unli == true) {
-        product.flavor = -1;
-        product.price_kid = this.product.price_kid;
-        product.subdetails = this.product.subdetails;
-      } else {
-        product.flavor = parseInt(this.product.flavor);
       }
 
-      const ref = db.collection("products").doc();
+      product.unli = this.product.unli
+
+      if (product.unli === true) {
+        product.flavor = -1
+        product.price_kid = this.product.price_kid
+        product.subdetails = this.product.subdetails
+      } else {
+        product.flavor = parseInt(this.product.flavor)
+      }
+
+      const ref = db.collection('products').doc()
       ref
         .set({
           id: ref.id,
@@ -182,57 +179,56 @@ export default {
         }) // sets the contents of the doc using the id
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Product Added",
+            type: 'success',
+            title: 'Product Added',
             showConfirmButton: false,
             timer: 1500
-          });
-        });
+          })
+        })
 
-      this.$router.push("/dashboard/chickens");
-      this.loading = false;
+      this.$router.push('/dashboard/chickens')
+      this.loading = false
 
-      form.reset();
+      form.reset()
     },
-    uploadProductImage(e) {
-      this.disabled = true;
-      let image = e.target.files[0];
+    uploadProductImage (e) {
+      this.disabled = true
+      let image = e.target.files[0]
 
-      var storageRef = fb.storage().ref("chickens/" + image.name);
+      var storageRef = fb.storage().ref('chickens/' + image.name)
 
-      let uploadTask = storageRef.put(image);
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {
           var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadprogress = progress;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadprogress = progress
 
-          console.log("upload progress is: " + progress);
+          console.log('upload progress is: ' + progress)
           switch (snapshot.state) {
             case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log("Upload is paused");
-              break;
+              console.log('Upload is paused')
+              break
             case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log("Upload is running");
-              break;
+              console.log('Upload is running')
+              break
           }
         },
-        error => {},
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.product.image = downloadURL)) {
-              this.disabled = false;
+              this.disabled = false
             }
             // console.log("File available at: ", downloadURL);
-          });
+          })
         }
-      );
+      )
     }
   },
-  created() {}
-};
+  created () {}
+}
 </script>
 
 <style>

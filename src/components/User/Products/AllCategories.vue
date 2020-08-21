@@ -28,7 +28,7 @@
                 class="category_box_image mx-3"
                 v-bind:style="{ 'border': '3px solid' + categ.color  }"
                 style="box-shadow: 0px 3px 3px black"
-                
+
               />
               <h3 class="mr-1 text-center categ_title">{{categ.name}}</h3>
             </router-link>
@@ -45,45 +45,45 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { mapGetters, mapActions } from "vuex";
+import { db } from '@/config/firebase'
+import { mapGetters } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
       sauceCategory: null,
       categories: []
-    };
-  },
-  methods: {
-    fetchSauceCategory() {
-      db.collection("categories")
-        .where("name", "==", "Sauce")
-        .onSnapshot(snapshot => {
-          this.sauceCategory = null;
-          snapshot.forEach(doc => {
-            this.sauceCategory = doc.data();
-          });
-        });
-    },
-    fetchCategories() {
-      db.collection("categories")
-        .where("status", "==", true)
-        .onSnapshot(snapshot => {
-          this.categories = [];
-          snapshot.forEach(doc => {
-            this.categories.push(doc.data());
-          });
-        });
     }
   },
-  created() {
-    this.fetchSauceCategory();
-    this.fetchCategories();
+  methods: {
+    fetchSauceCategory () {
+      db.collection('categories')
+        .where('name', '==', 'Sauce')
+        .onSnapshot(snapshot => {
+          this.sauceCategory = null
+          snapshot.forEach(doc => {
+            this.sauceCategory = doc.data()
+          })
+        })
+    },
+    fetchCategories () {
+      db.collection('categories')
+        .where('status', '==', true)
+        .onSnapshot(snapshot => {
+          this.categories = []
+          snapshot.forEach(doc => {
+            this.categories.push(doc.data())
+          })
+        })
+    }
+  },
+  created () {
+    this.fetchSauceCategory()
+    this.fetchCategories()
   },
   computed: {
-    ...mapGetters(["canSauce"])
+    ...mapGetters(['canSauce'])
   }
-};
+}
 </script>
 
 <style>

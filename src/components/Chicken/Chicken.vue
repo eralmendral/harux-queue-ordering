@@ -41,15 +41,11 @@
    <td class="text-xs-center">{{ props.item.price }}</td>
    <td class="text-xs-center">{{ props.item.price_kid ? props.item.price_kid : "Na"}}</td>
 
-
-
                    <td class="text-xs-center"><v-chip  class="white--text" :color="props.item.unli ?  'green' : 'primary'">
                      {{ props.item.unli ? 'yes' : 'no'}}
                      </v-chip></td>
 
                         <td class="text-xs-center">{{ props.item.flavor != -1 ? props.item.flavor : 'unlimited' }}</td>
-
-                        
 
               <td class="text-xs-center">
                   <v-btn
@@ -60,7 +56,6 @@
                   <span class="mr-1 white--text">View</span>
                   <v-icon color="white">visibility</v-icon>
                 </v-btn>
-
 
                 <v-btn
                   depressed
@@ -93,82 +88,82 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "Category",
-  data() {
+  name: 'Category',
+  data () {
     return {
-      search: "",
+      search: '',
       headers: [
-        { text: "Image", value: "image", align: "center" },
-        { text: "Name", value: "name", align: "center" },
-        { text: "Status", value: "status", align: "center" },
-        { text: "Price", value: "price", align: "center" },
-        { text: "Price(kids)", value: "price_kid", align: "center" },
-        { text: "Unli", value: "unli", align: "center" },
-        { text: "Flavors", value: "flavor", align: "center" }
+        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Name', value: 'name', align: 'center' },
+        { text: 'Status', value: 'status', align: 'center' },
+        { text: 'Price', value: 'price', align: 'center' },
+        { text: 'Price(kids)', value: 'price_kid', align: 'center' },
+        { text: 'Unli', value: 'unli', align: 'center' },
+        { text: 'Flavors', value: 'flavor', align: 'center' }
       ],
       chickens: [],
       category: {
-        image: "",
-        name: ""
+        image: '',
+        name: ''
       },
       loading: false,
       dialog: false,
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Chickens",
+          text: 'Chickens',
           disabled: true,
-          to: "/dashboard/categories"
+          to: '/dashboard/categories'
         }
       ]
-    };
+    }
   },
   computed: {},
   methods: {
-    watcher() {
-      db.collection("products")
-        .where("category",'==','Chicken')
+    watcher () {
+      db.collection('products')
+        .where('category', '==', 'Chicken')
         .onSnapshot(querySnapshot => {
-          this.chickens = [];
+          this.chickens = []
           querySnapshot.forEach(doc => {
-            this.chickens.push(doc.data());
-          });
-        });
+            this.chickens.push(doc.data())
+          })
+        })
     },
-    deleteProduct(id) {
+    deleteProduct (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("products")
+          db.collection('products')
             .doc(id)
             .delete()
             .then(() => {
-              Swal.fire("Deleted!", "Your product has been deleted.", "success");
+              Swal.fire('Deleted!', 'Your product has been deleted.', 'success')
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     }
   },
-  created() {
-    this.watcher();
+  created () {
+    this.watcher()
   }
-};
+}
 </script>
 
 <style >

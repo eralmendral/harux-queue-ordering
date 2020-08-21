@@ -4,34 +4,29 @@
       <v-btn :disabled="tableProfile.billingout == true" @click="billout" class="billout-btn">
         <h3>BILLOUT</h3>
       </v-btn>
-  
+
     </div>
   </v-layout>
 </template>
 
 <script>
-import Vue from "vue";
-import { fb, db } from "@/config/firebase";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       billingOut: []
-    };
+    }
   },
   methods: {
-    ...mapActions(["billout"]),
-    notif(table_number) {
-     
-
-      console.log("notif sent", table_number);
+    ...mapActions(['billout']),
+    notif (tableNumber) {
     }
   },
   computed: {
-    ...mapGetters(["tableProfile"])
+    ...mapGetters(['tableProfile'])
   }
-};
+}
 </script>
 
 <style>

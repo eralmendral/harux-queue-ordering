@@ -30,7 +30,7 @@
     <br />
     <br />
     <br />
-     <br />
+    <br />
     <br />
     <br />
     <br />
@@ -38,24 +38,24 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
+import { db } from '@/config/firebase'
 export default {
-  data() {
+  data () {
     return {
-      id: "",
+      id: '',
       product: {}
-    };
+    }
   },
-  created() {
-    this.id = this.$route.params.id;
-    db.collection("products")
+  created () {
+    this.id = this.$route.params.id
+    db.collection('products')
       .doc(this.id)
       .onSnapshot(doc => {
-        this.product = doc.data();
-      });
+        this.product = doc.data()
+      })
   },
   methods: {}
-};
+}
 </script>
 
 <style>

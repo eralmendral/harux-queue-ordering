@@ -47,50 +47,47 @@
   </div>
 </template>
 
-
-
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import moment from "moment";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import moment from 'moment'
 export default {
-  data() {
+  data () {
     return {
       messages: [],
-      message: "",
-      search: "",
-      table_num: "",
+      message: '',
+      search: '',
+      table_num: '',
       headers: [
-        { text: "Date", value: "created_at", align: "center" },
-        { text: "Time", value: "created_at", align: "center" },
-        { text: "Message", value: "message", align: "center" },
-        { text: "Action", value: "", align: "center" }
+        { text: 'Date', value: 'created_at', align: 'center' },
+        { text: 'Time', value: 'created_at', align: 'center' },
+        { text: 'Message', value: 'message', align: 'center' },
+        { text: 'Action', value: '', align: 'center' }
       ],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Table Messages",
+          text: 'Table Messages',
           disabled: true
         }
       ]
-    };
+    }
   },
   methods: {
-    orderDate(date) {
-      return moment(date).format("MMMM Do YYYY");
+    orderDate (date) {
+      return moment(date).format('MMMM Do YYYY')
     },
-    orderTime(date) {
-      return moment(date).format("h:mm:ss a");
+    orderTime (date) {
+      return moment(date).format('h:mm:ss a')
     },
-    sendMessage() {
-      let messageForm = this.$refs.messageForm;
+    sendMessage () {
+      let messageForm = this.$refs.messageForm
 
-      let ref = db.collection("messages").doc();
+      let ref = db.collection('messages').doc()
 
       ref
         .set({
@@ -101,49 +98,49 @@ export default {
         })
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Message Sent",
+            type: 'success',
+            title: 'Message Sent',
             showConfirmButton: false,
             timer: 1500
-          });
-          messageForm.reset();
+          })
+          messageForm.reset()
         })
-        .catch(err => err);
+        .catch(err => err)
     },
-    deleteMessage(id) {
+    deleteMessage (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("messages")
+          db.collection('messages')
             .doc(id)
             .delete()
             .then(() => {
-              Swal.fire("Deleted!", "Message Deleted.", "success");
+              Swal.fire('Deleted!', 'Message Deleted.', 'success')
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     }
   },
-  created() {
-    this.table_num = this.$route.params.table_num;
-    db.collection("messages")
-      .where("table_number", "==", this.table_num)
+  created () {
+    this.table_num = this.$route.params.table_num
+    db.collection('messages')
+      .where('table_number', '==', this.table_num)
       .onSnapshot(querySnapshot => {
-        this.messages = [];
+        this.messages = []
         querySnapshot.forEach(doc => {
-          this.messages.push(doc.data());
-        });
-      });
+          this.messages.push(doc.data())
+        })
+      })
   }
-};
+}
 </script>
 
 <style>

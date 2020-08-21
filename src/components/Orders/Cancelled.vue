@@ -38,7 +38,7 @@
               <td class="text-xs-center">
                 <v-btn
                   depressed
-                  
+
                   color="success lighten--4"
                   :to="{name:'order_details',params:{order_number: props.item.order_number}}"
                 >
@@ -48,7 +48,7 @@
 
                 <v-btn
                   depressed
-                 
+
                   color="red lighten--4"
                   @click="deleteOrder(props.item.order_number)"
                 >
@@ -75,84 +75,84 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
-import moment from "moment";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import moment from 'moment'
 export default {
-  data() {
+  data () {
     return {
       orders: [],
-      status: "pending",
+      status: 'pending',
 
-      search: "",
+      search: '',
       headers: [
-        { text: "Order No.", value: "order_number", align: "center" },
-        { text: "Order Date", value: "time", align: "center" },
-        { text: "Order Time", value: "time", align: "center" },
-        { text: "Table", value: "table_number", align: "center" },
-        { text: "Cost", value: "total_price", align: "center" },
+        { text: 'Order No.', value: 'order_number', align: 'center' },
+        { text: 'Order Date', value: 'time', align: 'center' },
+        { text: 'Order Time', value: 'time', align: 'center' },
+        { text: 'Table', value: 'table_number', align: 'center' },
+        { text: 'Cost', value: 'total_price', align: 'center' },
 
-        { text: "Action", value: "", align: "center" }
+        { text: 'Action', value: '', align: 'center' }
       ],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Cancelled Orders",
+          text: 'Cancelled Orders',
           disabled: true
         }
       ]
-    };
+    }
   },
   methods: {
-    orderDate(date) {
-      return moment(date).format("MMMM Do YYYY");
+    orderDate (date) {
+      return moment(date).format('MMMM Do YYYY')
     },
-    orderTime(date) {
-      return moment(date).format("h:mm:ss a");
+    orderTime (date) {
+      return moment(date).format('h:mm:ss a')
     },
-    deleteOrder(order_number) {
+    deleteOrder (orderNumber) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("orders")
-            .where("order_number", "==", order_number)
+          db.collection('orders')
+            .where('order_number', '==', orderNumber)
             .get()
             .then(querySnapshot => {
               querySnapshot.forEach(doc => {
-                doc.ref.delete();
-                Swal.fire("Deleted!", "Order Deleted", "success");
-              });
+                doc.ref.delete()
+                Swal.fire('Deleted!', 'Order Deleted', 'success')
+              })
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     },
-    fetchNewOrders() {
-      db.collection("orders")
-        .where("status", "==", "cancelled")
+    fetchNewOrders () {
+      db.collection('orders')
+        .where('status', '==', 'cancelled')
         .onSnapshot(querySnapshot => {
-          this.orders = [];
+          this.orders = []
           querySnapshot.forEach(doc => {
-            this.orders.push(doc.data());
-          });
-        });
+            this.orders.push(doc.data())
+          })
+        })
     }
   },
-  created() {
-    this.fetchNewOrders();
+  created () {
+    this.fetchNewOrders()
   }
-};
+}
 </script>
 
 <style>

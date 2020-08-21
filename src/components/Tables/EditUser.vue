@@ -61,86 +61,83 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import axios from 'axios';
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import axios from 'axios'
 export default {
-  data() {
+  data () {
     return {
       disabled: false,
       tableExists: false,
       table: {
-        id: "",
-        number: "",
-        email: "",
-        password: "",
+        id: '',
+        number: '',
+        email: '',
+        password: '',
         orders: [],
         billingout: false
       },
-      error: "",
-      numberRules: [v => /^[0-9]?[0-9]$/.test(v) || "Invalid Table Number"],
-      inputRules: [v => v.length >= 6 || "Fill at least 6 Characters"],
+      error: '',
+      numberRules: [v => /^[0-9]?[0-9]$/.test(v) || 'Invalid Table Number'],
+      inputRules: [v => v.length >= 6 || 'Fill at least 6 Characters'],
       emailRules: [
         v =>
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          "E-mail must be valid"
+          'E-mail must be valid'
       ],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Users",
+          text: 'Users',
           disabled: false,
-          to: "/dashboard/users"
+          to: '/dashboard/users'
         },
         {
-          text: "Edit",
+          text: 'Edit',
           disabled: true
         }
       ]
-    };
+    }
   },
-  beforeRouteEnter(to, from, next) {
-    db.collection("users")
-      .where("id", "==", to.params.userid)
+  beforeRouteEnter (to, from, next) {
+    db.collection('users')
+      .where('id', '==', to.params.userid)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            (vm.table.id = doc.data().id),
-              (vm.table.number = doc.data().table_number),
-              (vm.table.email = doc.data().email),
-              (vm.table.password = doc.data().password),
-              (vm.table.orders = doc.data().orders),
-              (vm.table.billingout = doc.data().billingout);
-          });
-        });
-      });
+            vm.table.id = doc.data().id
+            vm.table.number = doc.data().table_number
+            vm.table.email = doc.data().email
+            vm.table.password = doc.data().password
+            vm.table.orders = doc.data().orders
+            vm.table.billingout = doc.data().billingout
+          })
+        })
+      })
   },
   methods: {
-    checkTable() {
-      var table_number = this.table.number;
-
-      var table_number = String(table_number);
+    checkTable () {
+      var tableNumber = this.table.number
+      tableNumber = String(tableNumber)
       // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
-      db.collection("users")
-        .where("table_number", "==", table_number)
-
+      db.collection('users')
+        .where('table_number', '==', tableNumber)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.tableExists = false;
+            this.tableExists = false
           } else {
-            this.tableExists = true;
+            this.tableExists = true
           }
-        });
+        })
     },
-    updateUser() {
-      this.disabled = true;
+    updateUser () {
+      this.disabled = true
 
       const user = {
         id: this.table.id,
@@ -149,40 +146,39 @@ export default {
         password: this.table.password,
         orders: this.table.orders,
         billingout: this.table.billingout,
-        role: "user"
-      };
+        role: 'user'
+      }
 
       axios
-        .post("https://haru-6bed6.firebaseapp.com/updateUser", {
+        .post('https://haru-6bed6.firebaseapp.com/updateUser', {
           userid: user.id,
           email: user.email,
           password: user.password
         })
         .then(res => {
-          console.log("Response Data Id", res.data.id);
+          console.log('Response Data Id', res.data.id)
           //
-          db.collection("users")
+          db.collection('users')
             .doc(user.id)
             .set({
               ...user
-            });
+            })
 
           Swal.fire({
-            type: "success",
-            title: "User Updated",
+            type: 'success',
+            title: 'User Updated',
             showConfirmButton: false,
             timer: 1000
-          });
+          })
 
-          this.$router.push("/dashboard/users");
-          this.disabled = false;
+          this.$router.push('/dashboard/users')
+          this.disabled = false
         })
         .catch(err => {
-          console.log("Error", err);
-          this.error = "Error Updating User: email maybe already taken";
-        });
+          console.log('Error', err)
+          this.error = 'Error Updating User: email maybe already taken'
+        })
     }
   }
-};
+}
 </script>
-

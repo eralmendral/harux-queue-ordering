@@ -211,8 +211,4 @@ export default {
     border: none !important;
     outline: none !important;
   }
-
-  button: focused {
-   background : red !important;
-  }
 </style>

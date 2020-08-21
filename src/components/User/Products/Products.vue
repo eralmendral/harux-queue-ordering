@@ -28,7 +28,7 @@
                   <router-link :to="{name: 'userproduct' , params:{id:product.id}}">
                       <img :src="product.image" class="product_img" alt="product image" />
                   </router-link>
-                
+
                 </v-flex>
                 <v-flex xs3>
                   <router-link tag="div" :to="{name: 'userproduct' , params:{id:product.id}}" style="cursor:pointer">
@@ -79,68 +79,68 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { mapState, mapGetters, mapActions } from "vuex";
+import { db } from '@/config/firebase'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       loading: false,
-      title: "Products",
-      category: "",
+      title: 'Products',
+      category: '',
       products: []
-    };
+    }
   },
   methods: {
     ...mapActions([
-      "setProducts",
-      "addToCart",
-      "removeFromCart",
-      "deleteFromCart",
-      "confirmOrder"
+      'setProducts',
+      'addToCart',
+      'removeFromCart',
+      'deleteFromCart',
+      'confirmOrder'
     ]),
-    confirmTheseOrder() {
-      this.confirmOrder();
-      this.$router.push("/");
+    confirmTheseOrder () {
+      this.confirmOrder()
+      this.$router.push('/')
     }
   },
-  created() {
-    //set category
-    this.category = this.$route.params.category;
-    //fetch products based on category
+  created () {
+    // set category
+    this.category = this.$route.params.category
+    // fetch products based on category
 
-    this.setProducts(this.category);
+    this.setProducts(this.category)
 
-    db.collection("products")
-      .where("category", "==", this.category)
-      .where('status','==','available')
+    db.collection('products')
+      .where('category', '==', this.category)
+      .where('status', '==', 'available')
       .onSnapshot(snapshot => {
-        this.products = [];
+        this.products = []
         snapshot.forEach(doc => {
-          this.products.push(doc.data());
-        });
-      });
+          this.products.push(doc.data())
+        })
+      })
     //  console.log("Fetched Products",this.fetchProducts);
   },
-  beforeRouteEnter(to, from, next) {
-    if (to.params.category == "Sauce") {
-      next({ name: "usersauces" });
+  beforeRouteEnter (to, from, next) {
+    if (to.params.category === 'Sauce') {
+      next({ name: 'usersauces' })
     }
-    if (to.params.category == "Chicken") {
-      next({ name: "userchickens" });
+    if (to.params.category === 'Chicken') {
+      next({ name: 'userchickens' })
     } else {
-      next();
+      next()
     }
   },
   computed: {
     ...mapGetters([
-      "fetchCart",
-      "cartSize",
-      "cartTotalAmount",
-      "fetchProductQuantity"
+      'fetchCart',
+      'cartSize',
+      'cartTotalAmount',
+      'fetchProductQuantity'
     ])
   }
-};
+}
 </script>
 
 <style>

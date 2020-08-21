@@ -62,123 +62,116 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import axios from "axios";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import axios from 'axios'
 
 export default {
-  data() {
+  data () {
     return {
       disabled: false,
       tableExists: false,
       table: {
-        number: "",
-        email: "",
-        password: "",
+        number: '',
+        email: '',
+        password: '',
         orders: [],
         billingout: false,
-        role: "user"
+        role: 'user'
       },
-      error: "",
-      numberRules: [v => /^[0-9]?[0-9]$/.test(v) || "Invalid Table Number"],
-      inputRules: [v => v.length >= 6 || "Fill at least 6 Characters"],
+      error: '',
+      numberRules: [v => /^[0-9]?[0-9]$/.test(v) || 'Invalid Table Number'],
+      inputRules: [v => v.length >= 6 || 'Fill at least 6 Characters'],
       emailRules: [
         v =>
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          "E-mail must be valid"
+          'E-mail must be valid'
       ],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Users",
+          text: 'Users',
           disabled: false,
-          to: "/dashboard/users"
+          to: '/dashboard/users'
         },
         {
-          text: "Add ",
+          text: 'Add ',
           disabled: true
         }
       ]
-    };
+    }
   },
   methods: {
-    checkTable() {
-      var table_number = this.table.number;
-
-      var table_number = String(table_number);
+    checkTable () {
+      var tableNumber = this.table.number
+      tableNumber = String(tableNumber)
       // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
-      db.collection("users")
-        .where("table_number", "==", table_number)
+      db.collection('users')
+        .where('table_number', '==', tableNumber)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.tableExists = false;
+            this.tableExists = false
           } else {
-            this.tableExists = true;
+            this.tableExists = true
           }
-        });
+        })
     },
-    addUser() {
-      this.disabled = true;
-      var form = this.$refs.userform;
+    addUser () {
+      this.disabled = true
+      var form = this.$refs.userform
       if (form.validate() && !this.tableExists) {
-        var table_number = this.table.number;
-        var email = String(this.table.email);
-        var password = String(this.table.password);
+        var tableNumber = this.table.number
+        var email = String(this.table.email)
+        var password = String(this.table.password)
 
         axios
-          .post("https://haru-6bed6.firebaseapp.com/addUser", {
+          .post('https://haru-6bed6.firebaseapp.com/addUser', {
             email: email,
             password: password
           })
           .then(res => {
-            console.log("Response Data Id", res.data.id);
-
-            // // //add created user to database
-            const ref = db.collection("users").doc(res.data.id);
+            const ref = db.collection('users').doc(res.data.id)
 
             const table = {
-              table_number: table_number,
+              table_number: tableNumber,
               email: email,
               password: password,
               orders: [],
               billingout: false,
-              role: "user"
-            };
+              role: 'user'
+            }
 
             ref.set({
               id: res.data.id,
               ...table
-            });
-
+            })
 
             Swal.fire({
-              type: "success",
-              title: "User Added",
+              type: 'success',
+              title: 'User Added',
               showConfirmButton: false,
               timer: 1000
-            });
+            })
 
-            this.$router.push("/dashboard/users");
-             this.error = "";
+            this.$router.push('/dashboard/users')
+            this.error = ''
           })
           .catch(err => {
-            console.log("Error", err);
-             this.error = "Error Adding User: email maybe already taken";
-          });
+            console.log('Error', err)
+            this.error = 'Error Adding User: email maybe already taken'
+          })
 
-        this.disabled = false;
-        form.reset();
-       
+        this.disabled = false
+        form.reset()
       }
     }
   }
-};
+}
 </script>
 
 <style>

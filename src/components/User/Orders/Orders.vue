@@ -115,7 +115,7 @@
                       <v-flex xs4>
                         <h5>Adults: <b>{{chicken.adultQty}}</b></h5>
                       </v-flex>
-                     
+
                       <v-flex xs4>
                         <h5 class="pink--text">₱ {{chicken.total_price_adult}}</h5>
                       </v-flex>
@@ -125,7 +125,7 @@
                       <v-flex xs4>
                         <h5>Kids: <b>{{chicken.kidQty}}</b></h5>
                       </v-flex>
-                     
+
                       <v-flex xs4>
                         <h5 class="pink--text">₱ {{chicken.total_price_kid}}</h5>
                       </v-flex>
@@ -167,39 +167,39 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { mapGetters, mapActions } from "vuex";
-import moment from "moment";
+import { db } from '@/config/firebase'
+import { mapGetters } from 'vuex'
+import moment from 'moment'
 export default {
-  data() {
+  data () {
     return {
       allorders: [],
       myorders: []
-    };
-  },
-  computed: {
-    ...mapGetters(["tableProfile"])
-  },
-  methods: {
-    orderDate(date) {
-      return moment(date).format("MMMM Do YYYY");
-    },
-    orderTime(date) {
-      return moment(date).format("h:mm:ss a");
-    },
-    fetchMyOrders: function(ordernum) {
-      return this.allorders.filter(order => order.order_number == ordernum);
     }
   },
-  created() {
-    db.collection("orders").onSnapshot(querySnapshot => {
-      this.allorders = [];
+  computed: {
+    ...mapGetters(['tableProfile'])
+  },
+  methods: {
+    orderDate (date) {
+      return moment(date).format('MMMM Do YYYY')
+    },
+    orderTime (date) {
+      return moment(date).format('h:mm:ss a')
+    },
+    fetchMyOrders: function (ordernum) {
+      return this.allorders.filter(order => order.order_number === ordernum)
+    }
+  },
+  created () {
+    db.collection('orders').onSnapshot(querySnapshot => {
+      this.allorders = []
       querySnapshot.forEach(doc => {
-        this.allorders.push(doc.data());
-      });
-    });
+        this.allorders.push(doc.data())
+      })
+    })
   }
-};
+}
 </script>
 
 <style>

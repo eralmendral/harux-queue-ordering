@@ -9,12 +9,10 @@
 <script>
 import { fb, db } from '@/config/firebase'
 import Order from './Order'
-import Charts from './Charts'
 import Billout from './Billout'
 export default {
   components: {
     Order,
-    Charts,
     Billout
   },
   beforeRouteEnter (to, from, next) {

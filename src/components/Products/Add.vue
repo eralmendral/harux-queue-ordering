@@ -11,7 +11,7 @@
       <v-card-text>
         <v-form ref="productForm" >
           <v-select :items="categories" label="Category" v-model="product.category" item-text="name" item-value="name"></v-select>
-          
+
           <v-text-field
             prepend-icon="drag_indicator"
             label="Name"
@@ -28,7 +28,6 @@
             prefix="₱"
           ></v-text-field>
 
-        
            <v-select :items="statuses" label="Status" v-model="product.status"  ></v-select>
 
           <vue-editor v-model="product.details"></vue-editor>
@@ -65,30 +64,29 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { VueEditor, Quill } from "vue2-editor";
-import { uuid } from "vue-uuid";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import { VueEditor } from 'vue2-editor'
+import { uuid } from 'vue-uuid'
 
 export default {
-  data() {
+  data () {
     return {
       product: {
-        name: "",
+        name: '',
         image: [],
-        category: "",
-        details: "",
+        category: '',
+        details: '',
         quantity: 0,
-        price: "",
-        status: "",
-        created_at: ""
+        price: '',
+        status: '',
+        created_at: ''
       },
       loading: false,
-      statuses: ['available','unavailable'],
+      statuses: ['available', 'unavailable'],
       dialog: false,
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"]
-    };
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters']
+    }
   },
   props: {
     categories: Array
@@ -97,11 +95,11 @@ export default {
     VueEditor
   },
   methods: {
-    addProduct() {
-      this.dialog = false;
+    addProduct () {
+      this.dialog = false
 
-      let form = this.$refs.productForm;
-      const ref = db.collection("products").doc();
+      let form = this.$refs.productForm
+      const ref = db.collection('products').doc()
       const product = {
         id: ref.id,
         images: this.product.image,
@@ -112,68 +110,66 @@ export default {
         price: this.product.price,
         status: this.product.status,
         created_at: new Date()
-      };
+      }
 
       ref.set(product).then(() => {
         Swal.fire({
-          type: "success",
-          title: "Product Added",
+          type: 'success',
+          title: 'Product Added',
           showConfirmButton: false,
           timer: 1500
-        });
-      });
+        })
+      })
 
-        this.loading = false;
-        this.dialog = false;
-        form.reset();
+      this.loading = false
+      this.dialog = false
+      form.reset()
     },
-    uploadProductImage(e) {
-      let file = e.target.files[0];
-      console.log("FILE " + file);
+    uploadProductImage (e) {
+      let file = e.target.files[0]
+      console.log('FILE ' + file)
 
       for (var i = 0; i < this.$refs.file.files.length; i++) {
-        let file = this.$refs.file.files[i];
-        console.log(file);
+        let file = this.$refs.file.files[i]
+        console.log(file)
 
-        var filename = uuid.v1() + file.name;
-        console.log(filename);
-        var storageRef = fb.storage().ref("products/" + filename);
+        var filename = uuid.v1() + file.name
+        console.log(filename)
+        var storageRef = fb.storage().ref('products/' + filename)
 
-        let uploadTask = storageRef.put(file);
-        console.log("DONE");
+        let uploadTask = storageRef.put(file)
+        console.log('DONE')
         uploadTask.on(
-          "state_changed",
+          'state_changed',
           snapshot => {},
           error => {
-            console.log(error);
+            console.log(error)
           },
           () => {
             uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-              this.product.image.push(downloadURL);
-              console.log("Download url: " + downloadURL);
-            });
+              this.product.image.push(downloadURL)
+              console.log('Download url: ' + downloadURL)
+            })
           }
-        );
-
-      
+        )
       }
     },
-    deleteImage(img, index) {
-      let image = fb.storage().refFromURL(img);
+    deleteImage (img, index) {
+      let image = fb.storage().refFromURL(img)
 
-      this.product.image.splice(index, 1);
+      this.product.image.splice(index, 1)
 
       image
         .delete()
         .then(() => {
-          console.log("Image Deleted");
+          console.log('Image Deleted')
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
   }
-};
+}
 </script>
 
 <style scoped>

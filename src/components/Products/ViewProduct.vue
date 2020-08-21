@@ -23,7 +23,7 @@
                 <p class="secondary--text" v-html="product.details"></p>
               </v-flex>
             </v-layout>
-          
+
           </v-card>
           <div class="mt-3">
             <v-btn depressed fab color="red lighten--4" to="/dashboard/products">
@@ -37,67 +37,65 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
+import { db } from '@/config/firebase'
 
 export default {
-  data() {
+  data () {
     return {
       categories: [],
       product: {
-        image: "",
-        name: "",
-        category: "",
-        price: "",
+        image: '',
+        name: '',
+        category: '',
+        price: '',
         status: false,
-        details: ""
+        details: ''
       },
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Products",
+          text: 'Products',
           disabled: false,
-          to: "/dashboard/products"
+          to: '/dashboard/products'
         },
         {
-          text: "Info",
+          text: 'Info',
           disabled: true
         }
       ]
-    };
+    }
   },
-  beforeRouteEnter(to, from, next) {
-    db.collection("products")
-      .where("id", "==", to.params.product_id)
+  beforeRouteEnter (to, from, next) {
+    db.collection('products')
+      .where('id', '==', to.params.product_id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            (vm.product.id = doc.data().id),
-              (vm.product.name = doc.data().name),
-              (vm.product.category = doc.data().category),
-              (vm.product.image = doc.data().image),
-              (vm.product.status = doc.data().status),
-              (vm.product.price = doc.data().price),
-              (vm.product.details = doc.data().details);
-          });
-        });
-      });
+            vm.product.id = doc.data().id
+            vm.product.name = doc.data().name
+            vm.product.category = doc.data().category
+            vm.product.image = doc.data().image
+            vm.product.status = doc.data().status
+            vm.product.price = doc.data().price
+            vm.product.details = doc.data().details
+          })
+        })
+      })
   },
   methods: {
-    getProductTitle() {
-      return this.product.name;
+    getProductTitle () {
+      return this.product.name
     }
   },
-  created() {
-    this.fetchCategories();
+  created () {
+    this.fetchCategories()
   }
-};
+}
 </script>
 
 <style>

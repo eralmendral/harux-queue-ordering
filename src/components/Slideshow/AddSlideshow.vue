@@ -45,43 +45,42 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { uuid } from "vue-uuid";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import { uuid } from 'vue-uuid'
 export default {
   data: () => ({
     disabled: false,
-    uploadprogress: "",
+    uploadprogress: '',
     slide: {
-      image: "",
-      title: "",
-      details: "",
+      image: '',
+      title: '',
+      details: '',
       show: true
     },
-    inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"],
+    inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters'],
     items: [
       {
-        text: "Dashboard",
+        text: 'Dashboard',
         disabled: false,
-        to: "/dashboard/#"
+        to: '/dashboard/#'
       },
       {
-        text: "Slideshow",
+        text: 'Slideshow',
         disabled: false,
-        to: "/dashboard/slideshow"
+        to: '/dashboard/slideshow'
       },
       {
-        text: "Add ",
+        text: 'Add ',
         disabled: true,
-        to: "/dashboard/add-slideshow"
+        to: '/dashboard/add-slideshow'
       }
     ]
   }),
   methods: {
-    addSlide() {
-      this.disabled = true;
-      let form = this.$refs.slideform;
+    addSlide () {
+      this.disabled = true
+      let form = this.$refs.slideform
 
       const slide = {
         image: this.slide.image,
@@ -89,9 +88,9 @@ export default {
         details: this.slide.details,
         show: this.slide.show,
         created_at: new Date()
-      };
+      }
 
-      const ref = db.collection("slideshows").doc();
+      const ref = db.collection('slideshows').doc()
       ref
         .set({
           id: ref.id,
@@ -99,55 +98,54 @@ export default {
         }) // sets the contents of the doc using the id
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Slide Added",
+            type: 'success',
+            title: 'Slide Added',
             showConfirmButton: false,
             timer: 1500
-          });
-        });
+          })
+        })
 
-      this.$router.push("/dashboard/slideshow");
-      this.disabled = false;
-      form.reset();
+      this.$router.push('/dashboard/slideshow')
+      this.disabled = false
+      form.reset()
     },
-    uploadSlideImage(e) {
-      this.disabled = true;
-      let image = e.target.files[0];
-      let imagename = uuid.v1() + image.name;
-      var storageRef = fb.storage().ref("slideshow/" + imagename);
+    uploadSlideImage (e) {
+      this.disabled = true
+      let image = e.target.files[0]
+      let imagename = uuid.v1() + image.name
+      var storageRef = fb.storage().ref('slideshow/' + imagename)
 
-      let uploadTask = storageRef.put(image);
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {
           var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadprogress = progress;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadprogress = progress
 
-          console.log("upload progress is: " + progress);
+          console.log('upload progress is: ' + progress)
           switch (snapshot.state) {
             case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log("Upload is paused");
-              break;
+              console.log('Upload is paused')
+              break
             case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log("Upload is running");
-              break;
+              console.log('Upload is running')
+              break
           }
         },
-        error => {},
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.slide.image = downloadURL)) {
-              this.disabled = false;
+              this.disabled = false
             }
-            console.log("File available at: ", downloadURL);
-          });
+            console.log('File available at: ', downloadURL)
+          })
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style>

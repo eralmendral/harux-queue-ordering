@@ -99,221 +99,219 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { uuid } from "vue-uuid";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import { uuid } from 'vue-uuid'
 export default {
-  data() {
+  data () {
     return {
       saucecategories: [],
       disabled: false,
       sauceExists: false,
       uploadProgress: 0,
       sauce: {
-        id: "",
-        image: "",
-        newImage: "",
-        name: "",
-           price: "",
+        id: '',
+        image: '',
+        newImage: '',
+        name: '',
+        price: '',
         status: false,
-        subcategory: "",
-        category: "",
-        details: "",
+        subcategory: '',
+        category: '',
+        details: '',
         created_at: ''
       },
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"],
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters'],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Sauce",
+          text: 'Sauce',
           disabled: false,
-          to: "/dashboard/sauces"
+          to: '/dashboard/sauces'
         },
         {
-          text: "Edit",
+          text: 'Edit',
           disabled: true
         }
       ]
-    };
+    }
   },
-  beforeRouteEnter(to, from, next) {
-    db.collection("products")
-      .where("id", "==", to.params.id)
+  beforeRouteEnter (to, from, next) {
+    db.collection('products')
+      .where('id', '==', to.params.id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            (vm.sauce.id = doc.data().id),
-              (vm.sauce.name = doc.data().name),
-              (vm.sauce.category = doc.data().category),
-              (vm.sauce.price = doc.data().price),
-              (vm.sauce.subcategory = doc.data().subcategory),
-              (vm.sauce.status = doc.data().status),
-              (vm.sauce.image = doc.data().image),
-              (vm.sauce.details = doc.data().details);
-               (vm.sauce.created_at = doc.data().created_at);
-          });
-        });
-      });
+            vm.sauce.id = doc.data().id
+            vm.sauce.name = doc.data().name
+            vm.sauce.category = doc.data().category
+            vm.sauce.price = doc.data().price
+            vm.sauce.subcategory = doc.data().subcategory
+            vm.sauce.status = doc.data().status
+            vm.sauce.image = doc.data().image
+            vm.sauce.details = doc.data().details
+            vm.sauce.created_at = doc.data().created_at
+          })
+        })
+      })
   },
   methods: {
-    fetchSaucecategories() {
-      db.collection("saucecategories").onSnapshot(querySnapshot => {
-        this.saucecategories = [];
+    fetchSaucecategories () {
+      db.collection('saucecategories').onSnapshot(querySnapshot => {
+        this.saucecategories = []
         querySnapshot.forEach(doc => {
-          this.saucecategories.push(doc.data());
-        });
-      });
+          this.saucecategories.push(doc.data())
+        })
+      })
     },
-    checkSauce() {
-      var sauce = String(this.sauce.name);
+    checkSauce () {
+      var sauce = String(this.sauce.name)
 
-      db.collection("products")
-        .where("name", "==", sauce)
+      db.collection('products')
+        .where('name', '==', sauce)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.sauceExists = false;
+            this.sauceExists = false
           } else {
-            this.sauceExists = true;
+            this.sauceExists = true
           }
-        });
+        })
     },
-    deleteImage(img) {
-      let image = fb.storage().refFromURL(img);
-      this.sauce.newImage = "";
+    deleteImage (img) {
+      let image = fb.storage().refFromURL(img)
+      this.sauce.newImage = ''
       image
         .delete()
         .then(() => {
-          console.log("New Image Deleted");
+          console.log('New Image Deleted')
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
     },
-    updateSauce() {
-      let form = this.$refs.sauceForm;
-      this.loading = true;
+    updateSauce () {
+      let form = this.$refs.sauceForm
+      this.loading = true
 
-      //check if newimage is not empty . then assign image to new image, else retain old this.image
-      let update_image =
-        this.sauce.newImage != "" ? this.sauce.newImage : this.sauce.image;
+      // check if newimage is not empty . then assign image to new image, else retain old this.image
+      let updateImage =
+        this.sauce.newImage !== '' ? this.sauce.newImage : this.sauce.image
 
-      //if newimage is not empty, means there is an upload, remove old image
-      if (this.sauce.newImage != "") {
-        if (this.sauce.image != "") {
-          let image = fb.storage().refFromURL(this.sauce.image);
-          this.sauce.image = "";
+      // if newimage is not empty, means there is an upload, remove old image
+      if (this.sauce.newImage !== '') {
+        if (this.sauce.image !== '') {
+          let image = fb.storage().refFromURL(this.sauce.image)
+          this.sauce.image = ''
           image
             .delete()
             .then(() => {
-              console.log("Image Deleted");
+              console.log('Image Deleted')
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
       }
 
-      let price = this.sauce.price != '' ? this.sauce.price : 0;
+      let price = this.sauce.price !== '' ? this.sauce.price : 0
       if (form.validate()) {
         const sauce = {
           id: this.sauce.id,
-          image: update_image,
+          image: updateImage,
           name: this.sauce.name,
           status: this.sauce.status,
           category: this.sauce.category,
           subcategory: this.sauce.subcategory,
-          price:price,
+          price: price,
           details: this.sauce.details,
           created_at: this.sauce.created_at
-        };
+        }
 
-        const ref = db.collection("products").doc(sauce.id);
+        const ref = db.collection('products').doc(sauce.id)
         ref
           .set({
             ...sauce
           }) // sets the contents of the doc using the id
           .then(() => {
             Swal.fire({
-              type: "success",
-              title: "Sauce Updated",
+              type: 'success',
+              title: 'Sauce Updated',
               showConfirmButton: false,
               timer: 1500
-            });
-          });
+            })
+          })
       }
-      this.$router.push("/dashboard/sauces");
-      this.loading = false;
-      this.dialog = false;
-      form.reset();
+      this.$router.push('/dashboard/sauces')
+      this.loading = false
+      this.dialog = false
+      form.reset()
     },
-    uploadProductImage(e) {
-      let image = e.target.files[0];
+    uploadProductImage (e) {
+      let image = e.target.files[0]
 
-      var storageRef = fb.storage().ref("sauces/"+ uuid.v1() + image.name);
+      var storageRef = fb.storage().ref('sauces/' + uuid.v1() + image.name)
 
-      let uploadTask = storageRef.put(image);
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {
           var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadprogress = progress;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadprogress = progress
 
-          console.log("upload progress is: " + progress);
+          console.log('upload progress is: ' + progress)
           switch (snapshot.state) {
             case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log("Upload is paused");
-              break;
+              console.log('Upload is paused')
+              break
             case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log("Upload is running");
-              break;
+              console.log('Upload is running')
+              break
           }
         },
-        error => {},
         () => {
-          this.disabled = true;
+          this.disabled = true
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-            this.sauce.newImage = downloadURL;
-            this.disabled = false;
-            console.log("File available at: ", downloadURL);
-          });
+            this.sauce.newImage = downloadURL
+            this.disabled = false
+            console.log('File available at: ', downloadURL)
+          })
         }
-      );
+      )
 
-     // console.log(e.target.files[0]);
+      // console.log(e.target.files[0]);
     },
-    deleteSauce(id) {
+    deleteSauce (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("categories")
+          db.collection('categories')
             .doc(id)
             .delete()
             .then(() => {
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
 
-              this.$router.push("/dashboard/categories");
+              this.$router.push('/dashboard/categories')
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     }
   },
-  created() {
-    this.fetchSaucecategories();
+  created () {
+    this.fetchSaucecategories()
   }
-};
+}
 </script>
 
 <style>

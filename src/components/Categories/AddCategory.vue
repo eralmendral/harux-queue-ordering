@@ -119,8 +119,6 @@ export default {
     checkCategory () {
       var category = String(this.category.name)
       category = category.charAt(0).toUpperCase() + category.slice(1)
-
-      // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
       db.collection('categories')
         .where('name', '==', category)
         .get()
@@ -155,7 +153,7 @@ export default {
           .set({
             id: ref.id,
             ...category
-          }) // sets the contents of the doc using the id
+          })
           .then(() => {
             Swal.fire({
               type: 'success',
@@ -189,7 +187,6 @@ export default {
             if ((this.category.image = downloadURL)) {
               this.disabled = false
             }
-            // console.log("File available at: ", downloadURL);
           })
         }
       )

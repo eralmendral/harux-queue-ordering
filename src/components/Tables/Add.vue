@@ -32,16 +32,16 @@
 
 <script>
 export default {
-  name: "AddTable",
-  data() {
+  name: 'AddTable',
+  data () {
     return {
-      avatar: "img/boy_emoji.png",
-      number: "",
-      email: "",
-      password: ""
-    };
+      avatar: 'img/boy_emoji.png',
+      number: '',
+      email: '',
+      password: ''
+    }
   }
-};
+}
 </script>
 
 <style>

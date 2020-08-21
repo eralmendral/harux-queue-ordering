@@ -29,7 +29,6 @@
             <label for="details">Details</label>
             <vue-editor id="details" v-model="slide.details"></vue-editor>
 
-
               <v-switch v-model="slide.show" label="Show" color="primary"></v-switch>
 
               <v-btn large class="primary white--text" :disabled="disabled" @click="updateSlide">
@@ -54,64 +53,61 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { uuid } from "vue-uuid";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import { uuid } from 'vue-uuid'
 export default {
-  data() {
+  data () {
     return {
       disabled: false,
       loading: false,
       uploadProgress: 0,
       slide: {
-        id: "",
-        image: "",
-        title: "",
-        details: "",
+        id: '',
+        image: '',
+        title: '',
+        details: '',
         show: true
       },
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"],
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters'],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Slide",
+          text: 'Slide',
           disabled: false,
-          to: "/dashboard/slideshow"
+          to: '/dashboard/slideshow'
         },
         {
-          text: "Edit",
+          text: 'Edit',
           disabled: true
         }
       ]
-    };
+    }
   },
-  beforeRouteEnter(to, from, next) {
-    db.collection("slideshows")
-      .where("id", "==", to.params.slide_id)
+  beforeRouteEnter (to, from, next) {
+    db.collection('slideshows')
+      .where('id', '==', to.params.slide_id)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           next(vm => {
-            (vm.slide.id = doc.data().id),
-              (vm.slide.image = doc.data().image),
-              (vm.slide.title = doc.data().title),
-              (vm.slide.details = doc.data().details),
-              (vm.slide.show = doc.data().show);
-          });
-        });
-      });
-
- 
+            vm.slide.id = doc.data().id
+            vm.slide.image = doc.data().image
+            vm.slide.title = doc.data().title
+            vm.slide.details = doc.data().details
+            vm.slide.show = doc.data().show
+          })
+        })
+      })
   },
   methods: {
-    updateSlide() {
-      let form = this.$refs.slideform;
-      this.loading = true;
+    updateSlide () {
+      let form = this.$refs.slideform
+      this.loading = true
 
       if (form.validate()) {
         const slide = {
@@ -120,86 +116,85 @@ export default {
           title: this.slide.title,
           details: this.slide.details,
           show: this.slide.show
-        };
+        }
 
-        const ref = db.collection("slideshows").doc(slide.id);
+        const ref = db.collection('slideshows').doc(slide.id)
         ref
           .set({
             ...slide
           }) // sets the contents of the doc using the id
           .then(() => {
             Swal.fire({
-              type: "success",
-              title: "Slide Updated",
+              type: 'success',
+              title: 'Slide Updated',
               showConfirmButton: false,
               timer: 1500
-            });
-          });
+            })
+          })
       }
-      this.$router.push("/dashboard/slideshow");
-      this.loading = false;
-      this.dialog = false;
-      form.reset();
+      this.$router.push('/dashboard/slideshow')
+      this.loading = false
+      this.dialog = false
+      form.reset()
     },
-    uploadSlideImage(e) {
-      this.disabled = true;
-      let image = e.target.files[0];
-      let imagename = uuid.v1() + image.name;
-      var storageRef = fb.storage().ref("slideshow/" + imagename);
+    uploadSlideImage (e) {
+      this.disabled = true
+      let image = e.target.files[0]
+      let imagename = uuid.v1() + image.name
+      var storageRef = fb.storage().ref('slideshow/' + imagename)
 
-      let uploadTask = storageRef.put(image);
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {
           var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadprogress = progress;
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadprogress = progress
 
-          console.log("upload progress is: " + progress);
+          console.log('upload progress is: ' + progress)
           switch (snapshot.state) {
             case fb.storage.TaskState.PAUSED: // or 'paused'
-              console.log("Upload is paused");
-              break;
+              console.log('Upload is paused')
+              break
             case fb.storage.TaskState.RUNNING: // or 'running'
-              console.log("Upload is running");
-              break;
+              console.log('Upload is running')
+              break
           }
         },
-        error => {},
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.slide.image = downloadURL)) {
-              this.disabled = false;
+              this.disabled = false
             }
-            console.log("File available at: ", downloadURL);
-          });
+            console.log('File available at: ', downloadURL)
+          })
         }
-      );
+      )
     },
-    deleteSlide(id) {
+    deleteSlide (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("slideshows")
+          db.collection('slideshows')
             .doc(id)
             .delete()
             .then(() => {
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style>

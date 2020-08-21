@@ -146,7 +146,6 @@
             </v-btn>
           </template>
 
-
           <v-card style="padding-bottom: 25% !important">
             <v-card-title>
               <h5 class="text-center">
@@ -182,8 +181,7 @@
                   <!-- disabled if 0 -->
                   <v-flex >
                     <img :src="sauce.image" :alt="sauce.name" class="product_img d-block mx-auto" />
-                
-                
+
                     <h4 class="ml-3 sauce_title text-center" style="color:#261c1d !important;">{{sauce.name}}</h4>
                   </v-flex>
 
@@ -216,11 +214,8 @@
                   </v-flex>
                 </v-layout>
 
-                
               </v-card>
 
-                 
-              
             </v-card-text>
 
             <v-card-actions>
@@ -246,11 +241,9 @@
                 @click="confirmUnliChickenOrder()"
               >Confirm Order</v-btn>
             </v-card-actions>
-          
+
           </v-card>
 
-
-            
         </v-dialog>
 
       </v-layout>
@@ -345,18 +338,17 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { mapState, mapGetters, mapActions } from "vuex";
-import Swal from "sweetalert2";
-import { uuid } from "vue-uuid";
+import { db } from '@/config/firebase'
+import { mapGetters, mapActions } from 'vuex'
+import Swal from 'sweetalert2'
 
 export default {
-  data() {
+  data () {
     return {
       loading: false,
       dialog: false,
-      title: "Products",
-      category: "",
+      title: 'Products',
+      category: '',
       chickenProducts: [],
       unliChickenProducts: [],
       sauceCategories: [],
@@ -368,7 +360,7 @@ export default {
         orderUnliArr: [],
         flavor: null,
         sauces: [],
-        type: "Dine",
+        type: 'Dine',
         adult: {
           qty: 0,
           price: 0
@@ -380,324 +372,305 @@ export default {
       },
 
       maxFlavor: 0
-    };
+    }
   },
   methods: {
     ...mapActions([
-      "setProducts",
-      "addToCart",
-      "removeFromCart",
-      "deleteFromCart",
-      "confirmOrder"
+      'setProducts',
+      'addToCart',
+      'removeFromCart',
+      'deleteFromCart',
+      'confirmOrder'
     ]),
-    sauceNoQty(sauceId) {
+    sauceNoQty (sauceId) {
       let sauceProduct = this.selectedProducts.sauces.find(
         sauce => sauce.id === sauceId
-      );
+      )
       if (sauceProduct) {
-        return false;
+        return false
       } else {
-        return true;
+        return true
       }
     },
-    totalPrice_adultkid(id) {
+    totalPrice_adultkid (id) {
       if (this.findSelectedProduct(id)) {
-        var adult_total_price = this.findSelectedProduct(id).total_price_adult
+        var adultTotalPrice = this.findSelectedProduct(id).total_price_adult
           ? this.findSelectedProduct(id).total_price_adult
-          : 0;
-        var kid_total_price = this.findSelectedProduct(id).total_price_kid
+          : 0
+        var kidTotalPrice = this.findSelectedProduct(id).total_price_kid
           ? this.findSelectedProduct(id).total_price_kid
-          : 0;
-        var total_price = adult_total_price + kid_total_price;
-        return total_price;
+          : 0
+        var totalPrice = adultTotalPrice + kidTotalPrice
+        return totalPrice
       }
     },
-    push_unli_items_ids() {
-      //check unli product to see if it is added to selectedproducts.unliItem, if yes display its buttons
+    push_unli_items_ids () {
+      // check unli product to see if it is added to selectedproducts.unliItem, if yes display its buttons
       // return false;
-      this.unliItemsId = [];
+      this.unliItemsId = []
       this.selectedProducts.unliItems.forEach(item => {
-       
-        this.unliItemsId.push(item.id);
-      });
+        this.unliItemsId.push(item.id)
+      })
     },
-    findSelectedProduct(id) {
+    findSelectedProduct (id) {
       if (this.unliItemsId.includes(id)) {
-        var items = this.selectedProducts.unliItems;
-        var foundindex = items.findIndex(x => x.id === id);
-        return this.selectedProducts.unliItems[foundindex];
+        var items = this.selectedProducts.unliItems
+        var foundindex = items.findIndex(x => x.id === id)
+        return this.selectedProducts.unliItems[foundindex]
       }
     },
-    addAdultQty(id) {
+    addAdultQty (id) {
       // increment quantity of adults individually
-      var items = this.selectedProducts.unliItems;
-      var foundindex = items.findIndex(x => x.id === id);
+      var items = this.selectedProducts.unliItems
+      var foundindex = items.findIndex(x => x.id === id)
 
-      var itemArr = items[foundindex];
-      if ("adultQty" in itemArr) {
-        this.selectedProducts.unliItems[foundindex].adultQty += 1;
+      var itemArr = items[foundindex]
+      if ('adultQty' in itemArr) {
+        this.selectedProducts.unliItems[foundindex].adultQty += 1
       } else {
-        this.selectedProducts.unliItems[foundindex].adultQty = 1;
+        this.selectedProducts.unliItems[foundindex].adultQty = 1
       }
 
       // total of adult price
       this.selectedProducts.unliItems[foundindex].total_price_adult =
         this.selectedProducts.unliItems[foundindex].price *
-        this.selectedProducts.unliItems[foundindex].adultQty;
+        this.selectedProducts.unliItems[foundindex].adultQty
 
-      //update total price of these order
-      if ("total_price_kid" in this.selectedProducts.unliItems[foundindex]) {
+      // update total price of these order
+      if ('total_price_kid' in this.selectedProducts.unliItems[foundindex]) {
         this.selectedProducts.unliItems[foundindex].total_price =
           this.selectedProducts.unliItems[foundindex].total_price_adult +
-          this.selectedProducts.unliItems[foundindex].total_price_kid;
+          this.selectedProducts.unliItems[foundindex].total_price_kid
       } else {
-        this.selectedProducts.unliItems[
-          foundindex
-        ].total_price = this.selectedProducts.unliItems[
-          foundindex
-        ].total_price_adult;
+        this.selectedProducts.unliItems[foundindex].total_price = this.selectedProducts.unliItems[foundindex].total_price_adult
       }
 
-      //push to order unli, A HACK TO UPDATE THIS.SELECTEDPRODUCTS.UNLIITEMS
+      // push to order unli, A HACK TO UPDATE THIS.SELECTEDPRODUCTS.UNLIITEMS
       this.selectedProducts.orderUnliArr.pop(
         this.selectedProducts.unliItems[foundindex]
-      );
+      )
     },
-    subAdultQty(id) {
+    subAdultQty (id) {
       // increment quantity of adults individually
-      var items = this.selectedProducts.unliItems;
-      var foundindex = items.findIndex(x => x.id === id);
+      var items = this.selectedProducts.unliItems
+      var foundindex = items.findIndex(x => x.id === id)
 
-      var itemArr = items[foundindex];
-      if ("adultQty" in itemArr) {
+      var itemArr = items[foundindex]
+      if ('adultQty' in itemArr) {
         if (itemArr.adultQty > 0) {
-          this.selectedProducts.unliItems[foundindex].adultQty -= 1;
+          this.selectedProducts.unliItems[foundindex].adultQty -= 1
         }
       }
 
       this.selectedProducts.unliItems[foundindex].total_price_adult =
         this.selectedProducts.unliItems[foundindex].price *
-        this.selectedProducts.unliItems[foundindex].adultQty;
-      //push to order unli, A HACK TO UPDATE THIS.SELECTEDPRODUCTS.UNLIITEMS
+        this.selectedProducts.unliItems[foundindex].adultQty
+      // push to order unli, A HACK TO UPDATE THIS.SELECTEDPRODUCTS.UNLIITEMS
       this.selectedProducts.orderUnliArr.pop(
         this.selectedProducts.unliItems[foundindex]
-      );
+      )
 
-      //update total price of these order
-      if ("total_price_kid" in this.selectedProducts.unliItems[foundindex]) {
+      // update total price of these order
+      if ('total_price_kid' in this.selectedProducts.unliItems[foundindex]) {
         this.selectedProducts.unliItems[foundindex].total_price =
           this.selectedProducts.unliItems[foundindex].total_price_adult +
-          this.selectedProducts.unliItems[foundindex].total_price_kid;
+          this.selectedProducts.unliItems[foundindex].total_price_kid
       } else {
-        this.selectedProducts.unliItems[
-          foundindex
-        ].total_price = this.selectedProducts.unliItems[
-          foundindex
-        ].total_price_adult;
+        this.selectedProducts.unliItems[ foundindex ].total_price = this.selectedProducts.unliItems[foundindex].total_price_adult
       }
     },
-    addKidQty(id) {
+    addKidQty (id) {
       // increment quantity of adults individually
-      var items = this.selectedProducts.unliItems;
-      var foundindex = items.findIndex(x => x.id === id);
+      var items = this.selectedProducts.unliItems
+      var foundindex = items.findIndex(x => x.id === id)
 
-      var itemArr = items[foundindex];
-      if ("kidQty" in itemArr) {
-        this.selectedProducts.unliItems[foundindex].kidQty += 1;
+      var itemArr = items[foundindex]
+      if ('kidQty' in itemArr) {
+        this.selectedProducts.unliItems[foundindex].kidQty += 1
       } else {
-        this.selectedProducts.unliItems[foundindex].kidQty = 1;
+        this.selectedProducts.unliItems[foundindex].kidQty = 1
       }
 
       this.selectedProducts.unliItems[foundindex].total_price_kid =
         this.selectedProducts.unliItems[foundindex].price_kid *
-        this.selectedProducts.unliItems[foundindex].kidQty;
-      //push to order unli, A HACK TO UPDATE THIS.SELECTEDPRODUCTS.UNLIITEMS
+        this.selectedProducts.unliItems[foundindex].kidQty
+      // push to order unli, A HACK TO UPDATE THIS.SELECTEDPRODUCTS.UNLIITEMS
       this.selectedProducts.orderUnliArr.pop(
         this.selectedProducts.unliItems[foundindex]
-      );
+      )
 
-      //update total price of these order
-      if ("total_price_adult" in this.selectedProducts.unliItems[foundindex]) {
+      // update total price of these order
+      if ('total_price_adult' in this.selectedProducts.unliItems[foundindex]) {
         this.selectedProducts.unliItems[foundindex].total_price =
           this.selectedProducts.unliItems[foundindex].total_price_adult +
-          this.selectedProducts.unliItems[foundindex].total_price_kid;
+          this.selectedProducts.unliItems[foundindex].total_price_kid
       } else {
-        this.selectedProducts.unliItems[
-          foundindex
-        ].total_price = this.selectedProducts.unliItems[
-          foundindex
-        ].total_price_kid;
+        this.selectedProducts.unliItems[foundindex].total_price = this.selectedProducts.unliItems[foundindex].total_price_kid
       }
     },
-    subKidQty(id) {
+    subKidQty (id) {
       // increment quantity of adults individually
-      var items = this.selectedProducts.unliItems;
-      var foundindex = items.findIndex(x => x.id === id);
+      var items = this.selectedProducts.unliItems
+      var foundindex = items.findIndex(x => x.id === id)
 
-      var itemArr = items[foundindex];
-      if ("kidQty" in itemArr) {
+      var itemArr = items[foundindex]
+      if ('kidQty' in itemArr) {
         if (itemArr.kidQty > 0) {
-          this.selectedProducts.unliItems[foundindex].kidQty -= 1;
+          this.selectedProducts.unliItems[foundindex].kidQty -= 1
         }
       }
 
       this.selectedProducts.unliItems[foundindex].total_price_kid =
         this.selectedProducts.unliItems[foundindex].price_kid *
-        this.selectedProducts.unliItems[foundindex].kidQty;
-      //push to order unli, A HACK TO UPDATE THIS.SELECTEDPRODUCTS.UNLIITEMS
+        this.selectedProducts.unliItems[foundindex].kidQty
+      // push to order unli, A HACK TO UPDATE THIS.SELECTEDPRODUCTS.UNLIITEMS
       this.selectedProducts.orderUnliArr.pop(
         this.selectedProducts.unliItems[foundindex]
-      );
+      )
 
-      //update total price of these order
-      if ("total_price_adult" in this.selectedProducts.unliItems[foundindex]) {
+      // update total price of these order
+      if ('total_price_adult' in this.selectedProducts.unliItems[foundindex]) {
         this.selectedProducts.unliItems[foundindex].total_price =
           this.selectedProducts.unliItems[foundindex].total_price_adult +
-          this.selectedProducts.unliItems[foundindex].total_price_kid;
+          this.selectedProducts.unliItems[foundindex].total_price_kid
       } else {
-        this.selectedProducts.unliItems[
-          foundindex
-        ].total_price = this.selectedProducts.unliItems[
-          foundindex
-        ].total_price_kid;
+        this.selectedProducts.unliItems[foundindex].total_price = this.selectedProducts.unliItems[foundindex].total_price_kid
       }
     },
-    check_id_inArray(id) {
-      return this.unliItemsId.includes(id);
+    check_id_inArray (id) {
+      return this.unliItemsId.includes(id)
     },
-    addSauce(sauceId) {
-      //find the sauce in the sauces list
-      let sauce = this.sauces.find(sauce => sauce.id === sauceId);
-
-      // //find the sauce in the selectedproduct.sauces
+    addSauce (sauceId) {
+      // find the sauce in the sauces list
+      let sauce = this.sauces.find(sauce => sauce.id === sauceId)
       let sauceProduct = this.selectedProducts.sauces.find(
         sauce => sauce.id === sauceId
-      );
+      )
 
       if (sauceProduct) {
-        //product already present in the cart. so increase the quantity
-        sauceProduct.quantity++;
+        // product already present in the cart. so increase the quantity
+        sauceProduct.quantity++
       } else {
         this.selectedProducts.sauces.push({
           // sauce newly added to selectedPrduc
           ...sauce,
           quantity: 1
-        });
+        })
       }
     },
-    removeSauce(sauceId) {
+    removeSauce (sauceId) {
       let sauceProduct = this.selectedProducts.sauces.find(
         sauce => sauce.id === sauceId
-      );
+      )
 
       if (sauceProduct.quantity && sauceProduct.quantity > 1) {
-        sauceProduct.quantity--;
-      } else if (sauceProduct.quantity && sauceProduct.quantity == 1) {
+        sauceProduct.quantity--
+      } else if (sauceProduct.quantity && sauceProduct.quantity === 1) {
         let sauceProductIndex = this.selectedProducts.sauces.findIndex(
           sauce => sauce.id === sauceId
-        );
+        )
 
-        this.selectedProducts.sauces.splice(sauceProductIndex, 1);
+        this.selectedProducts.sauces.splice(sauceProductIndex, 1)
       } else {
-        return false;
+        return false
       }
     },
-    fetchSauceQuantity(id) {
+    fetchSauceQuantity (id) {
       if (this.selectedProducts.sauces.find(sauce => sauce.id === id)) {
-        return this.selectedProducts.sauces.find(sauce => sauce.id === id);
+        return this.selectedProducts.sauces.find(sauce => sauce.id === id)
         // return "yes"
       }
     },
-    fetchChickens() {
-      return this.chickenProducts.filter(p => p.unli === false);
+    fetchChickens () {
+      return this.chickenProducts.filter(p => p.unli === false)
     },
-    fetchUnliChickens() {
-      return this.chickenProducts.filter(p => p.unli === true);
+    fetchUnliChickens () {
+      return this.chickenProducts.filter(p => p.unli === true)
     },
-    fetchSauceCategories() {
-      db.collection("saucecategories")
-        .where("status", "==", true)
+    fetchSauceCategories () {
+      db.collection('saucecategories')
+        .where('status', '==', true)
         .onSnapshot(snapshot => {
-          this.sauceCategories = [];
+          this.sauceCategories = []
           snapshot.forEach(doc => {
-            this.sauceCategories.push(doc.data());
-          });
-        });
+            this.sauceCategories.push(doc.data())
+          })
+        })
     },
-    fetchSauces() {
-      db.collection("products")
-        .where("category", "==", "Sauce")
-        .where("status", "==", "available")
+    fetchSauces () {
+      db.collection('products')
+        .where('category', '==', 'Sauce')
+        .where('status', '==', 'available')
         .onSnapshot(snapshot => {
-          this.sauces = [];
+          this.sauces = []
           snapshot.forEach(doc => {
-            this.sauces.push(doc.data());
-          });
-        });
+            this.sauces.push(doc.data())
+          })
+        })
     },
-    filterSauces(subcategory) {
-      return this.sauces.filter(s => s.subcategory === subcategory);
+    filterSauces (subcategory) {
+      return this.sauces.filter(s => s.subcategory === subcategory)
       // return this.sauces;
     },
-    checkSelectedSauceLength() {
-      //no longer the length of selectedproducts but the quantity of each sauce in the selected products
+    checkSelectedSauceLength () {
+      // no longer the length of selectedproducts but the quantity of each sauce in the selected products
 
       // check length of selectedProducts.flavor
       // loop through sauces and add their overall quantity
       // if flavor and overall quantity is equal , return true
-      let flavorsLen = parseInt(this.selectedProducts.flavor);
+      let flavorsLen = parseInt(this.selectedProducts.flavor)
 
       if (this.selectedProducts.sauces.length > 0) {
-        let saucesArray = this.selectedProducts.sauces;
+        let saucesArray = this.selectedProducts.sauces
 
-        let aqty = 0;
+        let aqty = 0
         saucesArray.forEach(s => {
-          aqty += parseInt(s.quantity);
-        });
+          aqty += parseInt(s.quantity)
+        })
 
-        if (aqty == flavorsLen) {
-          return true;
+        if (aqty === flavorsLen) {
+          return true
         } else {
-          return false;
+          return false
         }
       }
     },
-    addProductFlavor() {
-      let temp = 0;
-      let flavors = this.selectedProducts.items.forEach(el => {
-        temp += el.flavor;
-      });
-      this.selectedProducts.flavor = temp;
-      this.push_unli_items_ids(); //pushed id of product to unli_items_ids -> for conditionally showing add and remove buttons
+    addProductFlavor () {
+      let temp = 0
+      this.selectedProducts.items.forEach(el => {
+        temp += el.flavor
+      })
+      this.selectedProducts.flavor = temp
+      this.push_unli_items_ids() // pushed id of product to unli_items_ids -> for conditionally showing add and remove buttons
     },
-    confirmUnliChickenOrder() {
-      var order_num = new Date()
+    confirmUnliChickenOrder () {
+      var orderNumber = new Date()
         .toISOString()
         .substr(0, 19)
-        .replace("T", ":")
-        .replace("-", ":")
-        .replace("-", ":");
+        .replace('T', ':')
+        .replace('-', ':')
+        .replace('-', ':')
 
-      let order = {};
-      order.table_number = this.tableProfile.table_number;
-      order.orders = [];
-      order.chickens = this.selectedProducts.unliItems;
-      order.sauces = this.selectedProducts.sauces;
+      let order = {}
+      order.table_number = this.tableProfile.table_number
+      order.orders = []
+      order.chickens = this.selectedProducts.unliItems
+      order.sauces = this.selectedProducts.sauces
 
-      order.order_number = order_num;
-      order.status = "pending";
-      order.time = new Date();
+      order.order_number = orderNumber
+      order.status = 'pending'
+      order.time = new Date()
 
-      let totalPrice = null;
+      let totalPrice = null
 
-      let chickens = order.chickens;
+      let chickens = order.chickens
       chickens.forEach(el => {
-        totalPrice += el.total_price;
-      });
+        totalPrice += el.total_price
+      })
 
-      order.total_price = totalPrice; //getters.cartTotalAmount; // *
+      order.total_price = totalPrice // getters.cartTotalAmount; // *
 
-      let ref = db.collection("orders").doc();
+      let ref = db.collection('orders').doc()
 
       ref
         .set({
@@ -706,30 +679,30 @@ export default {
         })
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Order Confirmed",
+            type: 'success',
+            title: 'Order Confirmed',
             showConfirmButton: false,
             timer: 1500
-          });
-          this.selectedProducts.unliItems = [];
-          this.selectedProducts.flavor = null;
-          this.selectedProducts.sauces = [];
-          this.selectedProducts.type = "Dine";
-          this.dialog = false;
+          })
+          this.selectedProducts.unliItems = []
+          this.selectedProducts.flavor = null
+          this.selectedProducts.sauces = []
+          this.selectedProducts.type = 'Dine'
+          this.dialog = false
 
-          this.$router.push("/");
-        });
+          this.$router.push('/')
+        })
 
-      //push order number to user profile
-      let userref = db.collection("users").doc(this.tableProfile.id);
+      // push order number to user profile
+      let userref = db.collection('users').doc(this.tableProfile.id)
 
       userref.get().then(doc => {
-        var orders = doc.data().orders;
-        var newOrder = [...orders, order.order_number];
-        var user = doc.data();
-        user.orders = newOrder;
-        user.sauce = true;
-        //update profile sauce status to true , if one of the product has category chicken
+        var orders = doc.data().orders
+        var newOrder = [...orders, order.order_number]
+        var user = doc.data()
+        user.orders = newOrder
+        user.sauce = true
+        // update profile sauce status to true , if one of the product has category chicken
 
         // state.cart.forEach(res => {
         //   if (res.category == "Chicken") {
@@ -737,67 +710,40 @@ export default {
         //   }
         // });
 
-        db.collection("users")
+        db.collection('users')
           .doc(this.tableProfile.id)
           .set({
             ...user
-          });
-      });
+          })
+      })
     },
-    confirmChickenOrder() {
-      // add to order the items,
-      // new schema to order
-      // new display schema to orders
-      // order total price, items[] overall price
-      /*
-       order_id
-      -ordernumber
-      -ordertime
-      -table_no
-     
-      - items [] 
-       - type - dineine ? takeout?
-       
-       -sauces []
-       -status = 
-       - total cost
-
-          let order = {};
-    order.table_number = profile.table_number;
-    order.orders = state.cart;
-    order.order_number = uuid.v1();
-    order.status = "pending";
-    order.time = new Date();
-    order.total_price = getters.cartTotalAmount;
-
-      */
-
-     var order_num = new Date()
+    confirmChickenOrder () {
+      var orderNumber = new Date()
         .toISOString()
         .substr(0, 19)
-        .replace("T", ":")
-        .replace("-", ":")
-        .replace("-", ":");
+        .replace('T', ':')
+        .replace('-', ':')
+        .replace('-', ':')
 
-      let order = {};
-      order.table_number = this.tableProfile.table_number;
-      order.orders = [];
-      order.chickens = this.selectedProducts.items;
-      order.sauces = this.selectedProducts.sauces;
-      order.type = this.selectedProducts.type;
-      order.order_number = order_num;
-      order.status = "pending";
-      order.time = new Date();
+      let order = {}
+      order.table_number = this.tableProfile.table_number
+      order.orders = []
+      order.chickens = this.selectedProducts.items
+      order.sauces = this.selectedProducts.sauces
+      order.type = this.selectedProducts.type
+      order.order_number = orderNumber
+      order.status = 'pending'
+      order.time = new Date()
 
-      let totalPrice = null;
-      let chickens = order.chickens;
+      let totalPrice = null
+      let chickens = order.chickens
       chickens.forEach(el => {
-        totalPrice += parseInt(el.price);
-      });
+        totalPrice += parseInt(el.price)
+      })
 
-      order.total_price = totalPrice; //getters.cartTotalAmount; // *
+      order.total_price = totalPrice // getters.cartTotalAmount; // *
 
-      let ref = db.collection("orders").doc();
+      let ref = db.collection('orders').doc()
 
       ref
         .set({
@@ -806,74 +752,67 @@ export default {
         })
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Order Confirmed",
+            type: 'success',
+            title: 'Order Confirmed',
             showConfirmButton: false,
             timer: 1500
-          });
-          this.selectedProducts.items = [];
-          this.selectedProducts.flavor = null;
-          this.selectedProducts.sauces = [];
-          this.selectedProducts.type = "Dine";
-          this.dialog = false;
+          })
+          this.selectedProducts.items = []
+          this.selectedProducts.flavor = null
+          this.selectedProducts.sauces = []
+          this.selectedProducts.type = 'Dine'
+          this.dialog = false
 
-          this.$router.push("/");
-        });
+          this.$router.push('/')
+        })
 
-      //push order number to user profile
-      let userref = db.collection("users").doc(this.tableProfile.id);
+      // push order number to user profile
+      let userref = db.collection('users').doc(this.tableProfile.id)
 
       userref.get().then(doc => {
-        var orders = doc.data().orders;
-        var newOrder = [...orders, order.order_number];
-        var user = doc.data();
-        user.orders = newOrder;
-        user.sauce = true;
-        //update profile sauce status to true , if one of the product has category chicken
+        var orders = doc.data().orders
+        var newOrder = [...orders, order.order_number]
+        var user = doc.data()
+        user.orders = newOrder
+        user.sauce = true
 
-        // state.cart.forEach(res => {
-        //   if (res.category == "Chicken") {
-        //     user.sauce = true;
-        //   }
-        // });
-
-        db.collection("users")
+        db.collection('users')
           .doc(this.tableProfile.id)
           .set({
             ...user
-          });
-      });
+          })
+      })
     }
   },
-  created() {
-    db.collection("products")
-      .where("category", "==", "Chicken")
-      .where("status", "==", "available")
+  created () {
+    db.collection('products')
+      .where('category', '==', 'Chicken')
+      .where('status', '==', 'available')
       .onSnapshot(snapshot => {
-        this.chickenProducts = [];
+        this.chickenProducts = []
 
-        this.selectedProducts.items = [];
-        this.selectedProducts.flavor = null;
-        this.selectedProducts.sauces = [];
-        this.selectedProducts.type = "Dine";
-        this.dialog = false;
+        this.selectedProducts.items = []
+        this.selectedProducts.flavor = null
+        this.selectedProducts.sauces = []
+        this.selectedProducts.type = 'Dine'
+        this.dialog = false
 
         snapshot.forEach(doc => {
-          this.chickenProducts.push(doc.data());
-        });
-      });
+          this.chickenProducts.push(doc.data())
+        })
+      })
 
-    this.fetchSauceCategories();
-    this.fetchSauces();
+    this.fetchSauceCategories()
+    this.fetchSauces()
   },
   computed: {
     ...mapGetters([
-      "fetchCart",
-      "cartSize",
-      "cartTotalAmount",
-      "fetchProductQuantity",
-      "tableProfile"
+      'fetchCart',
+      'cartSize',
+      'cartTotalAmount',
+      'fetchProductQuantity',
+      'tableProfile'
     ])
   }
-};
+}
 </script>

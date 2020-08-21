@@ -93,69 +93,69 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { mapState, mapGetters, mapActions } from "vuex";
+import { db } from '@/config/firebase'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       loading: false,
-      title: "Products",
-      category: "",
+      title: 'Products',
+      category: '',
       sauceCategories: [],
       sauces: []
-    };
+    }
   },
   methods: {
     ...mapActions([
-      "setProducts",
-      "addToCart",
-      "removeFromCart",
-      "deleteFromCart",
-      "confirmOrder"
+      'setProducts',
+      'addToCart',
+      'removeFromCart',
+      'deleteFromCart',
+      'confirmOrder'
     ]),
-    fetchSauceCategories() {
-      db.collection("saucecategories").onSnapshot(snapshot => {
-        this.sauceCategories = [];
+    fetchSauceCategories () {
+      db.collection('saucecategories').onSnapshot(snapshot => {
+        this.sauceCategories = []
         snapshot.forEach(doc => {
-          this.sauceCategories.push(doc.data());
-        });
-      });
+          this.sauceCategories.push(doc.data())
+        })
+      })
     },
-    fetchSauce() {
-      db.collection("products")
-        .where("category", "==", "Sauce")
-        .where('status', '==','available')
+    fetchSauce () {
+      db.collection('products')
+        .where('category', '==', 'Sauce')
+        .where('status', '==', 'available')
         .onSnapshot(snapshot => {
-          this.sauces = [];
+          this.sauces = []
           snapshot.forEach(doc => {
-            this.sauces.push(doc.data());
-          });
-        });
+            this.sauces.push(doc.data())
+          })
+        })
     },
-    filterSauces(subcategory) {
-      return this.sauces.filter(s => s.subcategory === subcategory);
+    filterSauces (subcategory) {
+      return this.sauces.filter(s => s.subcategory === subcategory)
     },
-    confirmTheseOrder() {
-      this.confirmOrder();
-      this.$router.push("/");
+    confirmTheseOrder () {
+      this.confirmOrder()
+      this.$router.push('/')
     }
   },
-  created() {
-    this.setProducts("Sauce");
-    this.fetchSauceCategories();
-    this.fetchSauce();
+  created () {
+    this.setProducts('Sauce')
+    this.fetchSauceCategories()
+    this.fetchSauce()
   },
   computed: {
     ...mapGetters([
-      "fetchProducts",
-      "fetchCart",
-      "cartSize",
-      "cartTotalAmount",
-      "fetchProductQuantity"
+      'fetchProducts',
+      'fetchCart',
+      'cartSize',
+      'cartTotalAmount',
+      'fetchProductQuantity'
     ])
   }
-};
+}
 </script>
 
 <style>
