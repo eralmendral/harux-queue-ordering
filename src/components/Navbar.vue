@@ -58,7 +58,7 @@
     </v-toolbar>
 
     <v-navigation-drawer
-      style='overflow-y: scroll;background:#1f1610'
+      style='overflow-y: scroll; background:#1f1610'
       app
       v-model='drawer'
       class='white--text'

@@ -1,77 +1,87 @@
 <template>
-  <div>
-    <h1>Orders Que</h1>
+  <div class="order-component">
+    <h1>Orders Que - <b class='primary--text'> {{orderQueue.length}} </b></h1>
     <v-layout align-center class="ordersQueueDashboard">
-      <v-btn v-for="(order) in orderQueue" :key="order.id" class="mx-3 pa-3 tableBox">
-        <div>
-          <h1 class="white--text">{{order.table_number}}</h1>
-          <v-btn
-            small
-            fab
-            color="info"
-            :to="{name:'order_details',params:{order_number: order.order_number}}"
-          >
-            <v-icon class="white--text">visibility</v-icon>
-          </v-btn>
-
-          <v-dialog v-model="dialog" width="500">
-            <template v-slot:activator="{ on }">
-              <v-btn small color="success darken-2" fab dark v-on="on">
-                <v-icon class="white--text">chat</v-icon>
+      <div v-if="orderQueue.length > 0">
+        <v-btn v-for="order in orderQueue" :key="order.id" class="mx-3 pa-3 tableBox">
+          <div>
+            <h1 class="white--text">{{ order.table_number }}</h1>
+            <div class="mt-3">
+              <v-btn
+                small
+                fab
+                color="primary lighten-2"
+                :to="{
+                name: 'order_details',
+                params: { order_number: order.order_number }
+              }"
+              >
+                <v-icon class="white--text">visibility</v-icon>
               </v-btn>
-            </template>
 
-            <v-card>
-              <v-card-text>
-                <v-form>
-                  <label for="message">Message to Table {{order.table_number}}</label>
-                  <v-text-field label="message" prepend-icon="chat" v-model="message"></v-text-field>
-                </v-form>
-              </v-card-text>
+              <v-dialog v-model="dialog" width="500">
+                <template v-slot:activator="{ on }">
+                  <v-btn small color="primary darken-1" fab dark v-on="on">
+                    <v-icon class="white--text">chat</v-icon>
+                  </v-btn>
+                </template>
 
-              <v-card-actions>
-                <v-btn class="success large" @click="sendMessage(order.table_number)">
-                  <v-icon >send</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+                <v-card>
+                  <v-card-text>
+                    <v-form>
+                      <label for="message">Message to Table {{ order.table_number }}</label>
+                      <v-text-field label="message" prepend-icon="chat" v-model="message"></v-text-field>
+                    </v-form>
+                  </v-card-text>
 
-          <v-btn small fab color="primary">
-            <v-icon class="white--text" @click="updateOrderFinished(order.order_number)">check</v-icon>
-          </v-btn>
-        </div>
-      </v-btn>
+                  <v-card-actions>
+                    <v-btn class="success large" @click="sendMessage(order.table_number)">
+                      <v-icon>send</v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-btn small fab color="primary  darken-2">
+                <v-icon class="white--text" @click="updateOrderFinished(order.order_number)">check</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </v-btn>
+      </div>
+      <div v-else>
+        <h1>No Orders</h1>
+      </div>
     </v-layout>
   </div>
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
 export default {
-  data() {
+  data () {
     return {
       billingout: 0,
       orderQueue: [],
       dialog: false,
-      message: ""
-    };
+      message: ''
+    }
   },
-  created() {
-    db.collection("orders")
-      .orderBy("time", "asc")
-      .where("status", "==", "pending")
-      .onSnapshot(querySnapshot => {
-        this.orderQueue = [];
-        querySnapshot.forEach(doc => {
-          this.orderQueue.push(doc.data());
-        });
-      });
+  created () {
+    db.collection('orders')
+      .orderBy('time', 'asc')
+      .where('status', '==', 'pending')
+      .onSnapshot((querySnapshot) => {
+        this.orderQueue = []
+        querySnapshot.forEach((doc) => {
+          this.orderQueue.push(doc.data())
+        })
+      })
   },
   methods: {
-    sendMessage(tablenum) {
-      let ref = db.collection("messages").doc();
+    sendMessage (tablenum) {
+      let ref = db.collection('messages').doc()
       ref
         .set({
           id: ref.id,
@@ -81,47 +91,47 @@ export default {
         })
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Message Sent",
+            type: 'success',
+            title: 'Message Sent',
             showConfirmButton: false,
             timer: 1500
-          });
+          })
         })
-        .catch(err => err);
+        .catch((err) => err)
 
-      this.dialog = false;
+      this.dialog = false
     },
-    updateOrderFinished(order_num) {
-      
-      //find and update
-      db.collection("orders")
-        .where("order_number", "==", order_num)
+    updateOrderFinished (orderNumber) {
+      // Find and update
+      db.collection('orders')
+        .where('order_number', '==', orderNumber)
         .get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-
-           // Build doc ref from doc.id
-            db.collection("orders")
-              .doc(doc.id)
-              .update({ status: "finished" });
-          });
-        });
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            // Build doc ref from doc.id
+            db.collection('orders').doc(doc.id).update({ status: 'finished' })
+          })
+        })
       Swal.fire({
-        type: "success",
-        title: "Order Updated to Finished",
+        type: 'success',
+        title: 'Order Updated to Finished',
         showConfirmButton: false,
         timer: 1500
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style>
+h1 {
+  font-family: "Do Hyeon", sans-serif !important;
+}
+
 .tableBox {
-  width: 160px;
-  height: 160px;
-  border-radius: 10px;
+  width: 170px;
+  height: 170px;
+  border-radius: 5px;
   background: #2c302e !important;
   color: #05b345 !important;
 }

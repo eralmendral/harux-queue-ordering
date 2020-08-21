@@ -26,6 +26,7 @@ yarn-error.log*
 .editorconfig
 .eslintrc.js
 .firebaserc
+.firebase
 .htaccess
 firebase.json
 postcss.config.js
