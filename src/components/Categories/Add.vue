@@ -45,33 +45,32 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
 
 export default {
-  data() {
+  data () {
     return {
-      image: "",
-      name: "",
+      image: '',
+      name: '',
       loading: false,
       dialog: false,
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"]
-    };
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters']
+    }
   },
   methods: {
-    addCategory() {
-      let form = this.$refs.form;
-      this.loading = true;
+    addCategory () {
+      let form = this.$refs.form
+      this.loading = true
 
       if (form.validate()) {
         const category = {
           image: this.image,
           name: this.name,
           created_at: new Date()
-        };
+        }
 
-        const ref = db.collection("categories").doc();
+        const ref = db.collection('categories').doc()
 
         ref
           .set({
@@ -82,39 +81,38 @@ export default {
           }) // sets the contents of the doc using the id
           .then(() => {
             Swal.fire({
-              type: "success",
-              title: "Category Added",
+              type: 'success',
+              title: 'Category Added',
               showConfirmButton: false,
               timer: 1500
-            });
-            this.$emit("fetchCategories");
-          });
+            })
+            this.$emit('fetchCategories')
+          })
       }
 
-      this.loading = false;
-      this.dialog = false;
-      form.reset();
+      this.loading = false
+      this.dialog = false
+      form.reset()
     },
-    uploadCategoryImage(e) {
-      let image = e.target.files[0];
+    uploadCategoryImage (e) {
+      let image = e.target.files[0]
 
-      var storageRef = fb.storage().ref("category/" + image.name);
+      var storageRef = fb.storage().ref('category/' + image.name)
 
-      let uploadTask = storageRef.put(image);
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {},
-        error => {},
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-            this.image = downloadURL;
-          });
+            this.image = downloadURL
+          })
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style scoped>

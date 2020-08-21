@@ -81,89 +81,88 @@
 
 <script>
 
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "Category",
-  data() {
+  name: 'Category',
+  data () {
     return {
-      search: "",
+      search: '',
       headers: [
-        { text: "Image", value: "image", align: "center" },
-        { text: "Name", value: "name", align: "center" },
-        { text: "Color", value: "color", align: "center" },
-        { text: "Status", value: "status", align: "center" },
-        { text: "Featured", value: "featured", align: "center" }
+        { text: 'Image', value: 'image', align: 'center' },
+        { text: 'Name', value: 'name', align: 'center' },
+        { text: 'Color', value: 'color', align: 'center' },
+        { text: 'Status', value: 'status', align: 'center' },
+        { text: 'Featured', value: 'featured', align: 'center' }
       ],
       categories: [],
       category: {
-        image: "",
-        name: ""
+        image: '',
+        name: ''
       },
       loading: false,
       dialog: false,
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Category",
+          text: 'Category',
           disabled: true,
-          to: "/dashboard/categories"
+          to: '/dashboard/categories'
         }
       ]
-    };
+    }
   },
   computed: {},
   methods: {
-    getCategories() {
-      this.watcher();
+    getCategories () {
+      this.watcher()
     },
-    watcher() {
-      db.collection("categories")
-        .orderBy("name")
+    watcher () {
+      db.collection('categories')
+        .orderBy('name')
         .onSnapshot(querySnapshot => {
-          this.categories = [];
+          this.categories = []
           querySnapshot.forEach(doc => {
-            this.categories.push(doc.data());
-          });
-        });
+            this.categories.push(doc.data())
+          })
+        })
     },
-    deleteCategory(id) {
+    deleteCategory (id) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
       }).then(result => {
         if (result.value) {
-          db.collection("categories")
+          db.collection('categories')
             .doc(id)
             .delete()
             .then(() => {
-              
-            Swal.fire({
-              type: "success",
-              title: "Category Deleted",
-              showConfirmButton: false,
-              timer: 1000
-            });
+              Swal.fire({
+                type: 'success',
+                title: 'Category Deleted',
+                showConfirmButton: false,
+                timer: 1000
+              })
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         }
-      });
+      })
     }
   },
-  created() {
-    this.getCategories();
+  created () {
+    this.getCategories()
   }
-};
+}
 </script>
 
 <style >

@@ -80,68 +80,67 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import { setTimeout } from "timers";
-import Swal from "sweetalert2";
-import { uuid } from "vue-uuid";
+import { fb, db } from '@/config/firebase'
+import Swal from 'sweetalert2'
+import { uuid } from 'vue-uuid'
 export default {
-  data() {
+  data () {
     return {
       disabled: false,
       categoryExists: false,
       uploadProgress: 0,
       category: {
-        image: "",
-        name: "",
+        image: '',
+        name: '',
         status: false,
         featured: false
       },
-      inputRules: [v => v.length >= 3 || "Fill at least 3 Characters"],
+      inputRules: [v => v.length >= 3 || 'Fill at least 3 Characters'],
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Category",
+          text: 'Category',
           disabled: false,
-          to: "/dashboard/categories"
+          to: '/dashboard/categories'
         },
         {
-          text: "Add Category",
+          text: 'Add Category',
           disabled: true,
-          to: "/dashboard/addcategory"
+          to: '/dashboard/addcategory'
         }
       ]
-    };
+    }
   },
   methods: {
-    checkCategory() {
-      var category = String(this.category.name);
-      var category = category.charAt(0).toUpperCase() + category.slice(1);
+    checkCategory () {
+      var category = String(this.category.name)
+      category = category.charAt(0).toUpperCase() + category.slice(1)
 
       // let categRef = .doc("7DCM24Z8hu0VDLZG85i7");
-      db.collection("categories")
-        .where("name", "==", category)
+      db.collection('categories')
+        .where('name', '==', category)
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            this.categoryExists = false;
+            this.categoryExists = false
           } else {
-            this.categoryExists = true;
+            this.categoryExists = true
           }
-        });
+        })
     },
-    addCategory() {
-      this.disabled = true;
-      let form = this.$refs.categoryForm;
-      this.loading = true;
+    addCategory () {
+      this.disabled = true
+      let form = this.$refs.categoryForm
+      this.loading = true
 
       if (form.validate()) {
-        var name = this.category.name;
-        var name = name.charAt(0).toUpperCase() + name.slice(1);
-        var color = document.getElementById("categoryColor").value;
+        var name = this.category.name
+        name = name.charAt(0).toUpperCase() + name.slice(1)
+        var color = document.getElementById('categoryColor').value
         const category = {
           image: this.category.image,
           name: name,
@@ -149,9 +148,9 @@ export default {
           featured: this.category.featured,
           color: color,
           created_at: new Date()
-        };
+        }
 
-        const ref = db.collection("categories").doc();
+        const ref = db.collection('categories').doc()
         ref
           .set({
             id: ref.id,
@@ -159,64 +158,54 @@ export default {
           }) // sets the contents of the doc using the id
           .then(() => {
             Swal.fire({
-              type: "success",
-              title: "Category Added",
+              type: 'success',
+              title: 'Category Added',
               showConfirmButton: false,
               timer: 1500
-            });
-          });
+            })
+          })
       }
-      this.$router.push("/dashboard/categories");
-      this.loading = false;
-      form.reset();
+      this.$router.push('/dashboard/categories')
+      this.loading = false
+      form.reset()
     },
-    uploadCategoryImage(e) {
-      this.disabled = true;
-      let image = e.target.files[0];
+    uploadCategoryImage (e) {
+      this.disabled = true
+      let image = e.target.files[0]
 
-      var storageRef = fb.storage().ref("category/"+ uuid.v1() + image.name);
+      var storageRef = fb.storage().ref('category/' + uuid.v1() + image.name)
 
-      let uploadTask = storageRef.put(image);
+      let uploadTask = storageRef.put(image)
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         snapshot => {
           var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadprogress = progress;
-          // console.log("upload progress is: " + progress);
-          // switch (snapshot.state) {
-          //   case fb.storage.TaskState.PAUSED: // or 'paused'
-          //     // console.log("Upload is paused");
-          //     break;
-          //   case fb.storage.TaskState.RUNNING: // or 'running'
-          //     //console.log("Upload is running");
-          //     break;
-          // }
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadprogress = progress
         },
-        error => {},
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             if ((this.category.image = downloadURL)) {
-              this.disabled = false;
+              this.disabled = false
             }
             // console.log("File available at: ", downloadURL);
-          });
+          })
         }
-      );
+      )
     },
-    deleteImage(img) {
-      let image = fb.storage().refFromURL(img);
-      this.category.image = "";
+    deleteImage (img) {
+      let image = fb.storage().refFromURL(img)
+      this.category.image = ''
       image
         .delete()
         .then(() => {
-          console.log("Image Deleted");
+          console.log('Image Deleted')
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
     }
   }
-};
+}
 </script>
 
 <style>

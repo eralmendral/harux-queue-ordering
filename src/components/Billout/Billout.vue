@@ -83,68 +83,67 @@
 </template>
 
 <script>
-import { fb, db } from "@/config/firebase";
-import Swal from "sweetalert2";
+import { db } from '@/config/firebase'
+import Swal from 'sweetalert2'
 
 export default {
-  name: "Users",
-  data() {
+  name: 'Users',
+  data () {
     return {
-      search: "",
-      message: "",
-      headers: [{ text: "Table", value: "table_number", align: "center" }],
+      search: '',
+      message: '',
+      headers: [{ text: 'Table', value: 'table_number', align: 'center' }],
       users: [],
       loading: false,
       dialog: false,
       items: [
         {
-          text: "Dashboard",
+          text: 'Dashboard',
           disabled: false,
-          to: "/dashboard/#"
+          to: '/dashboard/#'
         },
         {
-          text: "Billout",
+          text: 'Billout',
           disabled: true
         }
       ]
-    };
+    }
   },
   computed: {},
   methods: {
-    billOut(tablenum) {
+    billOut (tablenum) {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        type: "warning",
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Billout!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Billout!'
       }).then(result => {
         if (result.value) {
-          db.collection("users")
-            .where("table_number", "==", tablenum)
+          db.collection('users')
+            .where('table_number', '==', tablenum)
             .get()
-            .then(function(querySnapshot) {
-              querySnapshot.forEach(function(doc) {
-
+            .then(function (querySnapshot) {
+              querySnapshot.forEach(function (doc) {
                 // Build doc ref from doc.id
-                db.collection("users")
+                db.collection('users')
                   .doc(doc.id)
-                  .update({ billingout: false, orders: [], sauce: false });
-              });
-            });
+                  .update({ billingout: false, orders: [], sauce: false })
+              })
+            })
           Swal.fire({
-            type: "success",
-            title: "Table Billed Out",
+            type: 'success',
+            title: 'Table Billed Out',
             showConfirmButton: false,
             timer: 1500
-          });
+          })
         }
-      });
+      })
     },
-    sendMessage(tablenum) {
-      let ref = db.collection("messages").doc();
+    sendMessage (tablenum) {
+      let ref = db.collection('messages').doc()
       ref
         .set({
           id: ref.id,
@@ -154,31 +153,31 @@ export default {
         })
         .then(() => {
           Swal.fire({
-            type: "success",
-            title: "Message Sent",
+            type: 'success',
+            title: 'Message Sent',
             showConfirmButton: false,
             timer: 1500
-          });
+          })
         })
-        .catch(err => err);
+        .catch(err => err)
 
-      this.dialog = false;
+      this.dialog = false
     },
-    getUsers() {
-      db.collection("users")
-        .where("billingout", "==", true)
+    getUsers () {
+      db.collection('users')
+        .where('billingout', '==', true)
         .onSnapshot(querySnapshot => {
-          this.users = [];
+          this.users = []
           querySnapshot.forEach(doc => {
-            this.users.push(doc.data());
-          });
-        });
+            this.users.push(doc.data())
+          })
+        })
     }
   },
-  created() {
-    this.getUsers();
+  created () {
+    this.getUsers()
   }
-};
+}
 </script>
 
 <style >
