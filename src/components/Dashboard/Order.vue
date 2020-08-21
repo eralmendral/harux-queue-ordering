@@ -14,7 +14,7 @@
                 :to="{
                 name: 'order_details',
                 params: { order_number: order.order_number }
-              }"
+                }"
               >
                 <v-icon class="white--text">visibility</v-icon>
               </v-btn>
@@ -35,8 +35,8 @@
                   </v-card-text>
 
                   <v-card-actions>
-                    <v-btn class="success large" @click="sendMessage(order.table_number)">
-                      <v-icon>send</v-icon>
+                    <v-btn class="primary medium" @click="sendMessage(order.table_number)">
+                      <span>send</span>
                     </v-btn>
                   </v-card-actions>
                 </v-card>

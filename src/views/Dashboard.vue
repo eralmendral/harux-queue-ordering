@@ -2,44 +2,48 @@
   <v-container fluid>
     <Navbar></Navbar>
     <router-view></router-view>
-    <notifications group="foo" v-once position="top right" classes="my-style" />
+    <notifications group="billed-out" v-once position="top right" classes="my-style"/>
   </v-container>
 </template>
 
 <script>
-import Navbar from "@/components/Navbar";
-import { fb, db } from "@/config/firebase";
-import Vue from "vue";
+import Navbar from '@/components/Navbar'
+import { db } from '@/config/firebase'
+import Vue from 'vue'
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   components: {
     Navbar
   },
-  created() {
-    db.collection("billout").onSnapshot(function(snapshot) {
-      snapshot.docChanges().forEach(function(change) {
-        if (change.type === "added") {
+  created () {
+    db.collection('billout').onSnapshot(function (snapshot) {
+      snapshot.docChanges().forEach(function (change) {
+        if (change.type === 'added') {
         }
-        if (change.type === "modified") {
+        if (change.type === 'modified') {
           Vue.notify({
-            group: "foo",
-            title: "New Table Billing Out !",
-            duration: 10000,
-
+            group: 'billed-out',
+            title: 'New Table Billing Out !',
+            duration: 1000,
             speed: 1000
-          });
+          })
         }
-        if (change.type === "removed") {
+        if (change.type === 'removed') {
         }
-      });
-    });
+      })
+    })
   }
-};
+}
 </script>
 
 <style lang="scss">
 a:hover {
   text-decoration: none !important;
+}
+
+label { 
+ font-family: 'Raleway';
+ font-weight: 600;
 }
 
 table.v-table thead th {
@@ -188,4 +192,3 @@ input[type="checkbox"] {
 
 }
 </style>
-
