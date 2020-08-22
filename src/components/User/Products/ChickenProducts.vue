@@ -9,7 +9,7 @@
 
       <!-- unli here -->
       <v-container>
-        <v-card flat class="pa-3 bg-grey">
+        <v-card flat class="bg-grey pa-3">
         <div v-for="product in fetchUnliChickens()" :key="product.id">
           <v-layout row wrap justify-center align-center class="ma-3">
             <v-flex xs2>
@@ -226,7 +226,7 @@
       <v-container>
         <v-card flat class="bg-grey pa-3">
           <div v-for="product in fetchChickens()" :key="product.id">
-          <v-layout row wrap flex justify-center align-center class="ma-3 pa-3">
+          <v-layout row wrap flex justify-center align-center class="ma-3">
             <v-flex xs2>
               <input
                 v-if="selectedProducts.unliItems.length < 1"
