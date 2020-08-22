@@ -1,44 +1,30 @@
 <template>
-  <v-toolbar flat style="background: #ddae6a; opacity: .9; " height="75px">
-    <v-layout row justify-center align-content-center align-center style="z-index:99999 ">
-      <div class>
-        <!-- <v-btn style="background: inherit">
-          <h4 class="white--text">
-            <span class="green--text">{{tableProfile.table_number}}</span>
-          </h4>
-        </v-btn>-->
-
-        <v-btn style="background: inherit; border: 1px solid #fff; padding: 25px" to="/">
-          <h4 class="mt-2 nav_title">MENU</h4>
+  <v-toolbar color="secondary" class="navbar-user">
+    <v-layout>
+        <v-flex xs12 text-center>
+          <span class="navbar-user-table-number font-custom">#{{tableProfile.table_number}}</span>
+          <v-btn class="navbar-user-menu" to="/">
+          <span class="font-custom">Menu</span>
         </v-btn>
-
-        <v-btn
-          class="align-center justify-center"
-          color
-          style="background: inherit; border: 1px solid #fff;padding: 25px"
-          to="/myorders"
-        >
-          <h4 class="mt-2 nav_title">MY ORDERS</h4>
+        <v-btn class="navbar-user-menu" to="/myorders">
+          <span class="font-custom">My Orders</span>
         </v-btn>
-
         <v-btn
           slot="activator"
           @click="toggleCart"
           fab
-          style="background: inherit; border: 1px solid #fff; height: 50px;width:50px"
+          class="drawerActivator"
         >
           <v-badge color>
             <template v-slot:badge>
               <h5
-                class="font-weight-bold white--text"
-                :class="cartSize > 0 ? 'pink' : ''"
-                style="border-radius: 50%; padding: 2px; width: 30px;height: 25px"
+                class="cartSizeIndicator"
               >{{cartSize ? cartSize : ''}}</h5>
             </template>
-            <font-awesome-icon icon="utensils" class="secondary--text" size="2x" />
+            <font-awesome-icon icon="utensils" class="primary--text drawerActivatorIcon"/>
           </v-badge>
         </v-btn>
-      </div>
+        </v-flex>
     </v-layout>
   </v-toolbar>
 </template>
@@ -73,9 +59,43 @@ export default {
 </script>
 
 <style>
-.nav_title {
-  font-family: "Times New Roman" !important;
 
-  color: rgb(37, 23, 4);
+.navbar-user-table-number {
+  display: inline-block;
+  margin-right: 15px;
+  font-size: 24px;
+  color: #cb7a43 !important;
+  font-weight: bolder;
+}
+
+.navbar-user-menu {
+    background: inherit !important;
+    border: 1px solid #cb7a43;
+    border-radius: 0px;
+    color: #cb7a43 !important;
+    padding: 20px;
+    font-size: 24px;
+}
+
+.drawerActivator {
+  position: relative;
+  background: inherit !important;
+  border: 1px solid #cb7a43;
+  outline: none !important;
+  height: 40px;
+  width: 40px;
+}
+
+.cartSizeIndicator {
+  position: absolute;
+  width: 30px;
+  height: 25px;
+  color: #eeebea;
+  font-weight: bolder;
+  font-size: 18px;
+}
+
+.drawerActivatorIcon {
+  font-size: 24px;
 }
 </style>

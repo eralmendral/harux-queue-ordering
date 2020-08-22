@@ -2,28 +2,27 @@
   <div>
     <v-layout row wrap>
       <Navbar @toggleDrawer="drawer = !drawer" @toggleCart="cart = !cart" />
-
       <v-navigation-drawer
         v-model="cart"
         absolute
         temporary
         right
         persistent
-        width="400px"
-
+        width="450px"
         class="secondary primary--text"
       >
-        <v-btn fab absolute @click="cart = !cart" right color="primary white--text mt-2" small>
+        <v-btn fab absolute @click="cart = !cart" right color="pink white--text mt-2" small>
           <v-icon>close</v-icon>
         </v-btn>
+
         <v-list class="pa-1 text-xs-center">
           <div class="text-xs-left"></div>
           <v-layout row  align-center>
             <v-flex xs3>
-              <img src="/haruxlogo.png" alt="logo" width="80px" height="80px" />
+              <img src="/haruxlogo.png" alt="logo" class="drawerLogo"/>
             </v-flex >
             <v-flex xs6>
-              <h3 class="primary--text font-weight-bold display-1 text-center">{{tableProfile.table_number}}</h3>
+              <h2 class="primary--text font-weight-bold display-1 text-center font-custom">table #{{tableProfile.table_number}}</h2>
             </v-flex>
           </v-layout>
         </v-list>
@@ -41,16 +40,10 @@
         </v-list>
 
         <div class="container">
-          <h3 class>
-            <v-chip class="primary">
-              <span class="white--text">{{cartSize}}</span>
-            </v-chip>
-            <span class="white--text">products</span>
-          </h3>
           <div v-if="!cartSize" class="primary white--text pa-3">Table is empty! Please add some orders.</div>
-          <table v-else class="table table-striped mb-5">
+          <table v-else class="table table-striped mb-2">
             <thead class="thead-dark">
-              <tr>
+              <tr class="text-center">
                 <th scope="col">#</th>
                 <th scope="col">Product</th>
                 <th scope="col">Price</th>
@@ -60,11 +53,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(product, index) in fetchCart" :key="product.id">
+              <tr class="text-center" v-for="(product, index) in fetchCart" :key="product.id">
                 <th scope="row" class="white--text">{{index + 1}}</th>
                 <td class="white--text">{{product.name}}</td>
-                <td class="white--text">Php {{product.price}}</td>
-                <td>
+                <td class="white--text">{{product.price}}</td>
+                <td class="text-center" style="width: 120%">
                   <button
                     v-if="product.category != 'Chicken'"
                     @click="removeFromCart(product.id)"
@@ -89,26 +82,20 @@
               </tr>
 
               <tr class="table-footer white--text font-weight-bold">
-                <td colspan="4" class="total">Total:</td>
-                <td>
-                  <span>Php. {{cartTotalAmount}}</span>
-                </td>
+                <td colspan="4" class="total">Total</td>
+                <td colspan="4" class="font-custom"><h4><b>₱ {{cartTotalAmount}}</b></h4></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div class="text-xs-center" v-if="fetchCart.length > 0">
-          <v-btn large class="stdBtn white--text" @click="confirmTheseOrder()">
+        <div class="text-xs-right" v-if="fetchCart.length > 0">
+          <v-btn large class="primary white--text" @click="confirmTheseOrder()">
             <span>Confirm Order</span>
           </v-btn>
         </div>
       </v-navigation-drawer>
     </v-layout>
-
     <router-view></router-view>
-     <br>
-     <br>
-     <br>
     <Queue />
   </div>
 </template>
@@ -186,5 +173,14 @@ export default {
 body,
 html {
   overflow-x: hidden;
+}
+
+.navbar-user-drawer {
+  width: 450px
+}
+
+.drawerLogo {
+  width: 80px;
+  height: 80px;
 }
 </style>
