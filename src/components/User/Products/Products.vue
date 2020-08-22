@@ -1,56 +1,45 @@
 <template>
   <div>
     <div v-if="loading">Loading....</div>
-    <div v-else>
-      <div class="text-xs-center my-5">
-        <h3 class="primary--text text--darken-2">{{this.category}}</h3>
+    <div v-else class="mt-100">
+      <div class="text-xs-center">
+        <h2 class="primary--text text--darken-2">{{this.category}}</h2>
       </div>
 
       <div class="text-xs-center" v-if="fetchCart.length > 0">
         <v-btn
-          large
           fixed
           bottom
-          style="margin-bottom: 100px;"
           right
-          depressed
           @click="confirmTheseOrder()"
-          class="stdBtn secondary--text"
-        >Confirm Order</v-btn>
+          class="secondary primary--text confirm-button"
+        ><span class="font-custom">Confirm Order</span></v-btn>
       </div>
 
       <div>
-        <div v-if="products.length > 0">
-          <v-card v-for="product in products" :key="product.id" class="ma-2" flat>
+        <v-container v-if="products.length > 0">
+          <v-card v-for="product in products" :key="product.id" class="pa-3 bg-grey" flat>
             <v-card-text>
-              <v-layout row wrap flex justify-space-around align-center>
-                <v-flex xs2>
-                  <router-link :to="{name: 'userproduct' , params:{id:product.id}}">
-                      <img :src="product.image" class="product_img" alt="product image" />
-                  </router-link>
-
+              <v-layout row justify-content-center align-center>
+                <v-flex>
+                    <img :src="product.image ? product.image : '/haruxlogo.png'" class="product-table-image" :alt="product.name" />
                 </v-flex>
-                <v-flex xs3>
+                <v-flex>
                   <router-link tag="div" :to="{name: 'userproduct' , params:{id:product.id}}" style="cursor:pointer">
-                    <h6 class="card-title ml-2 text-center">{{product.name}}</h6>
+                    <h2 class="text-center secondary--text">{{product.name}}</h2>
                   </router-link>
                 </v-flex>
 
-                <v-flex xs2>
-                  <h6 class="card-text text-center brown--text">
-                    <b>₱ {{product.price}}</b>
-                  </h6>
-                </v-flex>
-
-                <v-flex xs5>
-                  <v-layout class="justify-center align-center">
-                    <button class="circleBtn" @click="removeFromCart(product.id)">
+                <v-flex>
+                  <v-layout class="justify-end align-center">
+                    <h2 style='margin-right: 100px'><b>₱ {{product.price}}</b></h2>
+                    <button class="secondary circleBtn" @click="removeFromCart(product.id)">
                       <v-icon class="primary--text">remove</v-icon>
                     </button>
-                    <h3
+                    <h2
                       class="primary--text"
-                    >{{fetchProductQuantity(product.id) ? fetchProductQuantity(product.id).quantity : '0'}}</h3>
-                    <button class="circleBtn" @click="addToCart({productId: product.id})">
+                    >{{fetchProductQuantity(product.id) ? fetchProductQuantity(product.id).quantity : '0'}}</h2>
+                    <button class="secondary circleBtn" @click="addToCart({productId: product.id})">
                       <v-icon class="primary--text">add</v-icon>
                     </button>
                   </v-layout>
@@ -58,9 +47,9 @@
               </v-layout>
             </v-card-text>
           </v-card>
-        </div>
-        <div v-else class="text-xs-center">
-          <h3 class="primary--text">There is No Product in these Category</h3>
+        </v-container>
+        <div v-else class="text-xs-center mt-5">
+          <h2 class="primary--text">There is no product in these category.</h2>
         </div>
       </div>
     </div>
@@ -96,8 +85,6 @@ export default {
   created () {
     // set category
     this.category = this.$route.params.category
-    // fetch products based on category
-
     this.setProducts(this.category)
 
     db.collection('products')

@@ -12,19 +12,20 @@
         style="z-index: 9999"
         class="secondary primary--text"
       >
-        <v-btn fab absolute @click="cart = !cart" right color="pink" small>
+        <v-btn fab absolute @click="cart = !cart" left color="pink" class="white--text mt-3" small>
           <v-icon>close</v-icon>
+        </v-btn>
+
+         <v-btn fab absolute @click="logout()" right color="primary white--text mt-3" small>
+          <v-icon>logout</v-icon>
         </v-btn>
 
         <v-list class="pa-1 text-xs-center">
           <div class="text-xs-left"></div>
-          <v-layout row  align-center>
-            <v-flex xs3>
-              <img src="/haruxlogo.png" alt="logo" class="drawerLogo"/>
+          <v-layout row  justify-content-center align-center>
+            <v-flex>
+             <h2 class="primary--text font-weight-bold display-1 text-center font-custom mt-3">table #{{tableProfile.table_number}}</h2>
             </v-flex >
-            <v-flex xs6>
-              <h2 class="primary--text font-weight-bold display-1 text-center font-custom">table #{{tableProfile.table_number}}</h2>
-            </v-flex>
           </v-layout>
         </v-list>
 
@@ -141,6 +142,13 @@ export default {
     confirmTheseOrder () {
       this.confirmOrder()
       this.$router.push('/')
+    },
+    logout () {
+      fb.auth()
+        .signOut()
+        .then(() => {
+          this.$router.push('/login')
+        })
     }
   },
   created () {
@@ -178,8 +186,4 @@ html {
   width: 450px
 }
 
-.drawerLogo {
-  width: 80px;
-  height: 80px;
-}
 </style>

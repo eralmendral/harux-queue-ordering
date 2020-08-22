@@ -9,51 +9,7 @@
         <v-icon large v-if='drawer'>close</v-icon>
         <v-icon large v-else>menu</v-icon>
       </v-btn>
-
-      <!-- <v-toolbar-title>
-        <span class='font-weight-light white--text hidden-sm-and-down'>
-          HARU
-          <b>X</b>
-        </span>
-      </v-toolbar-title> -->
       <v-spacer></v-spacer>
-
-      <!-- <v-menu offset-y content-class='dropdown-menu' transition='slide-y-transition'>
-        <v-btn slot='activator' color flat fab>
-          <v-badge>
-            <template v-slot:badge>
-              <span>6</span>
-            </template>
-            <v-icon color='grey lighten-1'>money</v-icon>
-          </v-badge>
-        </v-btn>
-
-        <v-card>
-          <v-list dense>
-            <v-list-tile v-for='notification in notifications' :key='notification'>
-              <v-list-tile-title v-text='notification' />
-            </v-list-tile>
-          </v-list>
-        </v-card>
-      </v-menu>
-      <v-menu offset-y content-class='dropdown-menu' transition='slide-y-transition'>
-        <v-btn slot='activator' color flat fab>
-          <v-badge>
-            <template v-slot:badge>
-              <span>6</span>
-            </template>
-            <v-icon color='grey lighten-1'>queue</v-icon>
-          </v-badge>
-        </v-btn>
-
-        <v-card>
-          <v-list dense>
-            <v-list-tile v-for='notification in notifications' :key='notification'>
-              <v-list-tile-title v-text='notification' />
-            </v-list-tile>
-          </v-list>
-        </v-card>
-      </v-menu>-->
       <v-icon medium right  color='primary' @click='logout' title='logout'>exit_to_app</v-icon>
     </v-toolbar>
 

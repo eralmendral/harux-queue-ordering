@@ -45,6 +45,18 @@ a:hover {
   margin-top: 50px !important;
 }
 
+.mt-100 {
+  margin-top: 100px !important;
+}
+
+.mb-100 {
+  margin-bottom: 100px !important;
+}
+
+.mb-150 {
+  margin-bottom: 150px !important;
+}
+
 label {
  font-family: 'Raleway';
  font-weight: 600;
@@ -65,6 +77,10 @@ h1, h2{
   font-family: "Do Hyeon", sans-serif !important;
 }
 
+h3, h4,h5 ,h6 , p {
+    font-family: "Raleway";
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -73,8 +89,15 @@ h1, h2{
   font-family: "Do Hyeon", sans-serif !important;
 }
 
-h3, h4,h5 ,h6 , p {
-    font-family: "Raleway";
+button {
+  outline: none !important;
+}
+
+.confirm-button {
+  margin-bottom: 100px;
+  padding: 32px;
+  font-size: 21px;
+  z-index:999
 }
 
 img {
@@ -136,20 +159,10 @@ img {
 .circleBtn {
   display: block;
   background: #261c1d !important;
-
-  width: 60px !important;
-  height: 60px !important;
+  width: 40px !important;
+  height: 40px !important;
   border-radius: 50%;
-  margin: 0px 5px;
-}
-
-.circleBtn {
-  display: block;
-  background: #ddae6a !important;
-  width: 60px !important;
-  height: 60px !important;
-  border-radius: 50%;
-  margin: 0px 5px;
+  margin: 5px 15px;
 }
 
 .disabledBtn {

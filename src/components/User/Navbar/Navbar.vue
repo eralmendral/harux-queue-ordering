@@ -1,6 +1,7 @@
 <template>
   <v-toolbar color="secondary" class="navbar-user">
     <v-layout>
+       <img src="/haruxlogo.png" alt="logo" class="logo"/>
         <v-flex xs12 text-center>
           <span class="navbar-user-table-number font-custom">#{{tableProfile.table_number}}</span>
           <v-btn class="navbar-user-menu" to="/">
@@ -102,5 +103,11 @@ export default {
 
 .drawerActivatorIcon {
   font-size: 24px;
+}
+
+.logo {
+  position: absolute;
+  width: 60px !important;
+  height: 120px !important;
 }
 </style>
