@@ -118,7 +118,7 @@
                         :key="sauce.id"
                       >
                         <v-flex xs4>
-                          <p>{{sauce.name}}</p>
+                          <small>{{sauce.name}}</small>
                         </v-flex>
                         <v-flex xs1>
                           <p class="primary--text font-weight-bold">{{sauce.quantity}}</p>
@@ -139,19 +139,19 @@
           <v-card flat v-for="item in order.orders" :key="item.id">
             <v-container>
               <v-layout row justify-space-around align-center>
-                <v-flex xs4 >
+                <v-flex xs4>
                  <div class="text-center">
                     <img :src="item.image ? item.image : '/haruxlogo.png'" class="product-table-image" :alt="item.name" />
                  </div>
                 </v-flex>
                 <v-flex xs3 >
-                  <h4>{{item.name}}</h4>
+                  <h4 class="font-custom">{{item.name}}</h4>
                 </v-flex>
                 <v-flex xs2>
                   <h4><b>{{item.quantity}}</b></h4>
                 </v-flex>
                 <v-flex xs2>
-                  <b class="font-custom" v-if="item.price">₱ {{item.price}}</b>
+                <h4><b v-if="item.price">₱ {{item.price}}</b></h4>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -167,7 +167,7 @@
                   <img :src="chicken.image ? chicken.image : '/haruxlogo.png'" class="product-table-image" :alt="chicken.name" />
                 </v-flex>
                 <v-flex xs3>
-                  <h5 class="font-weight-bold">{{chicken.name}}</h5>
+                  <h5 class="font-weight-bold font-custom">{{chicken.name}}</h5>
                 </v-flex>
                 <v-flex>
                   <h5 v-if="!chicken.kidQty && chicken.price"><b>₱ {{chicken.price}}</b></h5>
@@ -189,7 +189,7 @@
                   <img :src="sauce.image ? sauce.image : '/haruxlogo.png'" class="product-table-image" :alt="sauce.name" />
                 </v-flex>
                 <v-flex xs3>
-                  <h5>{{sauce.name}}</h5>
+                  <h5><b class="font-custom">{{sauce.name}}</b></h5>
                 </v-flex>
                 <v-flex xs3>
                   <h5 style="color: #cb7a43 " class="font-weight-bold">{{sauce.quantity}}</h5>
@@ -316,6 +316,7 @@ export default {
 </script>
 
 <style>
+
 .order-details {
  background: rgb(235, 223, 205);
  padding: 20px;

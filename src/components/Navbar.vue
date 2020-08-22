@@ -136,7 +136,7 @@ export default {
         },
         {
           icon: 'opacity',
-          text: 'Sauce',
+          text: 'Sauces',
           route: '/dashboard/sauces',
           color: 'white'
         },
@@ -204,10 +204,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   button {
-    background : none !important;
-    border: none !important;
-    outline: none !important;
+    border: none;
+    outline: none;
   }
 </style>

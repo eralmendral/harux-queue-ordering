@@ -134,6 +134,7 @@ img {
   border-radius: 50%;
   margin: 0px 5px;
 }
+
 .circleBtn {
   display: block;
   background: #ddae6a !important;
@@ -158,16 +159,6 @@ img {
   height: 90px;
 }
 
-.product_title {
-}
-
-.product_title_large {
-  /* primary--text text--darken-2 font-weight-bold text-center */
-}
-
-.product_checkbox {
-}
-
 input[type="checkbox"] {
   transform: scale(3);
 }
@@ -184,21 +175,6 @@ input[type="checkbox"] {
   color: #ffffff;
   background: rgb(218, 49, 133) !important;
   border-left: 5px solid rgb(195, 20, 87);
-  .notification-title {
-    // Style for title line
-  }
-
-  .notification-content {
-    // Style for content
-  }
-
-  &.my-type {
-    /*
-    Style for specific type of notification, will be applied when you
-    call notification with "type" parameter:
-    this.$notify({ type: 'my-type', message: 'Foo' })
-    */
-  }
 }
 
 /* color:rgb(243, 143, 35) TEXT COLOR OF ADMIN NAVBAR, ORANGE */

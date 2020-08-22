@@ -1,10 +1,10 @@
 <template>
   <v-container fluid>
     <br>
-    <h3 class=" text-center primary--text">
+    <h2 class=" text-center primary--text">
       <small>****</small> My Orders
       <small>****</small>
-    </h3>
+    </h2>
     <br>
     <v-card
       v-for="ordernum in tableProfile.orders"
