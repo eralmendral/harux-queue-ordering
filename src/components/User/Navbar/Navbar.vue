@@ -1,7 +1,7 @@
 <template>
   <v-toolbar color="secondary" class="navbar-user">
     <v-layout>
-       <img src="/haruxlogo.png" alt="logo" class="logo"/>
+       <img src="/haruxlogo.png" alt="logo" class="navbar-logo"/>
         <v-flex xs12 text-center>
           <span class="navbar-user-table-number font-custom">#{{tableProfile.table_number}}</span>
           <v-btn class="navbar-user-menu" to="/">
@@ -105,9 +105,9 @@ export default {
   font-size: 24px;
 }
 
-.logo {
+.navbar-logo {
   position: absolute;
-  width: 60px !important;
+  width: 120px !important;
   height: 120px !important;
 }
 </style>
