@@ -1,20 +1,20 @@
 <template>
-  <div>
     <div>
       <Slideshow />
-    </div>
-
-    <div>
       <Comments />
-    </div>
-    <Categories :categories="fetchFeaturedCategories" />
-    <br />
-    <div>
+      <Categories :categories="fetchFeaturedCategories" />
       <Billout v-if="tableProfile.orders.length > 0" />
-      <br />
-      <br />
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </div>
-  </div>
 </template>
 
 <script>

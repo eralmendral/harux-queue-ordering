@@ -10,13 +10,14 @@
         <v-icon large v-else>menu</v-icon>
       </v-btn>
 
-      <v-toolbar-title>
+      <!-- <v-toolbar-title>
         <span class='font-weight-light white--text hidden-sm-and-down'>
           HARU
           <b>X</b>
         </span>
-      </v-toolbar-title>
+      </v-toolbar-title> -->
       <v-spacer></v-spacer>
+
       <!-- <v-menu offset-y content-class='dropdown-menu' transition='slide-y-transition'>
         <v-btn slot='activator' color flat fab>
           <v-badge>

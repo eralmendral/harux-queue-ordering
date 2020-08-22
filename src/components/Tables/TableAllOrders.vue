@@ -123,7 +123,7 @@
                     <div class="border pa-3">
                       <v-layout
                         justify-center
-                        v-for="sauce in orders.sauces"
+                      v-for="sauce in orders.sauces"
                         :key="sauce.id"
                       >
                         <v-flex xs4>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-layout row wrap>
-      <Navbar @toggleDrawer="drawer = !drawer" @toggleCart="cart = !cart" />
+    <Navbar @toggleDrawer="drawer = !drawer" @toggleCart="cart = !cart"/>
+      <v-layout row wrap>
       <v-navigation-drawer
         v-model="cart"
         absolute
@@ -9,6 +9,7 @@
         right
         persistent
         width="450px"
+        style="z-index: 999"
         class="secondary primary--text"
       >
         <v-btn fab absolute @click="cart = !cart" right color="pink white--text mt-2" small>

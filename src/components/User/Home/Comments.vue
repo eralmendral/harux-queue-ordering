@@ -1,9 +1,8 @@
 <template>
   <div>
-    <!--    v-bind:style="{ 'background': settings.comment.color  }" -->
-    <v-card class="comment_section" v-bind:style="{ 'background': comment.background  }" >
+    <v-card v-if="message" class="comment_section" v-bind:style="{ 'background': comment.background  }" >
       <v-card-text class="text-xs-center">
-        <h1 class="display-1 comment_title" v-if="message"  v-bind:style="{ 'color': comment.textColor  }">{{message.message}}</h1>
+        <h1 class="display-1 message" v-bind:style="{ 'color': comment.textColor  }">{{message.message}}</h1>
       </v-card-text>
     </v-card>
   </div>
@@ -69,13 +68,7 @@ export default {
 </script>
 
 <style>
-.comment_section {
-  /* background: #332625 !important; */
-}
-
-.comment_title {
-  /* color: #ffac30; */
-  font-family: 'Montserrat', cursive !important;
-  font-weight: bolder;
+.message {
+  font-family: 'Pacifico' !important;
 }
 </style>

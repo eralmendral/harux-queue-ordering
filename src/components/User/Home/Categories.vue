@@ -2,45 +2,39 @@
   <div>
     <v-container fluid>
       <v-layout row flex wrap justify-center align-center>
-
         <div v-if="canSauce">
-            <router-link style="cursor:pointer" tag="div" to="/mainproduct/sauces">
+            <router-link tag="div" to="/mainproduct/sauces">
               <img
                 :src="sauceCategory.image"
                 :alt="sauceCategory.name"
+                class="productCategoryButton"
                 v-bind:style="{ 'border': '3px solid' + sauceCategory.color  }"
-                class="category_box_image"
               />
-              <h3 class="mr-1 text-center categ_title ">{{sauceCategory.name}}</h3>
+              <h2 class="text-center">{{sauceCategory.name}}</h2>
             </router-link>
         </div>
 
         <div v-for="categ in categories" :key="categ.name">
-          <div>
             <router-link
               v-if="categ.name != 'Sauce'"
-              style="cursor:pointer"
               tag="div"
               :to="{name: 'userproducts', params: {category: categ.name}}"
             >
               <img
                 :src="categ.image"
-                alt
-                class="category_box_image"
+                :alt="categ.name"
+                class="productCategoryButton"
                 v-bind:style="{ 'border': '3px solid' + categ.color  }"
               />
-              <h3 class="mr-1 text-center categ_title">{{categ.name}}</h3>
+              <h2 class="text-center">{{categ.name}}</h2>
             </router-link>
-          </div>
         </div>
 
-        <div>
-          <router-link style="cursor:pointer" tag="div" to="/">
-            <v-btn class="more_categ " to="/allcategories">
-              <span>More</span>
-            </v-btn>
-          </router-link>
-        </div>
+        <router-link to="/">
+          <v-btn class="productCategoryButton moreCategoryButton primary mb-5" to="/allcategories">
+            <h2>More</h2>
+          </v-btn>
+        </router-link>
       </v-layout>
     </v-container>
   </div>
@@ -79,23 +73,20 @@ export default {
 </script>
 
 <style>
-.category_box_image {
+.productCategoryButton {
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
+  cursor: pointer;
+  transition: all .4s ease;
 }
 
-.more_categ {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-   background: #ddae6a !important;
-  color: #261c1d !important;
+.productCategoryButton:hover {
+   box-shadow: 0 0 10px #b1581c;
+}
 
-  margin-bottom: 40px !important;
-
-  font-size: 24px;
-  font-family: "Montserrat" !important;
+.moreCategoryButton {
+  border: 3px solid #422009 !important;
 }
 
 .categ_title {

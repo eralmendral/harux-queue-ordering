@@ -36,7 +36,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      title: 'Harux1'
+      title: 'Harux'
     }
   },
   methods: {
@@ -59,6 +59,11 @@ export default {
 </script>
 
 <style>
+.navbar-user {
+  position: fixed;
+  width: 100%;
+  z-index: 99;
+}
 
 .navbar-user-table-number {
   display: inline-block;

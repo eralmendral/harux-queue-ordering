@@ -1,14 +1,11 @@
 <template>
-
-    <b-carousel
+   <div class="slideshow-wrapper">
+      <b-carousel
       id="carousel-1"
       v-model="slide"
       :interval="4000"
       fade
       controls
-      img-width="1024"
-      img-height="250px"
-      style="z-index: 1;height: 250px !important;"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
 
@@ -17,14 +14,13 @@
         v-for="slide in slideshow"
         :key="slide.id"
         :img-src="slide.image"
-        style="height: 250px !important; "
       >
 
-        <h1 v-html="slide.title"></h1>
-        <h4 v-html="slide.details"></h4>
+        <h1 v-html="slide.title" class="slideTitle"></h1>
+        <h4 v-html="slide.details" class="slideDesc"></h4>
       </b-carousel-slide>
     </b-carousel>
-
+   </div>
 </template>
 
 <script>
@@ -72,10 +68,18 @@ export default {
     margin-top: auto;
     opacity: 0.9;
     width: 100vw;
-    height: auto;
-    max-height: 100vh;
-    bottom: 0;
-    border-radius: 0%;
+    max-height: 480px;
+    border-radius: 0px;
 }
 
+.slideshow-wrapper {
+  height: 480px;
+  margin-top: 50px
+}
+
+@media only screen and (max-width: 720px) {
+  .slideshow-wrapper {
+    height: 280px;
+  }
+}
 </style>
