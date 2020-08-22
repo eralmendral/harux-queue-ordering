@@ -4,18 +4,19 @@
         v-for="(order,index) in orderQueue"
         :key="order.id"
         class="mx-3 qtableBox"
-        :class="[order.table_number == tableProfile.table_number? 'myTable' : 'notmyTable', tableProfile.table_number == order.table_number ? `index--${index}` : '']"
+        :class="[order.table_number == tableProfile.table_number? 'primary' : 'secondary', tableProfile.table_number == order.table_number ? `index--${index}` : '']"
       >
         <router-link
           :to="{name: 'userorder', params: {order_number: order.order_number}}"
           v-if="order.table_number == tableProfile.table_number"
+          style="width: 100%; height: 100%; background-color:'red'; z-index: 999"
         >
-          <h3 class="white--text">{{order.table_number}}</h3>
+          <h2 class="qtableNumber secondary--text"><span>{{order.table_number}}</span></h2>
         </router-link>
         <div v-else>
-          <h3 class="white--text">
-            <span class="white--text">{{order.table_number}}</span>
-          </h3>
+          <h2 class="qtableNumber primary--text">
+            <span>{{order.table_number}}</span>
+          </h2>
         </div>
       </v-btn>
     </v-layout>
@@ -55,16 +56,17 @@ export default {
 </script>
 
 <style>
-.myTable {
-  background: #8db600 !important;
-}
-.notmyTable {
-  background: #5a5c5b !important;
-}
 .qtableBox {
-
+  outline: none !important;
   height: 75px;
-  color: rgb(223, 220, 202);
+}
+
+.qtableNumber {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  margin-top: 5px;
 }
 
 .ordersQueueBar {
@@ -78,18 +80,4 @@ export default {
   overflow-y: hidden;
   z-index: 999;
 }
-
-@keyframes blink {
-    from{background: rgb(182, 182, 172)}
-    to{background: red}
-}
-
-.index--0{
-  animation: blink;
-  animation-duration: .4s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  animation-timing-function: ease-in-out;
-}
-
 </style>
