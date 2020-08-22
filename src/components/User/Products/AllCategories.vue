@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-3">
+  <div class="all-categories-page">
     <v-container fluid>
       <v-layout row flex wrap justify-center align-center>
         <div v-if="canSauce">
@@ -7,10 +7,10 @@
             <img
               :src="sauceCategory.image"
               :alt="sauceCategory.name"
+              class="productCategoryButton"
               v-bind:style="{ 'border': '3px solid' + sauceCategory.color  }"
-              class="category_box_image mx-3"
             />
-            <h3 class="mr-1 text-center categ_title">{{sauceCategory.name}}</h3>
+            <h2 class="text-center">{{sauceCategory.name}}</h2>
           </router-link>
         </div>
 
@@ -24,13 +24,11 @@
             >
               <img
                 :src="categ.image"
-                alt
-                class="category_box_image mx-3"
+                :alt="categ.image"
+                class="productCategoryButton"
                 v-bind:style="{ 'border': '3px solid' + categ.color  }"
-                style="box-shadow: 0px 3px 3px black"
-
               />
-              <h3 class="mr-1 text-center categ_title">{{categ.name}}</h3>
+              <h2 class="text-center">{{categ.name}}</h2>
             </router-link>
           </div>
         </div>
@@ -82,4 +80,7 @@ export default {
 </script>
 
 <style>
+.all-categories-page{
+  margin-top: 10%;
+}
 </style>
