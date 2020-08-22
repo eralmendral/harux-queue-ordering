@@ -15,10 +15,9 @@
       >Bill Out</v-btn>
       <v-card v-for="ordernum in tableProfile.orders" flat :key="ordernum" class="ma-3">
         <v-card-text>
-            <small>Order No:</small>
-            {{ordernum}}
+            <p>Order #: <b>{{ordernum}}</b> </p>
           <div v-for="orders in fetchMyOrders(ordernum)" :key="orders">
-            <v-container>
+            <v-container fluid>
               <v-layout>
                 <v-flex sm6>
                  <div class="order-details">
@@ -29,10 +28,7 @@
 
                   <h5 v-if="orders.type">
                     <small>Order Type ........................</small>
-                    <v-chip
-                      class="white--text"
-                      :class="orders.type == 'Dine' ? 'success' : 'primary'"
-                    >{{orders.type}}</v-chip>
+                    <small><b> {{orders.type}}</b></small>
                   </h5>
 
                   <h5 v-if="orders.orders.length">

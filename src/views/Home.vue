@@ -9,10 +9,10 @@
         right
         persistent
         width="450px"
-        style="z-index: 999"
+        style="z-index: 9999"
         class="secondary primary--text"
       >
-        <v-btn fab absolute @click="cart = !cart" right color="pink white--text mt-2" small>
+        <v-btn fab absolute @click="cart = !cart" right color="pink" small>
           <v-icon>close</v-icon>
         </v-btn>
 
@@ -129,7 +129,6 @@ export default {
     ...mapActions([
       'setTableProfile',
       'setCategories',
-      'fetchProducts',
       'setProducts',
       'addToCart',
       'removeFromCart',
@@ -160,7 +159,6 @@ export default {
       'occupied',
       'billingOut',
       'fetchCategories',
-      'fetchProducts',
       'fetchCart',
       'cartSize',
       'cartTotalAmount',

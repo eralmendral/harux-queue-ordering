@@ -1,152 +1,110 @@
 <template>
-  <v-container fluid>
-    <h3 class="text-center primary--text">
-      <small>****</small> Order Details
-      <small>****</small>
-    </h3>
+  <v-container fluid class="mt-50">
+    <h2 class="my-3 text-center primary--text">
+      <small>**** </small>Order Detail<small> ****</small>
+    </h2>
     <br />
 
-    <v-card flat :key="ordernum" class="border border-warning pa-3 mb-5" style="background: #fff">
+    <v-card flat class="ma-5">
       <v-card-text>
         <p>
           <small>Order No.:</small>
           {{order.order_number}}
         </p>
+        <div>
+           <h5>
+            <small>Order Status ........................</small>
+            <small><b>{{order.status}}</b></small>
+          </h5>
 
-        <h5 class="my-2">
-          <small>
-            Order Status ........................
-            <v-chip
-              class="white--text"
-              :class="order.status == 'pending' ? 'green' : 'brown'"
-            >{{order.status}}</v-chip>
-          </small>
-        </h5>
+          <h5 v-if="order.type">
+            <small>Order Type ........................</small>
+              <small><b> {{order.type}}</b></small>
+          </h5>
 
-        <h5 class="my-2" v-if="order.type">
-          <small>
-            Order Type ........................
-            <v-chip
-              class="white--text"
-              :class="order.type == 'Dine' ? 'success' : 'primary'"
-            >{{order.type}}</v-chip>
-          </small>
-        </h5>
+          <h5 v-if="order.orders">
+            <small>Variety of Items ........................</small>
+            <small><b>{{order.orders.length ? order.orders.length : ''}}</b></small>
+          </h5>
 
-        <h5 class="my-2" v-if="order.orders.length">
-          <small>
-            Variety of Items ........................
-            {{order.orders.length}}
-          </small>
-        </h5>
+          <h5>
+            <small>Order Date ........................</small>
+            <small><b>{{order.time ? orderDate(order.time) : '' }}</b></small>
+          </h5>
+          <h5>
+            <small>Order Time ........................</small>
+            <small><b>{{order.time ? orderTime(order.time) : '' }}</b></small>
+          </h5>
 
-        <h5 class="my-2">
-          <small>
-            Order Date ........................
-            {{orderDate(order.time.toDate())}}
-          </small>
-        </h5>
-        <h5 class="my-2">
-          <small>
-            Order Time ........................
-            {{orderTime(order.time.toDate())}}
-          </small>
-        </h5>
-
-        <h5 class="my-2">
-          <small>
-            Total Price ........................
-            ₱
-            <v-chip class="pink white--text font-weight-bold">{{order.total_price}}</v-chip>
-          </small>
-        </h5>
+          <h5 class="my-2">
+            <small>Total Price ........................</small>
+            <small class="font-custom"><b>₱ {{order.total_price}}</b></small>.
+          </h5>
+          </div>
         <hr />
-        <div v-if="order.orders.length">
-          <h6>Items</h6>
-          <v-card flat v-for="item in order.orders" :key="item.id">
-            <v-container>
-              <v-layout row justify-space-around align-center>
-                <v-flex xs4>
-                  <div class="text-center">
-                    <img :src="item.image" width="80px" height="80px" :alt="item.name" />
-                  </div>
-                </v-flex>
-                <v-flex xs4>
-                  <h5>{{item.name}}</h5>
-                </v-flex>
-                <v-flex xs2>
-                  <h5>{{item.quantity}}</h5>
-                </v-flex>
-                <v-flex xs2>
-                  <h5>₱ {{item.price}}</h5>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card>
-        </div>
-       <div v-else>
-            <h6>Chickens</h6>
-            <v-card flat v-for="chicken in order.chickens" :key="chicken.id">
-              <v-container>
+
+        <div v-if="order.orders && order.orders.length">
+            <h2>Order Items</h2>
+            <v-card flat v-for="item in order.orders" :key="item.id">
+              <v-container fluid>
                 <v-layout row justify-space-around align-center>
                   <v-flex xs4>
                     <div class="text-center">
-                      <img :src="chicken.image" width="80px" height="80px" :alt="chicken.name" />
+                      <img :src="item.image ? item.image : '/haruxlogo.png'" class="product-table-image" :alt="item.name" />
                     </div>
                   </v-flex>
-                  <v-flex xs6>
-                    <h5 class="text-center">{{chicken.name}}</h5>
+                  <v-flex xs3>
+                    <h4 class="font-custom">{{item.name}}</h4>
                   </v-flex>
                   <v-flex xs2>
-                    <h5 v-if="!chicken.unli">₱ {{chicken.price}}</h5>
+                    <h4><b>{{item.quantity}}</b></h4>
                   </v-flex>
-                </v-layout>
-
-                <v-layout class="my-1 pa-3" v-if="chicken.adultQty || chicken.kidQty">
-                  <v-flex>
-                    <v-layout justify-center v-if="chicken.adultQty > 0">
-                      <v-flex xs4>
-                        <h5>Adults: <b>{{chicken.adultQty}}</b></h5>
-                      </v-flex>
-
-                      <v-flex xs4>
-                        <h5 class="pink--text">₱ {{chicken.total_price_adult}}</h5>
-                      </v-flex>
-                    </v-layout>
-
-                    <v-layout justify-center v-if="chicken.kidQty > 0">
-                      <v-flex xs4>
-                        <h5>Kids: <b>{{chicken.kidQty}}</b></h5>
-                      </v-flex>
-
-                      <v-flex xs4>
-                        <h5 class="pink--text">₱ {{chicken.total_price_kid}}</h5>
-                      </v-flex>
-                    </v-layout>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card>
-
-            <h6>Sauces</h6>
-            <v-card flat v-for="sauce in order.sauces" :key="sauce.id">
-              <v-container>
-                <v-layout row justify-space-around align-center>
-                  <v-flex xs4>
-                    <div class="text-center">
-                      <img :src="sauce.image" width="80px" height="80px" :alt="sauce.name" />
-                    </div>
-                  </v-flex>
-                  <v-flex xs4>
-                    <h5>{{sauce.name}}</h5>
-                  </v-flex>
-                  <v-flex xs2>
-                    <h5 class="pink--text font-weight-bold">{{sauce.quantity}}</h5>
+                    <v-flex xs2>
+                    <h4><b v-if="item.price">₱ {{item.price}}</b></h4>
                   </v-flex>
                 </v-layout>
               </v-container>
             </v-card>
           </div>
+          <div v-if="order.chickens">
+              <h2>Chickens</h2>
+              <v-card flat v-for="chicken in order.chickens" :key="chicken.id">
+                <v-container fluid>
+                  <v-layout row justify-space-around align-center>
+                    <v-flex xs4>
+                      <div class="text-center">
+                        <img :src="chicken.image ? chicken.image : '/haruxlogo.png'" class="product-table-image" :alt="chicken.name" />
+                      </div>
+                    </v-flex>
+                    <v-flex xs4>
+                      <h4 class="font-custom">{{chicken.name}}</h4>
+                    </v-flex>
+                    <v-flex xs2>
+                      <h4><b v-if="chicken.price">₱ {{chicken.price}}</b></h4>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card>
+              <hr />
+              <h2>Sauces</h2>
+              <v-card flat v-for="sauce in order.sauces" :key="sauce.id">
+                <v-container fluid>
+                  <v-layout flex row justify-space-around align-center>
+                    <v-flex xs4>
+                      <div class="text-center">
+                        <img :src="sauce.image ? sauce.image : '/haruxlogo.png'" class="product-table-image" :alt="sauce.name" />
+                      </div>
+                    </v-flex>
+                    <v-flex xs4>
+                      <h4 class="font-custom">{{sauce.name}}</h4>
+                    </v-flex>
+                    <v-flex xs2>
+                      <h4 class="font-weight-bold secondary--text">{{sauce.quantity}}</h4>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card>
+            </div>
       </v-card-text>
     </v-card>
 
@@ -172,7 +130,7 @@ export default {
   },
   methods: {
     orderDate (date) {
-      return moment(date).format('MMMM Do YYYY')
+      return moment(date).format('MMM. DD YYYY')
     },
     orderTime (date) {
       return moment(date).format('h:mm:ss a')

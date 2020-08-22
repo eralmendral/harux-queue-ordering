@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-50">
     <v-breadcrumbs :items="items">
       <template v-slot:divider>
         <v-icon>chevron_right</v-icon>

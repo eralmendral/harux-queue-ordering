@@ -41,6 +41,10 @@ a:hover {
   text-decoration: none !important;
 }
 
+.mt-50 {
+  margin-top: 50px !important;
+}
+
 label {
  font-family: 'Raleway';
  font-weight: 600;
@@ -59,6 +63,10 @@ table.v-table tbody td {
 
 h1, h2{
   font-family: "Do Hyeon", sans-serif !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .font-custom {
