@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container fluid>
-      <v-layout row flex wrap justify-center align-center>
+      <v-layout row justify-center align-center>
         <div v-if="canSauce">
           <router-link tag="div" to="/mainproduct/sauces">
             <img

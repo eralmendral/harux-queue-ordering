@@ -1,7 +1,7 @@
 <template>
-  <div class="all-categories-page">
+  <div class="all-categories-pag mt-100">
     <v-container fluid>
-      <v-layout row flex wrap justify-center align-center>
+      <v-layout row wrap justify-center align-center>
         <div v-if="canSauce">
           <router-link style="cursor:pointer" tag="div" to="/mainproduct/sauces">
             <img
@@ -10,7 +10,7 @@
               class="productCategoryButton"
               v-bind:style="{ 'border': '3px solid' + sauceCategory.color  }"
             />
-            <h2 class="text-center">{{sauceCategory.name}}</h2>
+            <h2 class="text-center categoryName">{{sauceCategory.name}}</h2>
           </router-link>
         </div>
 
@@ -28,7 +28,7 @@
                 class="productCategoryButton"
                 v-bind:style="{ 'border': '3px solid' + categ.color  }"
               />
-              <h2 class="text-center">{{categ.name}}</h2>
+              <h2 class="text-center categoryName">{{categ.name}}</h2>
             </router-link>
           </div>
         </div>
