@@ -1,31 +1,24 @@
 <template>
   <v-toolbar color="secondary" class="navbar-user">
     <v-layout>
-       <img src="/haruxlogo.png" alt="logo" class="navbar-logo"/>
-        <v-flex xs12 text-center>
-          <span class="navbar-user-table-number font-custom">#{{tableProfile.table_number}}</span>
-          <v-btn class="navbar-user-menu" to="/">
+      <img src="/haruxlogo.png" alt="logo" class="navbar-logo" />
+      <v-flex xs12 text-center>
+        <span class="navbar-user-table-number font-custom">#{{tableProfile.table_number}}</span>
+        <v-btn class="navbar-user-menu" to="/">
           <span class="font-custom">Menu</span>
         </v-btn>
         <v-btn class="navbar-user-menu" to="/myorders">
           <span class="font-custom">My Orders</span>
         </v-btn>
-        <v-btn
-          slot="activator"
-          @click="toggleCart"
-          fab
-          class="drawerActivator"
-        >
+        <v-btn slot="activator" @click="toggleCart" fab class="drawerActivator">
           <v-badge color>
             <template v-slot:badge>
-              <h5
-                class="cartSizeIndicator"
-              >{{cartSize ? cartSize : ''}}</h5>
+              <h5 class="cartSizeIndicator">{{cartSize ? cartSize : ''}}</h5>
             </template>
-            <font-awesome-icon icon="utensils" class="primary--text drawerActivatorIcon"/>
+            <font-awesome-icon icon="utensils" class="primary--text drawerActivatorIcon" />
           </v-badge>
         </v-btn>
-        </v-flex>
+      </v-flex>
     </v-layout>
   </v-toolbar>
 </template>
@@ -75,12 +68,12 @@ export default {
 }
 
 .navbar-user-menu {
-    background: inherit !important;
-    border: 1px solid #cb7a43;
-    border-radius: 0px;
-    color: #cb7a43 !important;
-    padding: 20px;
-    font-size: 24px;
+  background: inherit !important;
+  border: 1px solid #cb7a43;
+  border-radius: 0px;
+  color: #cb7a43 !important;
+  padding: 20px;
+  font-size: 24px;
 }
 
 .drawerActivator {
@@ -109,5 +102,21 @@ export default {
   position: absolute;
   width: 120px !important;
   height: 120px !important;
+}
+
+@media only screen and (max-width: 660px) {
+  .navbar-logo {
+    display: none;
+  }
+  .navbar-user-table-number {
+    margin-right: 5px;
+    font-size: 16;
+    font-weight: bold;
+  }
+
+  .navbar-user-menu {
+    padding: 10px;
+    font-size: 15px;
+  }
 }
 </style>

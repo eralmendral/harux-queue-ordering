@@ -1,10 +1,8 @@
 <template>
   <v-layout wrap justify-center>
-    <div class="billout text-center">
-      <v-btn class="billout-btn" disabled="tableProfile.billingout == true" @click="billout">
+      <v-btn class="billout-btn bg-danger" disabled="tableProfile.billingout == true" @click="billout">
         <h3 class="billout-text">Billout</h3>
       </v-btn>
-    </div>
   </v-layout>
 </template>
 
@@ -30,7 +28,6 @@ export default {
 
 <style>
 .billout-btn {
-  margin-bottom: 30px;
   width: 150px;
   height: 70px;
   background: #261c1d !important;
@@ -50,5 +47,16 @@ export default {
 .billout-btn[disabled], .billout-btn:disabled {
   background: #6e6c6c !important;
   color: #cb7a43 !important;
+}
+
+@media only screen and (max-width: 660px) {
+  .billout-btn {
+    width: 100px;
+    height: 70px;
+  }
+
+  .billout-text {
+    font-size: 21px !important;
+  }
 }
 </style>

@@ -71,7 +71,7 @@ export default {
 
 .ordersQueueBar {
   position: fixed;
-  bottom: -10px;
+  bottom: -5px;
   background: #180e03;
   border: 1px solid #ddae6a;
   width: 100%;

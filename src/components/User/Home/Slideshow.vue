@@ -60,7 +60,7 @@ export default {
 <style>
 
 .carousel-inner {
-    background-color: #cb7a43;
+  background-color: #cb7a43;
 }
 .carousel-inner img {
     margin-left: auto;
@@ -79,7 +79,11 @@ export default {
 
 @media only screen and (max-width: 720px) {
   .slideshow-wrapper {
-    height: 280px;
+    height: 200px;
+  }
+
+  .slideTitle {
+    font-size: 14px;
   }
 }
 </style>

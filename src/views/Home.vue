@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar @toggleDrawer="drawer = !drawer" @toggleCart="cart = !cart"/>
-      <v-layout row wrap>
+      <v-layout>
       <v-navigation-drawer
         v-model="cart"
         absolute

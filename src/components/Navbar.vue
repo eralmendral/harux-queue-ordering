@@ -9,12 +9,13 @@
         <v-icon large v-if='drawer'>close</v-icon>
         <v-icon large v-else>menu</v-icon>
       </v-btn>
+
       <v-spacer></v-spacer>
       <v-icon medium right  color='primary' @click='logout' title='logout'>exit_to_app</v-icon>
     </v-toolbar>
 
     <v-navigation-drawer
-      style='overflow-y: scroll; background:#1f1610'
+      style='overflow-y: scroll; overflow-x: hidden; background:#1f1610'
       app
       v-model='drawer'
       class='white--text'

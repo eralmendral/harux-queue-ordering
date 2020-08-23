@@ -3,36 +3,36 @@
     <v-container fluid>
       <v-layout row flex wrap justify-center align-center>
         <div v-if="canSauce">
-            <router-link tag="div" to="/mainproduct/sauces">
-              <img
-                :src="sauceCategory.image"
-                :alt="sauceCategory.name"
-                class="productCategoryButton"
-                v-bind:style="{ 'border': '3px solid' + sauceCategory.color  }"
-              />
-              <h2 class="text-center">{{sauceCategory.name}}</h2>
-            </router-link>
+          <router-link tag="div" to="/mainproduct/sauces">
+            <img
+              :src="sauceCategory.image"
+              :alt="sauceCategory.name"
+              class="productCategoryButton"
+              v-bind:style="{ 'border': '3px solid' + sauceCategory.color  }"
+            />
+            <h2 class="text-center categoryName">{{sauceCategory.name}}</h2>
+          </router-link>
         </div>
 
         <div v-for="categ in categories" :key="categ.name">
-            <router-link
-              v-if="categ.name != 'Sauce'"
-              tag="div"
-              :to="{name: 'userproducts', params: {category: categ.name}}"
-            >
-              <img
-                :src="categ.image"
-                :alt="categ.name"
-                class="productCategoryButton"
-                v-bind:style="{ 'border': '3px solid' + categ.color  }"
-              />
-              <h2 class="text-center">{{categ.name}}</h2>
-            </router-link>
+          <router-link
+            v-if="categ.name != 'Sauce'"
+            tag="div"
+            :to="{name: 'userproducts', params: {category: categ.name}}"
+          >
+            <img
+              :src="categ.image"
+              :alt="categ.name"
+              class="productCategoryButton"
+              v-bind:style="{ 'border': '3px solid' + categ.color  }"
+            />
+            <h2 class="text-center categoryName">{{categ.name}}</h2>
+          </router-link>
         </div>
 
         <router-link to="/">
           <v-btn class="productCategoryButton moreCategoryButton primary mb-5" to="/allcategories">
-            <h2>More</h2>
+            <h2 class="categoryName">More</h2>
           </v-btn>
         </router-link>
       </v-layout>
@@ -56,8 +56,8 @@ export default {
     fetchSauceCategory () {
       db.collection('categories')
         .where('name', '==', 'Sauce')
-        .onSnapshot(snapshot => {
-          snapshot.forEach(doc => {
+        .onSnapshot((snapshot) => {
+          snapshot.forEach((doc) => {
             this.sauceCategory = doc.data()
           })
         })
@@ -78,22 +78,25 @@ export default {
   width: 180px;
   height: 180px;
   cursor: pointer;
-  transition: all .4s ease;
+  transition: all 0.4s ease;
 }
 
 .productCategoryButton:hover {
-   box-shadow: 0 0 10px #b1581c;
+  box-shadow: 0 0 10px #b1581c;
 }
 
-.moreCategoryButton {
-  border: 3px solid #422009 !important;
+@media only screen and (max-width: 660px) {
+  .productCategoryButton {
+    width: 100px;
+    height: 100px;
+  }
+
+  .categoryName {
+    font-size: 21px !important;
+  }
+
+.moreCategoryButton h2{
+  font-size: 21px !important;;
 }
-
-.categ_title {
-  font-size: 20px;
-  color: #422009 !important;
-  font-weight: bold;
-  margin: 10px;
-
 }
 </style>

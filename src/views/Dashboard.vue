@@ -37,6 +37,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 a:hover {
   text-decoration: none !important;
 }
@@ -203,26 +204,7 @@ input[type="checkbox"] {
 // media screen
 
 /* Portrait */
-@media only screen and (max-width: 420px) {
-  .sauce_title {
-    font-size: 14px;
-    font-weight: bold;
-  }
-
-  .circleBtn {
-    width: 40px !important;
-    height: 40px !important;
-  }
-
-  .stdBtn {
-    height: 50px;
-  }
-
-  .product_img {
-  width: 50px;
-  height: 50px;
-
-}
+@media only screen and (max-width: 660px) {
 
 }
 </style>
