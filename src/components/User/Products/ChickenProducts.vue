@@ -1,20 +1,27 @@
 <template>
-  <div class="mt-100 mb-150">
+  <div>
     <div v-if="loading">Loading....</div>
     <div v-else>
+      <div class="text-xs-center my-4">
+        <h3 class="primary--text text--darken-2">Chicken Menu</h3>
 
-      <div class="text-xs-center">
-        <h2 class="primary--text text--darken-2">Chickens</h2>
+        <h3
+          class="primary--text text--darken-2"
+          v-show="1!=1"
+        >Selected Products: {{selectedProducts.unliItems}}</h3>
+        <h3
+          class="primary--text text--darken-2"
+          v-show="1!=1"
+        >Order Array: {{selectedProducts.orderUnliArr}}</h3>
       </div>
 
       <!-- unli here -->
-      <v-container>
-        <v-card flat class="bg-grey pa-3">
+      <v-card flat class="pa-3">
         <div v-for="product in fetchUnliChickens()" :key="product.id">
           <v-layout row wrap justify-center align-center class="ma-3">
             <v-flex xs2>
               <input
-                v-if="selectedProducts.items.length < 1"
+                :disabled="selectedProducts.items.length > 0"
                 type="checkbox"
                 class="product_checkbox"
                 v-model="selectedProducts.unliItems"
@@ -26,7 +33,7 @@
 
             <v-flex xs4>
               <router-link :to="{name: 'userproduct' , params:{id:product.id}}">
-                <img :src="product.image ? product.image : '/haruxlogo.png'" class="product-table-image" :alt="product.name" />
+                <img :src="product.image" class="product_img_large" alt="product image" />
               </router-link>
             </v-flex>
 
@@ -36,79 +43,92 @@
                 :to="{name: 'userproduct' , params:{id:product.id}}"
                 style="cursor:pointer"
               >
-                <h2>{{product.name}}</h2>
+                <h3 class="font-weight-bold">{{product.name}}</h3>
               </router-link>
-              <b>( {{product.subdetails}} )</b>
+              <p>( {{product.subdetails}} )</p>
             </v-flex>
           </v-layout>
 
           <v-container>
-            <v-layout row align-center v-if="check_id_inArray(product.id)">
-              <v-flex justify-end>
-                <h2 class="my-2">Adult  ₱ {{product.price}}</h2>
-                <h2 class="my-2">Kid<small>( 5-9 y/o )</small> ₱ {{product.price_kid}}</h2>
+            <v-layout row justify-space-around align-center v-if="check_id_inArray(product.id)">
+              <v-flex xs4>
+                <h3 class="my-2">Adult -- ₱ {{product.price}}</h3>
+                <br />
+                <h3 class="my-2">
+                  Kid
+                  <small>( 5-9 y/o )</small>
+                  -- ₱ {{product.price_kid}}
+                </h3>
               </v-flex>
 
               <v-flex>
                 <v-layout class="justify-center align-center my-1">
-                  <h3 hidden='true'>Order Array: {{selectedProducts.orderUnliArr}}</h3>
                   <button
-                    class="circleBtn secondary"
+                    class="circleBtn"
                     :class="{ disabledBtn: !findSelectedProduct(product.id).adultQty || findSelectedProduct(product.id).adultQty < 1}"
                     :disabled="!findSelectedProduct(product.id).adultQty || findSelectedProduct(product.id).adultQty < 1"
                     @click="subAdultQty(product.id)"
                   >
                     <v-icon class="primary--text">remove</v-icon>
                   </button>
-                  <h2>{{findSelectedProduct(product.id).adultQty ? findSelectedProduct(product.id).adultQty : 0}}</h2>
-                  <button class="circleBtn secondary" @click="addAdultQty(product.id)">
+                  <h3>{{findSelectedProduct(product.id).adultQty ? findSelectedProduct(product.id).adultQty : 0}}</h3>
+                  <button class="circleBtn" @click="addAdultQty(product.id)">
                     <v-icon class="primary--text">add</v-icon>
                   </button>
                 </v-layout>
 
                 <v-layout class="justify-center align-center my-1">
                   <button
-                    class="circleBtn secondary"
+                    class="circleBtn"
                     :class="{ disabledBtn: !findSelectedProduct(product.id).kidQty || findSelectedProduct(product.id).kidQty < 1}"
                     :disabled="!findSelectedProduct(product.id).kidQty || findSelectedProduct(product.id).kidQty < 1"
                     @click="subKidQty(product.id)"
                   >
                     <v-icon class="primary--text">remove</v-icon>
                   </button>
-                  <h2>{{findSelectedProduct(product.id).kidQty ? findSelectedProduct(product.id).kidQty : 0}}</h2>
-                  <button class="circleBtn secondary" @click="addKidQty(product.id)">
+
+                  <h3
+                    class
+                  >{{findSelectedProduct(product.id).kidQty ? findSelectedProduct(product.id).kidQty : 0}}</h3>
+                  <button class="circleBtn" @click="addKidQty(product.id)">
                     <v-icon class="primary--text">add</v-icon>
                   </button>
                 </v-layout>
               </v-flex>
 
-              <v-flex>
-                <h2 v-if="check_id_inArray(product.id)">Total</h2>
-                <h2>₱ {{totalPrice_adultkid(product.id)}}</h2>
+              <v-flex xs2>
+                <h4 class v-if="check_id_inArray(product.id)">Total</h4>
+                <v-chip class="primary white--text pa-2">
+                  <h4 class="text-center">{{totalPrice_adultkid(product.id)}}</h4>
+                </v-chip>
               </v-flex>
             </v-layout>
           </v-container>
         </div>
+        <div></div>
       </v-card>
 
-      </v-container>
       <br />
+      <!-- <v-flex>
+            <p class="card-text ma-3 brown--text">
+              Adult
+              <b>adu. {{product.price}}</b>
+            </p>
+          </v-flex>
 
-    <!-- Dine in or Take out -->
-    <div
-      class="dine-in-button primary--text"
-      v-if="selectedProducts.items.length > 0"
-    >
-      <v-layout flow justify-content-center>
-        <v-radio-group v-model="selectedProducts.type">
-          <v-radio label="Dine in" color="secondary darken-3" value="Dine"></v-radio>
-        <v-flex>
-          <v-radio label="Take out" color="secondary darken-3" value="Take"></v-radio>
-        </v-flex>
-      </v-radio-group>
-      </v-layout>
-      <br />
-    </div>
+          <v-flex>
+            <v-layout class="justify-center align-center">
+              <v-btn fab small class="stdBtn" @click="removeFromCart(product.id)">
+                <v-icon>remove</v-icon>
+              </v-btn>
+              <h3
+                class
+              >{{fetchProductQuantity(product.id) ? fetchProductQuantity(product.id).quantity : '0'}}</h3>
+              <v-btn small fab class="stdBtn" @click="addToCart({productId: product.id})">
+                <v-icon>add</v-icon>
+              </v-btn>
+            </v-layout>
+      </v-flex>-->
 
       <!-- Pick your sauce -->
       <v-layout
@@ -118,103 +138,108 @@
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
           <template v-slot:activator="{ on }">
             <v-btn
-              class="pick-sauce-button secondary"
+              class="white--text stdBtn"
               v-on="on"
+              style="position: fixed; bottom: 15%;right: 5%;"
             >
-              <b class="font-custom primary--text">Pick your Sauce</b>
+              <span class="secondary--text">Pick your Sauce</span>
             </v-btn>
           </template>
 
           <v-card style="padding-bottom: 25% !important">
             <v-card-title>
-              <h2 class="text-center">
-                You can choose
-                <v-chip class="primary white--text">
-                  <h2
-                    class="mt-2"
-                  >{{selectedProducts.flavor == 0 ? 'unlimited' : selectedProducts.flavor}}</h2>
-                </v-chip>flavors.
-              </h2>
+              <h5 class="text-center">
+                You can choose:
+                <v-chip class="pink white--text">
+                  <h5
+                    class="mt-1"
+                  >{{selectedProducts.flavor == 0 ? 'unlimited' : selectedProducts.flavor}}</h5>
+                </v-chip>flavors
+              </h5>
             </v-card-title>
 
-      <v-card class="ma-5 bg-grey"
-        flat
-        v-for="sauceCateg in sauceCategories"
-        :key="sauceCateg.id"
-      >
-        <h2 class="text-xs-center pt-3" v-bind:style="{ 'color':  sauceCateg.color  }">
-          <small>****</small>
-          {{sauceCateg.name}}
-          <small>****</small>
-        </h2>
+            <v-card-text style="">
+              <v-card class="my-1" flat v-for="sauceCateg in sauceCategories" :key="sauceCateg.id">
+                <h3
+                  class="text-xs-center pt-3 sauceTitle"
+                  v-bind:style="{ 'color':  sauceCateg.color  }"
+                >
+                  <small>****</small>
+                  {{sauceCateg.name}}
+                  <small>****</small>
+                </h3>
+                <br />
+                <v-layout
+                  flex
+                  row
+                  align-center
+                  justify-space-around
+                  v-for="sauce in filterSauces(sauceCateg.name)"
+                  :key="sauce.id"
+                  class="my-2"
+                >
+                  <!-- disabled if 0 -->
+                  <v-flex >
+                    <img :src="sauce.image" :alt="sauce.name" class="product_img d-block mx-auto" />
 
-        <v-container>
-          <v-layout
-            flex
-            row
-            wrap
-            align-center
-            justify-space-around
-            v-for="sauce in filterSauces(sauceCateg.name)"
-            :key="sauce.id"
-          >
-            <v-flex>
-                <v-layout  >
-                  <v-flex row align-center>
-                    <img :src="sauce.image ? sauce.image : '/haruxlogo.png'" class="d-block product-table-image" :alt="sauce.name" />
-                    <router-link
-                    tag="div"
-                    :to="{name: 'userproduct' , params:{id:sauce.id}}"
-                    style="cursor:pointer"
-                  >
-                    <h2 class="ml-5 text-center" style="color:#261c1d !important;">{{sauce.name}}</h2>
-                  </router-link>
-                </v-flex>
+                    <h4 class="ml-3 sauce_title text-center" style="color:#261c1d !important;">{{sauce.name}}</h4>
+                  </v-flex>
+
+                  <v-flex xs4>
+                    <p v-html="sauce.details" class="mt-3 "></p>
+                  </v-flex>
+
+                  <v-flex xs4>
+                    <v-layout row justify-center align-center>
+                      <button
+                        class="circleBtn"
+                        :class="{ disabledBtn: sauceNoQty(sauce.id) || checkSelectedSauceLength()}"
+                        @click="removeSauce(sauce.id)"
+                        :disabled="sauceNoQty(sauce.id)"
+                      >
+                        <v-icon class="primary--text">remove</v-icon>
+                      </button>
+
+                      <h3>{{fetchSauceQuantity(sauce.id) ? fetchSauceQuantity(sauce.id).quantity : '0'}}</h3>
+
+                      <button
+                        class="circleBtn"
+                        :class="{ disabledBtn:  checkSelectedSauceLength()}"
+                        :disabled="checkSelectedSauceLength()"
+                        @click="addSauce(sauce.id)"
+                      >
+                        <v-icon class="primary--text">add</v-icon>
+                      </button>
+                    </v-layout>
+                  </v-flex>
                 </v-layout>
-            </v-flex>
 
-            <v-flex>
-              <p class="text-start" v-html="sauce.details" ></p>
-            </v-flex>
+              </v-card>
 
-            <v-flex>
-              <v-layout class="justify-end align-center">
-                <button class="secondary circleBtn" @click="removeFromCart(sauce.id)">
-                  <v-icon class="primary--text">remove</v-icon>
-                </button>
-                <h2 class="primary--text"
-                >{{fetchProductQuantity(sauce.id) ? fetchProductQuantity(sauce.id).quantity : '0'}}</h2>
-                <button class="secondary circleBtn" @click="addToCart({productId: sauce.id})">
-                  <v-icon class="primary--text">add</v-icon>
-                </button>
-              </v-layout>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card>
+            </v-card-text>
 
             <v-card-actions>
-              <v-btn fab fixed top right class="pink white--text" text @click="dialog = false">
+              <v-btn fab fixed top right class="red white--text" text @click="dialog = false">
                 <v-icon>close</v-icon>
               </v-btn>
               <v-btn
                 fixed
                 bottom
                 right
-                style="margin-bottom: 100px"
+                style="margin-bottom: 15%"
                 v-if="selectedProducts.flavor > 0"
-                class="confirm-button secondary primary--text"
+                class="stdBtn secondary--text"
                 @click="confirmChickenOrder()"
-              ><b class="font-custom">Confirm Order</b></v-btn>
+              >Confirm Order</v-btn>
               <v-btn
                 v-else
                 fixed
                 bottom
-                style="margin-bottom: 100px"
+                style="margin-bottom: 15%"
                 right
-                class="confirm-button secondary primary--text"
+                class="stdBtn secondary--text"
                 @click="confirmUnliChickenOrder()"
-              ><b class="font-custom">Confirm Order</b></v-btn>
+              >Confirm Order</v-btn>
             </v-card-actions>
 
           </v-card>
@@ -223,13 +248,12 @@
 
       </v-layout>
 
-      <v-container>
-        <v-card flat class="bg-grey pa-3">
-          <div v-for="product in fetchChickens()" :key="product.id">
+      <v-container v-if="1==1">
+        <div v-for="product in fetchChickens()" :key="product.id">
           <v-layout row wrap flex justify-center align-center class="ma-3">
             <v-flex xs2>
               <input
-                v-if="selectedProducts.unliItems.length < 1"
+                :disabled="selectedProducts.unliItems.length > 0"
                 type="checkbox"
                 class="product_checkbox"
                 v-model="selectedProducts.items"
@@ -239,31 +263,77 @@
               />
             </v-flex>
 
-            <v-flex>
+            <v-flex xs4>
               <router-link :to="{name: 'userproduct' , params:{id:product.id}}">
-                <img :src="product.image ? product.image : '/haruxlogo.png'" class="product-table-image" :alt="product.name" />
+                <img :src="product.image" class="product_img_large" alt="product image" />
               </router-link>
             </v-flex>
 
-            <v-flex>
+            <v-flex xs4>
               <router-link
                 tag="div"
                 :to="{name: 'userproduct' , params:{id:product.id}}"
                 style="cursor:pointer"
               >
-                <h2 class="text--darken-2 font-weight-bold">{{product.name}}</h2>
+                <h3 class="text--darken-2 font-weight-bold">{{product.name}}</h3>
               </router-link>
               <b class="pink--text">{{product.flavor}} Sauces</b>
             </v-flex>
 
             <v-flex xs2>
-              <h2 class="font-weight-bold">₱ {{product.price}}</h2>
+              <h5 class="font-weight-bold">₱ {{product.price}}</h5>
+            </v-flex>
+
+            <v-flex>
+              <v-layout class="justify-center align-center">
+                <!-- <v-btn
+                fab
+                small
+                color="pink"
+                :class="inCartQuantity ? 'btn-success' :  'btn-danger'"
+                @click="removeFromCart(product.id)"
+              >
+                <v-icon>remove</v-icon>
+              </v-btn>
+              <h3
+                class
+              >{{fetchProductQuantity(product.id) ? fetchProductQuantity(product.id).quantity : '0'}}</h3>
+              <v-btn small fab color="pink" @click="addToCart({productId: product.id})">
+                <v-icon>add</v-icon>
+                </v-btn>-->
+              </v-layout>
             </v-flex>
           </v-layout>
+          <hr />
         </div>
-        </v-card>
       </v-container>
     </div>
+
+    <div
+      class="fixed"
+      v-if="selectedProducts.items.length > 0"
+      style="background: #f2f2f2; border: 1px solid #cb7a43;padding: 0px 10px;width: 140px; height: 80px; position: fixed;  bottom: 16%;left: 5%; box-shadow: 0px 0px 7px #261c1d"
+    >
+      <v-radio-group v-model="selectedProducts.type">
+        <v-flex>
+          <v-radio label="Dine in" color="brown darken-3" value="Dine"></v-radio>
+        </v-flex>
+        <v-flex>
+          <v-radio label="Take out" color="brown darken-3" value="Take"></v-radio>
+        </v-flex>
+      </v-radio-group>
+      <br />
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <br />
   </div>
 </template>
 
@@ -746,31 +816,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-.dine-in-button {
-    position: fixed;
-    background: #dfdede;
-    border: 1px solid #261c1d;
-    width: 200px;
-    height: 95px;
-    padding: 0px 20px !important;
-    right: 325px;
-    bottom: 125px;
-    z-index: 9;
-}
-
-.pick-sauce-button {
-  position: fixed;
-  right: 50px;
-  bottom: 40px;
-  margin-bottom: 100px;
-  padding: 32px;
-  font-size: 21px;
-  z-index: 9;
-}
-v-label {
-  color: #fff !important;
-}
-</style>
