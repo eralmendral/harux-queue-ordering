@@ -5,7 +5,7 @@
     </h2>
     <br />
 
-    <v-card flat class="ma-5">
+    <v-card flat>
       <v-card-text>
         <p>
           <small>Order No.:</small>
@@ -54,13 +54,13 @@
                     </div>
                   </v-flex>
                   <v-flex xs3>
-                    <h4 class="font-custom">{{item.name}}</h4>
+                    <h4 class="font-custom product-name">{{item.name}}</h4>
                   </v-flex>
                   <v-flex xs2>
-                    <h4><b>{{item.quantity}}</b></h4>
+                    <h4 clas="product-qty"><b>{{item.quantity}}</b></h4>
                   </v-flex>
                     <v-flex xs2>
-                    <h4><b v-if="item.price">₱ {{item.price}}</b></h4>
+                    <h4 class="product-price"><b v-if="item.price">₱ {{item.price}}</b></h4>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -77,37 +77,38 @@
                       </div>
                     </v-flex>
                     <v-flex xs4>
-                      <h4 class="font-custom">{{chicken.name}}</h4>
+                      <h4 class="font-custom  product-name">{{chicken.name}}</h4>
                     </v-flex>
                     <v-flex xs2>
-                      <h4><b v-if="chicken.price">₱ {{chicken.price}}</b></h4>
+                      <h4 class="product-price"><b v-if="chicken.price">₱ {{chicken.price}}</b></h4>
                     </v-flex>
                   </v-layout>
                 </v-container>
               </v-card>
-              <hr />
-              <h2>Sauces</h2>
-              <v-card flat v-for="sauce in order.sauces" :key="sauce.id">
-                <v-container fluid>
-                  <v-layout flex row justify-space-around align-center>
-                    <v-flex xs4>
-                      <div class="text-center">
-                        <img :src="sauce.image ? sauce.image : '/haruxlogo.png'" class="product-table-image" :alt="sauce.name" />
-                      </div>
-                    </v-flex>
-                    <v-flex xs4>
-                      <h4 class="font-custom">{{sauce.name}}</h4>
-                    </v-flex>
-                    <v-flex xs2>
-                      <h4 class="font-weight-bold secondary--text">{{sauce.quantity}}</h4>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-card>
+              <div v-if="order.sauces.length > 0">
+                <hr />
+                <h2>Sauces</h2>
+                <v-card flat v-for="sauce in order.sauces" :key="sauce.id">
+                  <v-container fluid>
+                    <v-layout flex row justify-space-around align-center>
+                      <v-flex xs4>
+                        <div class="text-center">
+                          <img :src="sauce.image ? sauce.image : '/haruxlogo.png'" class="product-table-image" :alt="sauce.name" />
+                        </div>
+                      </v-flex>
+                      <v-flex xs4>
+                        <h4 class="font-custom product-name">{{sauce.name}}</h4>
+                      </v-flex>
+                      <v-flex xs2>
+                        <h4 class="font-weight-bold secondary--text product-qty">{{sauce.quantity}}</h4>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card>
+              </div>
             </div>
       </v-card-text>
     </v-card>
-
     <br />
     <br />
     <br />

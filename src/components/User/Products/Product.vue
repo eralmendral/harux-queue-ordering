@@ -2,11 +2,10 @@
   <div>
     <v-container>
       <v-layout column justify-center align-center>
-        <!-- image,name,category,price,details -->
         <v-flex>
-          <img :src="product.image" alt="product_image" width="250px" />
-          <h4 class="text-center my-2">{{product.name}}</h4>
-          <h5 class="text-center my-2">₱ {{product.price}}</h5>
+          <img :src="product.image" class="product-table-image" :alt="product.name"/>
+          <h4 class="text-center my-2 product-name">{{product.name}}</h4>
+          <h5 class="text-center my-2 product-price">₱ {{product.price}}</h5>
         </v-flex>
         <v-flex>
           <div class="container">

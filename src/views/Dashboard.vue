@@ -205,6 +205,13 @@ input[type="checkbox"] {
 
 /* Portrait */
 @media only screen and (max-width: 660px) {
+  .product-table-image {
+    width: 90px;
+    height: 70px;
+  }
 
+  h2 {
+    font-size: 21px;
+  }
 }
 </style>
