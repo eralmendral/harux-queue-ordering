@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="mt-100 mb-100">
     <v-container>
       <v-layout column justify-center align-center>
         <v-flex>
-          <img :src="product.image" class="product-table-image" :alt="product.name"/>
-          <h4 class="text-center my-2 product-name">{{product.name}}</h4>
-          <h5 class="text-center my-2 product-price">₱ {{product.price}}</h5>
+          <img :src="product.image" class="product-detail-image img-fluid" :alt="product.name"/>
+          <h2 class="text-center my-2 product-detail-name">{{product.name}}</h2>
+          <h2 v-if="product.price" class="text-center my-2 product-detail-price">₱ {{product.price}}</h2>
         </v-flex>
         <v-flex>
           <div class="container">
@@ -16,23 +16,13 @@
       <v-layout>
         <v-flex>
        <router-link  :to="{name: 'userproducts', params: {category: product.category}}">
-              <button class="circleBtn" >
+          <button class="primary secondary--text pa-2 rounded-circle">
             <v-icon color="white">arrow_back</v-icon>
           </button>
        </router-link>
         </v-flex>
       </v-layout>
     </v-container>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
   </div>
 </template>
 
@@ -58,4 +48,8 @@ export default {
 </script>
 
 <style>
+.product-detail-image {
+  width: 720px;
+  height: auto;
+}
 </style>

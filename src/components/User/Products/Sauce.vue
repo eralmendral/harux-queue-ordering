@@ -16,7 +16,7 @@
         >Confirm Order</v-btn>
       </div>
 
-      <v-card class="ma-5 bg-grey"
+      <v-card class="ma-4 bg-grey"
         flat
         v-for="sauceCateg in sauceCategories"
         :key="sauceCateg.id"
@@ -28,36 +28,31 @@
         </h2>
 
         <v-container>
-          <v-layout
-            flex
-            row
-            wrap
-            align-center
-            justify-space-around
+          <div
             v-for="sauce in filterSauces(sauceCateg.name)"
             :key="sauce.id"
           >
-            <v-flex>
-                <v-layout  >
-                  <v-flex row align-center>
-                    <img :src="sauce.image ? sauce.image : '/haruxlogo.png'" class="d-block product-table-image" :alt="sauce.name" />
-                    <router-link
+
+          <div class="row mb-4">
+            <div class="col-6  col-sm-3">
+              <img :src="sauce.image ? sauce.image : '/haruxlogo.png'" class="d-block mx-auto product-table-image" :alt="sauce.name" />
+            </div>
+            <div class="col-6 col-sm-3 d-flex align-center">
+               <router-link
                     tag="div"
                     :to="{name: 'userproduct' , params:{id:sauce.id}}"
                     style="cursor:pointer"
                   >
-                    <h2 class="ml-5 text-center" style="color:#261c1d !important;">{{sauce.name}}</h2>
+                    <h2 class="product-name product-sauce-name text-start">{{sauce.name}}</h2>
                   </router-link>
-                </v-flex>
-                </v-layout>
-            </v-flex>
+            </div>
 
-            <v-flex>
-              <p class="text-start" v-html="sauce.details" ></p>
-            </v-flex>
+            <div class="col-12 col-sm-3 d-flex align-center">
+                 <p class="text-start" v-html="sauce.details" ></p>
+            </div>
 
-            <v-flex>
-              <v-layout class="justify-end align-center">
+            <div class="col-12 col-sm-3 d-flex align-center">
+              <v-layout class="align-center justify-content-center">
                 <button class="secondary circleBtn" @click="removeFromCart(sauce.id)">
                   <v-icon class="primary--text">remove</v-icon>
                 </button>
@@ -67,8 +62,10 @@
                   <v-icon class="primary--text">add</v-icon>
                 </button>
               </v-layout>
-            </v-flex>
-          </v-layout>
+            </div>
+          </div>
+          <v-divider></v-divider>
+          </div>
         </v-container>
       </v-card>
     </div>
@@ -146,4 +143,5 @@ export default {
   font-family: "Lobster", cursive !important;
   font-weight: bolder;
 }
+
 </style>
