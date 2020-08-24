@@ -199,15 +199,10 @@ input[type="checkbox"] {
   border-left: 5px solid rgb(195, 20, 87);
 }
 
-/* color:rgb(243, 143, 35) TEXT COLOR OF ADMIN NAVBAR, ORANGE */
-
-// media screen
-
-/* Portrait */
 @media only screen and (max-width: 660px) {
   .product-table-image {
-    width: 90px;
-    height: 70px;
+    width: 120px;
+    height: 90px;
   }
 
   h2 {
