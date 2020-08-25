@@ -20,7 +20,10 @@ monitor the orders of all tables and process it in Queue.
   
   
 ### Built With
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [Vue](https://vuejs.org/)
 * [Vuex](https://vuex.vuejs.org/)
 * [Vuetify](https://vuetifyjs.com/en/)
+
+
+## Docs
+You can contact me for full documentation.
