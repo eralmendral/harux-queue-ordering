@@ -2,7 +2,7 @@
   <div class="order-component">
     <h1>Orders Que - <b class='primary--text'> {{orderQueue.length}} </b></h1>
     <v-layout align-center class="ordersQueueDashboard">
-      <div v-if="orderQueue.length > 0">
+      <div class="d-flex" v-if="orderQueue.length > 0">
         <v-btn v-for="order in orderQueue" :key="order.id" class="mx-3 pa-3 tableBox">
           <div>
             <h1 class="white--text">{{ order.table_number }}</h1>
@@ -133,9 +133,8 @@ export default {
 }
 
 .ordersQueueDashboard {
-  border: 1px solid #f2f2f2;
   margin: 10px;
-  width: 100%;
+  width: auto !important;
   height: 250px;
   padding: 10px;
   overflow-y: hidden;

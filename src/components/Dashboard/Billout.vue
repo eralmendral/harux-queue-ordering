@@ -2,7 +2,7 @@
   <div>
     <h1>Billing Out - <b class='primary--text'>{{ billingOut.length }} </b></h1>
     <v-layout align-center class="billoutDashboard">
-      <div v-if="billingOut.length > 0">
+      <div class="d-flex" v-if="billingOut.length > 0">
          <v-btn v-for="table in billingOut" :key="table.id" class="mx-3 billout-box">
         <div>
           <br />
@@ -128,7 +128,7 @@ export default {
 
 <style >
 .billout-box {
- width: 170px;
+  width: 170px;
   height: 170px;
   border-radius: 5px;
   background: #55540b !important;
