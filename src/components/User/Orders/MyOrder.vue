@@ -50,7 +50,7 @@
                 <v-layout row justify-space-around align-center>
                   <v-flex xs4>
                     <div class="text-center">
-                      <img :src="item.image ? item.image : '/haruxlogo.png'" class="product-table-image" :alt="item.name" />
+                      <img :src="item.image ? item.image : '/haruxlogo.png'" class="product-table-image myorder-item-image" :alt="item.name" />
                     </div>
                   </v-flex>
                   <v-flex xs3>
@@ -73,7 +73,7 @@
                   <v-layout row justify-space-around align-center>
                     <v-flex xs4>
                       <div class="text-center">
-                        <img :src="chicken.image ? chicken.image : '/haruxlogo.png'" class="product-table-image" :alt="chicken.name" />
+                        <img :src="chicken.image ? chicken.image : '/haruxlogo.png'" class="product-table-image myorder-item-image" :alt="chicken.name" />
                       </div>
                     </v-flex>
                     <v-flex xs4>
@@ -93,7 +93,7 @@
                     <v-layout flex row justify-space-around align-center>
                       <v-flex xs4>
                         <div class="text-center">
-                          <img :src="sauce.image ? sauce.image : '/haruxlogo.png'" class="product-table-image" :alt="sauce.name" />
+                          <img :src="sauce.image ? sauce.image : '/haruxlogo.png'" class="product-table-image myorder-item-image" :alt="sauce.name" />
                         </div>
                       </v-flex>
                       <v-flex xs4>
@@ -158,4 +158,11 @@ export default {
 </script>
 
 <style>
+
+@media only screen and (max-width: 660px) {
+  .myorder-item-image {
+    width: 80px;
+    height: 60px;
+  }
+}
 </style>
