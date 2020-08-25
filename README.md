@@ -7,7 +7,7 @@ monitor the orders of all tables and process it in Queue.
 ![](https://i.gyazo.com/08a2b7f3bc09ec84e89f29980ecb3a9c.gif)
 ![](https://i.gyazo.com/1b9fe6249a7564c6b231b6505d4c7c91.gif)
 
- <a href="https://vercel.com/eralmendral/harux-queue-ordering/d6to1rp1e">View Demo</a>
+ <a href="https://harux-queue-ordering-d6to1rp1e.vercel.app/" target="_blank">View Demo</a>
  
 # Demo Accounts
   <h3> Admin </h3> 
@@ -20,7 +20,7 @@ monitor the orders of all tables and process it in Queue.
   
   
 ### Built With
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [Vue](https://vuejs.org/)
 * [Vuex](https://vuex.vuejs.org/)
 * [Vuetify](https://vuetifyjs.com/en/)
+
