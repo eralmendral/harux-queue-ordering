@@ -4,8 +4,8 @@ A real time ordering application where restaurant customers can place their orde
 app. Their order then will be added to the queue and the kitchen staffs and the admin could
 monitor the orders of all tables and process it in Queue.
 
-![](public/img/readme/haruUser.gif)
-![](public/img/readme/haruAdmin.gif)
+![](https://i.gyazo.com/08a2b7f3bc09ec84e89f29980ecb3a9c.gif)
+![](https://i.gyazo.com/189aae0b72b2d48f132ba53ccd3b826e.gif)
 
  <a href="https://vercel.com/eralmendral/harux-queue-ordering/d6to1rp1e">View Demo</a>
  
