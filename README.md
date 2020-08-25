@@ -5,7 +5,7 @@ app. Their order then will be added to the queue and the kitchen staffs and the 
 monitor the orders of all tables and process it in Queue.
 
 ![](https://i.gyazo.com/08a2b7f3bc09ec84e89f29980ecb3a9c.gif)
-![](https://i.gyazo.com/189aae0b72b2d48f132ba53ccd3b826e.gif)
+![](https://i.gyazo.com/1b9fe6249a7564c6b231b6505d4c7c91.gif)
 
  <a href="https://vercel.com/eralmendral/harux-queue-ordering/d6to1rp1e">View Demo</a>
  
