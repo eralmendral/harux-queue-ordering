@@ -24,6 +24,3 @@ monitor the orders of all tables and process it in Queue.
 * [Vuex](https://vuex.vuejs.org/)
 * [Vuetify](https://vuetifyjs.com/en/)
 
-
-## Docs
-You can contact me for full documentation.
