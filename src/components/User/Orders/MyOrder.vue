@@ -161,8 +161,8 @@ export default {
 
 @media only screen and (max-width: 660px) {
   .myorder-item-image {
-    width: 80px;
-    height: 60px;
+    width: 80px !important;
+    height: 60px !important;
   }
 }
 </style>

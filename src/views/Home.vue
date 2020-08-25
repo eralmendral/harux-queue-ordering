@@ -48,7 +48,6 @@
               <tr class="text-center">
                 <th scope="col">#</th>
                 <th scope="col">Product</th>
-                <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Remove</th>
                 <th scope="col">Total</th>
@@ -56,23 +55,22 @@
             </thead>
             <tbody>
               <tr class="text-center" v-for="(product, index) in fetchCart" :key="product.id">
-                <th scope="row" class="white--text">{{index + 1}}</th>
-                <td class="white--text">{{product.name}}</td>
-                <td class="white--text">{{product.price}}</td>
-                <td class="text-center" style="width: 120%">
-                  <button
-                    v-if="product.category != 'Chicken'"
-                    @click="removeFromCart(product.id)"
-                    class="btn btn-outline-danger btn-small"
-                  >-</button>
-                  <span class="mx-2 white--text">{{product.quantity ? product.quantity : '' }}</span>
-                  <button
-                    v-if="product.category != 'Chicken'"
-                    @click="addToCart({productId: product.id})"
-                    :disabled="product.quantity === product.stock"
-                    class="btn btn-outline-success btn-small"
-                  >+</button>
-                </td>
+                  <td scope="row" class="white--text">{{index + 1}}</td>
+                  <td class="white--text">{{product.name}}</td>
+                  <td class="text-center" style="width: 120%">
+                    <button
+                      v-if="product.category != 'Chicken'"
+                      @click="removeFromCart(product.id)"
+                      class="btn btn-outline-danger btn-small"
+                    >-</button>
+                    <span class="mx-1 white--text">{{product.quantity ? product.quantity : '' }}</span>
+                    <button
+                      v-if="product.category != 'Chicken'"
+                      @click="addToCart({productId: product.id})"
+                      :disabled="product.quantity === product.stock"
+                      class="btn btn-outline-success btn-small"
+                    >+</button>
+                  </td>
                 <td>
                   <button
                     v-if="product.category != 'Chicken'"
@@ -84,7 +82,7 @@
               </tr>
 
               <tr class="table-footer white--text font-weight-bold">
-                <td colspan="4" class="total">Total</td>
+                <td colspan="3" class="total">Total</td>
                 <td colspan="4" class="font-custom"><h4><b>₱ {{cartTotalAmount}}</b></h4></td>
               </tr>
             </tbody>
