@@ -1,7 +1,7 @@
 # Realtime Queue Ordering  
 
-A real time ordering application where restaurant customers can place their order from the
-app. Their order then will be added to the queue and the kitchen staffs and the admin could
+A real time ordering Progressive Web App where restaurant customers can place their order from the
+app using the restaurant's tablets. Their order then will be added to the queue and the kitchen staffs and the admin could
 monitor the orders of all tables and process it in Queue.
 
 ![](https://i.gyazo.com/08a2b7f3bc09ec84e89f29980ecb3a9c.gif)
