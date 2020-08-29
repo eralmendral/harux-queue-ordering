@@ -1,18 +1,26 @@
-# Carhub Bootcamp Project
+# Realtime Queue Ordering  
 
-10 Day Bootcamp Challenge Project using an unfamiliar backend framework. Created a cars dealing website where user can see car listing and contact car seller when signed up. Used the project as a training on how to use SCRUM practice.  React/Redux is used for frontend and Python django for backend.
+A real time ordering Progressive Web App where restaurant customers can place their order from the
+app using the restaurant's tablets. Their order then will be added to the queue and the kitchen staffs and the admin could
+monitor the orders of all tables and process it in Queue.
 
-![](https://i.gyazo.com/25261786659b86bfecb2c7adb29801fe.gif)
+![](https://i.gyazo.com/08a2b7f3bc09ec84e89f29980ecb3a9c.gif)
+![](https://i.gyazo.com/1b9fe6249a7564c6b231b6505d4c7c91.gif)
 
  <a href="https://harux-queue-ordering-d6to1rp1e.vercel.app/" target="_blank">View Demo</a>
  
-# Demo Account
-  <p> email:  johndoe@gmail.com</p>
-  <p> password: pass123! </p>
+# Demo Accounts
+  <h3> Admin </h3> 
+  <p> email/username:  admin@haru.com</p>
+  <p> password: haruadmin123 </p>
+  
+  <h3> Table/User </h3>
+  <p> username:  tb4@haru.ph</p>
+  <p> password: password </p>
   
   
 ### Built With
-* [React](https://reactjs.org/)
-* [Redux](https://redux.js.org/)
-* [Django](https://www.djangoproject.com/)
+* [Vue](https://vuejs.org/)
+* [Vuex](https://vuex.vuejs.org/)
+* [Vuetify](https://vuetifyjs.com/en/)
 
