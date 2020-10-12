@@ -64,8 +64,8 @@ export default {
   data () {
     return {
       error: '',
-      email: 'admin@haru.com',
-      password: 'haruadmin123'
+      email: 'tb1@haru.ph',
+      password: 'password'
     }
   },
   methods: {
