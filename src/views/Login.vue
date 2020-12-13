@@ -68,10 +68,12 @@
               class='pink--text text-center mt-2'
               v-if='this.error'
             >{{this.error}}</p>
+            <hr>
+            <p>Admin account Demo: </p>
+            <p> <b>email: admin@haru.com</b> </p>
+            <p> <b>password: haruadmin123</b></p>
           </v-card>
-          <p>Admin account </p>
-          <b>email: admin@haru.com</b>
-          <b>password: haruadmin123</b>
+
         </v-flex>
       </v-layout>
     </v-container>
